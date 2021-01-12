@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-sheet elevation="5" class="pa-3">
-      <v-row>
+    <v-sheet  elevation="5" class="pa-3">
+      <v-row >
         <v-col md="auto">
           <v-tooltip top nudge-top>
             <template v-slot:activator="{ on, attrs }">

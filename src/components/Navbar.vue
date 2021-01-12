@@ -57,7 +57,7 @@
           v-on="on"
         >
           email@gmail.com
-          <v-icon class="mx-2">mdi-chevron-down</v-icon>
+          <v-icon class="ml-2">mdi-chevron-down</v-icon>
         </v-chip>
       </template>
       <v-list>

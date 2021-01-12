@@ -28,7 +28,25 @@ const routes = [
   {
     path: '/creating',
     name: 'CreateElementPage',
-    component: () => import('../views/CreateElementPage.vue')
+    component: () => import('../views/CreateElementPage.vue'),
+    children : [
+      {
+        path: 'stage1',
+        component: () => import('../components/tabs/SelectTypeTab.vue')
+      },
+      {
+        path: 'stage2',
+        component: () => import('../components/tabs/DescribeLibraryTab.vue')
+      },
+      {
+        path: 'stage3',
+        component: () => import('../components/tabs/LibraryDecorateTab.vue')
+      },
+      {
+        path: 'stage4',
+        component: () => import('../components/tabs/DescribeComponentTab.vue')
+      }
+    ]
   },
   {
     path: "/about",
