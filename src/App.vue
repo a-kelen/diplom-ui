@@ -26,9 +26,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 #app {
     background-color: #f5fffd;
 }
-
+a {
+    text-decoration: none !important;;
+}
+.gap {
+  gap: 1rem;
+}
 </style>

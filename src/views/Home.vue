@@ -47,24 +47,40 @@
         md="2"
       >
         <v-sheet elevation="6">
-          <v-list flat>
-            <v-list-item-group
-              v-model="selectedItem"
-              color="primary"
+          <v-navigation-drawer permanent>
+            <v-list-item active-class="highlighted" >
+              <v-list-item-content>
+                <v-list-item-title class="title">
+                  Application
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  subtext
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list
+              dense
+              nav
             >
               <v-list-item
                 v-for="(item, i) in items"
                 :key="i"
+                :to="item.path" 
+                active-class="highlighted"
+                :class="item.path === $route.path ? 'highlighted' : ''"
               >
                 <v-list-item-icon>
-                  <v-icon v-text="item.icon"></v-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
                 </v-list-item-icon>
+
                 <v-list-item-content>
-                  <v-list-item-title v-text="item.text"></v-list-item-title>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-            </v-list-item-group>
-          </v-list>
+            </v-list>
+          </v-navigation-drawer>
+          <router-view></router-view>
         </v-sheet>
       </v-col>
     </v-row>
@@ -88,10 +104,15 @@ export default {
   data: () => ({ 
       selectedItem: 1,
       items: [
-        { text: 'Components', icon: 'mdi-view-compact' },
-        { text: 'Libraries', icon: 'mdi-library' },
-        { text: 'Users', icon: 'mdi-account' },
+        { title: 'Components', icon: 'mdi-view-compact', path: 'q1'},
+        { title: 'Libraries', icon: 'mdi-library', path: 'q2' },
+        { title: 'Users', icon: 'mdi-account', path: 'q3' },
       ],
-    })
+    }),
+    methods: {
+      listHandler(em) {
+        console.log(em);
+      }
+    }
 };
 </script>

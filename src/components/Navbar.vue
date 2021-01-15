@@ -24,10 +24,12 @@
       </v-list-item>
 
       <v-divider></v-divider>
-      <router-link v-for="(item, index) in items"
-          :key="index"
-           :to="item.path">
-        <v-list-item @click="go">
+       
+        <v-list-item v-for="(item, i) in items"
+        :key="i"
+        :to="item.path" 
+        active-class="highlighted"
+        :class="item.path === $route.path ? 'highlighted' : ''">
           <v-list-item-action >
             <v-icon>{{item.icon}}</v-icon>
           </v-list-item-action>
@@ -35,7 +37,6 @@
             <v-list-item-title>{{item.title}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        </router-link>
       </v-list>
     </v-navigation-drawer>
 
@@ -88,6 +89,11 @@ export default {
           { title: 'Dashboard', icon: 'mdi-view-dashboard' , path : '/dashboard' },
           { title: 'Sets', icon: 'mdi-folder-multiple' , path : '/chats'},
         ],
-  })
+  }),
+  methods: {
+    go() {
+      
+    }
+  }
 }
 </script>

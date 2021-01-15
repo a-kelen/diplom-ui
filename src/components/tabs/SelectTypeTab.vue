@@ -1,11 +1,9 @@
 <template>
-  <v-container>
-    <v-list rounded>
+    <v-list rounded color="transparent">  
       <v-list-item-group
         v-model="selectedItem"
-        color="primary"
       >
-        <v-list-item class="border">
+        <v-list-item color="primary" outlined class="rounded-xl">
         <v-card
             height="200"
             flat
@@ -16,7 +14,7 @@
             <p class="text-h4 teal--text ">Library</p>
         </v-card>
         </v-list-item>
-        <v-list-item class="border">
+        <v-list-item color="primary"  class="rounded-pill">
          <v-card
             height="200"
             flat
@@ -29,7 +27,6 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
-  </v-container>
 </template>
 
 <script>
@@ -42,7 +39,8 @@ export default {
 </script>
 
 <style scoped>
-.border {
-    border: 0.4ch solid teal !important; 
-}
+  .border {
+    border: 0.4ch solid teal !important;
+  }
+  
 </style>

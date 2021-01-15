@@ -2,13 +2,13 @@
   <v-container>
     <v-row>
       <v-col>
-        <router-view></router-view>  
+        <router-view app></router-view>  
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <v-sheet 
-        class="d-flex gap pa-1">
+        <v-card
+        class="d-flex gap pa-3 rounded-pill">
           <v-btn 
             color="teal darken-3" 
             large 
@@ -18,17 +18,17 @@
           <v-btn 
             color="teal darken-3" 
             large 
-            rounded 
+            rounded
             dark 
             class="ml-auto">Create
           </v-btn>
           <v-btn
             color="teal darken-3" 
             large 
-            rounded 
+            rounded
             dark>Next
           </v-btn>
-        </v-sheet>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>

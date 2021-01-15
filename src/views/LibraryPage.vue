@@ -48,7 +48,7 @@
               <v-tab href="#tab-2">Components</v-tab>
               <v-tab href="#tab-3">Dependencies</v-tab>
             </v-tabs>
-            <v-tabs-items class="transparent-body tabs-item-focus-opacity" v-model="tab">
+            <v-tabs-items class="transparent-body" v-model="tab">
               <v-tab-item background-opacity="0" value="tab-1">
                 sdfsdfsdf
               </v-tab-item>
