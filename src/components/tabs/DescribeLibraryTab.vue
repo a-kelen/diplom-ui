@@ -2,9 +2,8 @@
   <v-container>
     <v-row>
         <v-text-field
-            name="name"
+            v-model="newLibraryName"
             label="Name"
-            id="id"
         ></v-text-field>
     </v-row>
     <v-row>
@@ -14,7 +13,7 @@
         ref="editor"
         :outline="false"
         :render-config="renderConfig"
-        v-model="text"
+        v-model="newLibraryDescription"
         />
     </v-row>
   </v-container>
@@ -36,6 +35,27 @@ export default {
         },
         emoji: false
       }
-  })
+  }),
+  computed: {
+    newLibraryName: {
+      get () {
+        return this.$store.state.ElementStore.newLibraryName
+      },
+      set (value) {
+        this.$store.commit('ElementStore/updateNewLibraryName', value)
+      }
+    },
+    newLibraryDescription: {
+      get () {
+        return this.$store.state.ElementStore.newLibraryDescription
+      },
+      set (value) {
+        this.$store.commit('ElementStore/updateNewLibraryDescription', value)
+      }
+    }
+  },
+  created() {
+    
+  }
 };
 </script>

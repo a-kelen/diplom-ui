@@ -3,7 +3,7 @@
     <v-row>
         <v-col md="3">
             <v-text-field
-                name="name"
+                v-model="item.name"
                 label="Event name"
                 id="id"
                 filled
@@ -13,6 +13,7 @@
         </v-col>
         <v-col>
             <v-textarea 
+            v-model="item.desciption"
             label="Event description"
             rows="1"
             auto-grow
@@ -25,6 +26,7 @@
 <script>
 export default {
   name: "AddEventItem",
+  props: ['item'],
   data: () => ({
   })
 };

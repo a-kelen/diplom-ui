@@ -3,9 +3,8 @@
     <v-row>
         <v-col md="3">
             <v-text-field
-                name="name"
+                v-model="item.name"
                 label="Prop name"
-                id="id"
                 filled
                 outlined
                 rounded
@@ -13,6 +12,7 @@
         </v-col>
         <v-col>
             <v-textarea 
+            v-model="item.desciption"
             label="Prop description"
             rows="1"
             auto-grow
@@ -25,6 +25,7 @@
 <script>
 export default {
   name: "AddPropItem",
+  props: ['item'],
   data: () => ({
   })
 };

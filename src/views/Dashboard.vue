@@ -7,7 +7,7 @@
             rounded 
             block
             dark
-            color="teal darken-3">Create element</v-btn>
+            color="teal darken-3" :to="{name: 'CreateElementPage'}">Create element</v-btn>
             <v-sheet elevation="6">
               <v-list flat>
                 <v-list-item-group
@@ -75,6 +75,7 @@
 <script>
 import ComponentItem from '../components/items/ComponentItem.vue';
 import LibraryItem from '../components/items/LibraryItem.vue';
+import { mapState } from "vuex"
 
 export default {
   name: "Dashboard",
@@ -92,7 +93,12 @@ export default {
         { text: 'Owned Libraries', icon: 'mdi-account' },
         { text: 'Owned Components', icon: 'mdi-account' },
       ],
-  })
+  }),
+  computed: {
+    ...mapState({
+      
+    })
+  }
 };
 </script>
 

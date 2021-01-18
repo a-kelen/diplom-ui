@@ -30,11 +30,22 @@
 </template>
 
 <script>
+// import {mapState} from "vuex"
+
 export default {
   name: "SelectTypeTab",
   data: () => ({
-      selectedItem: 1
-  })
+  }),
+  computed: {
+    selectedItem: {
+      get () {
+        return this.$store.state.ElementStore.elementSelectType
+      },
+      set (value) {
+        this.$store.commit('ElementStore/updateElementType', value)
+      }
+    }
+  }
 };
 </script>
 
@@ -42,5 +53,4 @@ export default {
   .border {
     border: 0.4ch solid teal !important;
   }
-  
 </style>
