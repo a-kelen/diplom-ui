@@ -12,8 +12,7 @@
 
 <script>
 import Navbar from "./components/Navbar.vue"
-
-
+import axios from './store/axios' 
 
 export default {
   name: "App",
@@ -22,7 +21,11 @@ export default {
   },
   data: () => ({
     //
-  })
+  }),
+  created() {
+    axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('token')
+    this.$store.dispatch('UserStore/getCurrentUser')
+  }
 };
 </script>
 
