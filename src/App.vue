@@ -1,21 +1,23 @@
 <template>
   <v-app>
-    <navbar/>
+    <navbar />
 
     <v-main>
-       <v-container fluid>
-      <router-view></router-view>
-    </v-container>
+      <v-container fluid>
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
+      </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Navbar from "./components/Navbar.vue"
-import axios from './store/axios' 
+import Navbar from './components/Navbar.vue'
+import axios from './store/axios'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     Navbar
   },
@@ -29,12 +31,12 @@ export default {
 };
 </script>
 
-<style >
+<style>
 #app {
-    background-color: #f5fffd;
+  background-color: #f5fffd;
 }
 a {
-    text-decoration: none !important;;
+  text-decoration: none !important;
 }
 .gap {
   gap: 1rem;

@@ -1,5 +1,7 @@
+import Axios from '../axios'
 const state = {
     elementSelectType: 0,
+    status: true,
     newLibraryName: 'a',
     newLibraryDescription: 'a',
     newComponent: {
@@ -17,6 +19,9 @@ const state = {
   const mutations = {
     updateElementType (state, val) {
       state.elementSelectType = val
+    },
+    updateStatus (state, val) {
+      state.status = val
     },
     updateNewLibraryName (state, val) {
       state.newLibraryName = val
@@ -48,7 +53,43 @@ const state = {
   }
 
   const actions = {
+    createElement ({ commit, state }) {
+      if(state.elementSelectType == 0) {
+        let payload = {
+          name: state.newLibraryName,
+          description: state.newLibraryDescription,
+          components: state.components
+        }
+        Axios.post('Library/', payload)
+          .then(resp => {
+            commit('LibraryStore/add_own_library', resp.data)
+          })
+      }
+      if(state.elementSelectType == 1) {
+        let formData = new FormData()
+        for(let i=0; i < state.newComponent.files.length; i++){
+          formData.append('files', state.newComponent.files[i])
+        }
+        Axios.post('Component/', state.newComponent)
+          .then(resp => {
+            formData.append('elementId', resp.data.id)
+            formData.append('descriminator', 'component')
+            commit('ComponentStore/add_own_component', resp.data)
+            Axios.post('File/upload-files', formData)
+              .then(resp => {
+                commit('ComponentStore/add_own_component', resp.data, { root: true })
+              })
+          })
+      }
       
+    },
+    uploadFiles ({ state }) {
+      Axios.post('File/upload-files', state.newComponent.files)
+        .then(resp => {
+          console.log(resp);
+          // commit('add_own_library', resp.data)
+        })
+    },
   }
   
   export default {

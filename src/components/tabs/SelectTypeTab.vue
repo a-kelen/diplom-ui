@@ -1,4 +1,5 @@
 <template>
+  <v-sheet>
     <v-list rounded color="transparent">  
       <v-list-item-group
         v-model="selectedItem"
@@ -27,6 +28,12 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
+    <v-checkbox
+      class="mx-2"
+      v-model="status"
+      label="Private"
+    ></v-checkbox>
+  </v-sheet>
 </template>
 
 <script>
@@ -43,6 +50,14 @@ export default {
       },
       set (value) {
         this.$store.commit('ElementStore/updateElementType', value)
+      }
+    },
+    status: {
+      get () {
+        return this.$store.state.ElementStore.status
+      },
+      set (value) {
+        this.$store.commit('ElementStore/updateStatus', value)
       }
     }
   }

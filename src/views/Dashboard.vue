@@ -40,19 +40,15 @@
             </v-col>
           </v-row>
           <v-row v-if="selectedItem == 2">
-            <v-col 
-              v-for="n in 10" 
-              :key="n"
-              cols="4">
-              <component-item/>
+            <v-col v-for="(component, index) in ownComponents" :key="index" cols="4">
+              <component-item :component="component"/>
             </v-col>
           </v-row>
           <v-row v-if="selectedItem == 1">
             <v-col 
-              v-for="n in 10" 
-              :key="n"
+              v-for="(library, index) in ownLibraries" :key="index"
               cols="4">
-              <library-item/>
+              <library-item :library="library"/>
             </v-col>
           </v-row>
           <v-row justify="center">
@@ -62,7 +58,7 @@
               v-model="page"
               class="my-4"
               color="teal darken-3"
-              length="5"
+              :length="paginationLength"
               circle
             ></v-pagination>
           </v-container>
@@ -84,6 +80,7 @@ export default {
     ComponentItem
   },
   data: () => ({
+      paginationLength : 6,
       selectedItem: 1,
       page: 1,
       items: [
@@ -94,10 +91,14 @@ export default {
         { text: 'Owned Components', icon: 'mdi-account' },
       ],
   }),
+  mounted() {
+    this.$store.dispatch('ComponentStore/getOwnComponentList')
+  },
   computed: {
     ...mapState({
-      
-    })
+      ownComponents: s => s.ComponentStore.ownComponents,
+      ownLibraries: s => s.ComponentStore.ownLibraries
+    }),
   }
 };
 </script>

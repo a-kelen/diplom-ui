@@ -45,7 +45,6 @@ const actions = {
               name: resp.data.name,
               nickname: resp.data.nickname
             }
-            console.log(resp)
             commit('reauth_success', user)
             resolve(resp)
           })

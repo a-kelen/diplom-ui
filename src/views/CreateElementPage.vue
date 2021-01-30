@@ -4,16 +4,14 @@
       <v-stepper-header>
         <template v-for="n in steps">
           <v-stepper-step
-              :key="`${n.id}-step`"
-              :complete="currentStep > n.id || n.id == 4"
-              :step="n.id"
-            > {{n.title}}
+            :key="`${n.id}-step`"
+            :complete="currentStep > n.id || n.id == 4"
+            :step="n.id"
+          >
+            {{ n.title }}
           </v-stepper-step>
 
-            <v-divider
-              v-if="n.id !== steps"
-              :key="n.id"
-            ></v-divider>
+          <v-divider v-if="n.id !== steps" :key="n.id"></v-divider>
         </template>
       </v-stepper-header>
 
@@ -30,14 +28,17 @@
             class="mx-3"
             v-show="n.backVisibleBtn"
             @click="backStep()"
-          >Back
+          >
+            Back
           </v-btn>
           <v-btn
             color="primary"
             class="mx-3"
             v-show="n.saveVisibleBtn"
             :disabled="saveButtonDisable"
-          >Save
+            @click="saveElement"
+          >
+            Save
           </v-btn>
           <v-btn
             color="primary"
@@ -45,13 +46,12 @@
             v-show="n.nextVisibleBtn"
             :disabled="nextButtonDisable"
             @click="nextStep()"
-          >Continue
+          >
+            Continue
           </v-btn>
-          
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
-    
   </v-container>
 </template>
 
@@ -63,7 +63,7 @@ import DescribeComponentTab from '../components/tabs/AddComponentTab'
 import LibraryDecorateTab from '../components/tabs/LibraryDecorateTab'
 
 export default {
-  name: "CreateElementPage",
+  name: 'CreateElementPage',
   components: {
     SelectTypeTab,
     DescribeLibraryTab,
@@ -111,7 +111,8 @@ export default {
     ...mapState({
       elementType: s => s.ElementStore.elementSelectType,
       newLibraryName: s => s.ElementStore.newLibraryName,
-      components: s => s.ElementStore.components
+      components: s => s.ElementStore.components,
+      newComponent: s => s.ElementStore.newComponent
     }),
     steps() {
       if(this.elementType == 1)
@@ -133,7 +134,11 @@ export default {
       return false;
     },
     saveButtonDisable() {
-      return this.components.length == 0
+      
+      if(this.elementType == 0)
+        return this.components.length == 0 
+      else  
+        return this.newComponent.files == 0
     },
     backButtonVisible() {
       return this.currentStep > 1;
@@ -149,6 +154,9 @@ export default {
     },
 
   methods: {
+      saveElement() {
+        this.$store.dispatch('ElementStore/createElement')
+      },
       nextStep () {
         this.e1++
       },

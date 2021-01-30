@@ -66,6 +66,7 @@ export default {
   name: "LibraryItem",
   data: () => ({
     rating: 4.5
-  })
+  }),
+  props: ['library']
 };
 </script>
