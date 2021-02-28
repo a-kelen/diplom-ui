@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vue2-editor": "^2.10.2",
     "vuetify": "^2.2.11",
     "vuetify-markdown-editor": "^3.3.2",
     "vuex": "^3.4.0"
@@ -40,8 +41,11 @@
       "node": true
     },
     "rules": {
-        "semi": 0,
-        "quotes": [1 , "single"]
+      "semi": 0,
+      "quotes": [
+        1,
+        "single"
+      ]
     },
     "extends": [
       "plugin:vue/essential",

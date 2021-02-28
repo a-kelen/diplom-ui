@@ -54,13 +54,13 @@
           <v-row justify="center">
         <v-col cols="8">
           <v-container class="max-width">
-            <v-pagination
+            <!-- <v-pagination
               v-model="page"
               class="my-4"
               color="teal darken-3"
               :length="paginationLength"
               circle
-            ></v-pagination>
+            ></v-pagination> -->
           </v-container>
         </v-col>
       </v-row>
@@ -93,11 +93,12 @@ export default {
   }),
   mounted() {
     this.$store.dispatch('ComponentStore/getOwnComponentList')
+    this.$store.dispatch('LibraryStore/getOwnLibraryList')
   },
   computed: {
     ...mapState({
       ownComponents: s => s.ComponentStore.ownComponents,
-      ownLibraries: s => s.ComponentStore.ownLibraries
+      ownLibraries: s => s.LibraryStore.ownLibraries
     }),
   }
 };

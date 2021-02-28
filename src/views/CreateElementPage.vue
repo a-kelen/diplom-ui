@@ -36,6 +36,7 @@
             class="mx-3"
             v-show="n.saveVisibleBtn"
             :disabled="saveButtonDisable"
+            :loading="saveBtnLoading"
             @click="saveElement"
           >
             Save
@@ -71,6 +72,7 @@ export default {
     LibraryDecorateTab
   },
   data: () => ({
+    saveBtnLoading: false,
     e1: 0,
     rawSteps: [
       {
@@ -155,7 +157,11 @@ export default {
 
   methods: {
       saveElement() {
-        this.$store.dispatch('ElementStore/createElement')
+        this.saveBtnLoading = true
+        this.$store.dispatch('ElementStore/createElement').then(() => {
+          this.saveBtnLoading = false
+          this.$router.push('Dashboard')
+        })
       },
       nextStep () {
         this.e1++

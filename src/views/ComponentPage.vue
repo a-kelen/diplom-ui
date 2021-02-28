@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container v-if="component">
       <v-row>
         <v-col>
           <v-row>
@@ -42,14 +42,21 @@
             </v-tabs>
             <v-tabs-items class="transparent-body" v-model="tab">
               <v-tab-item background-opacity="0" value="tab-1">
-                sdfsdfsdf
+                {{component.description}}
               </v-tab-item>
-              <v-tab-item value="tab-2">
-                <event-item/>
-                <event-item :isLast="true"/>
+              <v-tab-item  value="tab-2">
+                <event-item 
+                  v-for="(e, i) in component.events" 
+                  :key="i"
+                  :event="e"
+                  :isLast="component.events.length - 1 == i"/>
               </v-tab-item>
               <v-tab-item value="tab-3">
-                <prop-item/>
+                <prop-item 
+                  v-for="(p, i) in component.props" 
+                  :key="i"
+                  :prop="p"
+                  :isLast="component.props.length - 1 == i"/>
               </v-tab-item>
               <v-tab-item value="tab-4">
                 sdfsdfsdf
@@ -64,7 +71,7 @@
 <script>
 import EventItem from '../components/items/EventItem.vue';
 import PropItem from '../components/items/PropItem.vue';
-
+import { mapState } from 'vuex'
 export default {
   name: "ComponentPage",
   components: {
@@ -72,8 +79,32 @@ export default {
     PropItem
   },
   data: () => ({
-    tab: 'tab-2'
-  })
+    tab: 'tab-1',
+  }),
+  computed: {
+    ...mapState({
+      component: s => s.ComponentStore.activeComponent
+    })
+  },
+  // watch: {
+  //   c() {
+  //     this.component = this.c
+  //   }
+  // },
+  methods: {
+    fetch() {
+      this.$store.dispatch('ComponentStore/getComponent', this.$route.params.id)
+    },
+    
+  },
+  beforeRouteUpdate (to, from, next) {
+      this.fetch()
+      next()
+  },
+  beforeRouteEnter (to, from, next) {
+      next(vm => vm.fetch())
+  },
+
 };
 </script>
 

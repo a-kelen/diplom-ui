@@ -8,7 +8,8 @@ const state = {
       files: [],
       events: [],
       props: [],
-      description: ''
+      description: '',
+      status: true
     },
     components: []
   }
@@ -44,7 +45,8 @@ const state = {
         files: [],
         events: [],
         props: [],
-        description: ''
+        description: '',
+        status: true
       }
     },
     deleteComponent(state, val) {
@@ -55,14 +57,35 @@ const state = {
   const actions = {
     createElement ({ commit, state }) {
       if(state.elementSelectType == 0) {
+        var libraryFiles = [];
+        for(var i=0; i<state.components.length; i++){
+          libraryFiles = libraryFiles.concat(state.components[i].files);
+        }
+        console.log(libraryFiles);
         let payload = {
           name: state.newLibraryName,
           description: state.newLibraryDescription,
-          components: state.components
+          components: state.components,
+          status: state.status
         }
-        Axios.post('Library/', payload)
-          .then(resp => {
-            commit('LibraryStore/add_own_library', resp.data)
+        let formData = new FormData()
+        for(let i=0; i < libraryFiles.length; i++){
+          formData.append('files', libraryFiles[i])
+        }
+        return new Promise((resolve, reject) => {
+          Axios.post('Library/', payload)
+            .then(resp => {
+              formData.append('elementId', resp.data.id)
+              formData.append('descriminator', 'library')
+              commit('ComponentStore/add_own_component', resp.data)
+              Axios.post('File/upload-files', formData)
+                .then(resp => {
+                  commit('LibraryStore/add_own_library', resp.data, { root: true })
+                  resolve(resp.data)
+                }).catch(err => {
+                  reject(err)
+                })
+            })
           })
       }
       if(state.elementSelectType == 1) {
@@ -70,16 +93,22 @@ const state = {
         for(let i=0; i < state.newComponent.files.length; i++){
           formData.append('files', state.newComponent.files[i])
         }
-        Axios.post('Component/', state.newComponent)
-          .then(resp => {
-            formData.append('elementId', resp.data.id)
-            formData.append('descriminator', 'component')
-            commit('ComponentStore/add_own_component', resp.data)
-            Axios.post('File/upload-files', formData)
-              .then(resp => {
-                commit('ComponentStore/add_own_component', resp.data, { root: true })
-              })
-          })
+        state.newComponent.status = state.status
+        return new Promise((resolve, reject) => {
+          Axios.post('Component/', state.newComponent)
+            .then(resp => {
+              formData.append('elementId', resp.data.id)
+              formData.append('descriminator', 'component')
+              commit('ComponentStore/add_own_component', resp.data)
+              Axios.post('File/upload-files', formData)
+                .then(resp => {
+                  commit('ComponentStore/add_own_component', resp.data, { root: true })
+                  resolve(resp.data)
+                }).catch(err => {
+                  reject(err)
+                })
+            })
+        })
       }
       
     },

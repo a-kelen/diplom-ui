@@ -15,7 +15,7 @@
             <v-col>
               <v-sheet class="transparent d-flex align-center">
                 <v-card-text class="text-h4">
-                  Title
+                  {{ library.name }}
                 </v-card-text>
                 <v-rating class="ml-auto"></v-rating>
               </v-sheet>
@@ -25,7 +25,7 @@
             <v-col>
               <v-sheet class="transparent gap d-flex align-center">
                 <v-card-text>
-                  author-a
+                  {{ library.author }}
                 </v-card-text>
                 <v-btn color="primary" icon>
                   <v-icon>mdi-heart-outline</v-icon>
@@ -50,13 +50,10 @@
             </v-tabs>
             <v-tabs-items class="transparent-body" v-model="tab">
               <v-tab-item background-opacity="0" value="tab-1">
-                sdfsdfsdf
+                {{ library.description }}
               </v-tab-item>
               <v-tab-item value="tab-2">
-                  <component-row/>
-                  <component-row/>
-                  <component-row/>
-                  <component-row/>
+                  <component-row v-for="(c, i) in library.components" :key="i" :component="c" />
               </v-tab-item>
               <v-tab-item value="tab-3">
                 sdfsdfsdf
@@ -69,7 +66,8 @@
 </template>
 
 <script>
-import ComponentRow from '../components/items/ComponentRow.vue';
+import ComponentRow from '../components/items/ComponentRow.vue'
+import { mapState } from 'vuex'
 export default {
   name: "Library",
   components: {
@@ -77,7 +75,25 @@ export default {
   },
   data: () => ({
     tab: 'tab-1'
-  })
+  }),
+  computed: {
+    ...mapState({
+      library: s => s.LibraryStore.activeLibrary
+    })
+  },
+  methods: {
+    fetch() {
+      this.$store.dispatch('LibraryStore/getLibrary', this.$route.params.id)
+    },
+    
+  },
+  beforeRouteUpdate (to, from, next) {
+      this.fetch()
+      next()
+  },
+  beforeRouteEnter (to, from, next) {
+      next(vm => vm.fetch())
+  },
 };
 </script>
 

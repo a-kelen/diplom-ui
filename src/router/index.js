@@ -16,12 +16,12 @@ const routes = [
     component: () => import('../views/Dashboard.vue')
   },
   {
-    path: '/library',
-    name: 'LibaryPage',
+    path: '/library/:id',
+    name: 'LibraryPage',
     component: () => import('../views/LibraryPage.vue')
   },
   {
-    path: '/comp',
+    path: '/comp/:id',
     name: 'ComponentPage',
     component: () => import('../views/ComponentPage.vue')
   },

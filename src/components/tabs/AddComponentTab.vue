@@ -55,17 +55,18 @@
         <add-event-item :key="index" v-for="(event, index) in component.events" :item="event"/>
     </v-row>
     <v-row>
-        <v-card-text class="text-h5">Description</v-card-text>
+        <v-card-text class="text-h5" v-model="component.description">Description</v-card-text>
     </v-row>
     <v-row>
-        <Editor
+        <!-- <Editor
         mode="editor"
         :emoji="false"
         ref="editor"
         :outline="false"
         :render-config="renderConfig"
         v-model="component.description"
-        />
+        /> -->
+        <!-- <vue-editor v-model="component.description" /> -->
     </v-row>
   </v-container>
 </template>
@@ -73,7 +74,8 @@
 <script>
 import AddEventItem from '../items/AddEventItem.vue';
 import AddPropItem from '../items/AddPropItem.vue';
-import { Editor } from "vuetify-markdown-editor";
+// import { Editor } from "vuetify-markdown-editor";
+// import { VueEditor } from "vue2-editor";
 import { mapState } from 'vuex';
 
 export default {
@@ -81,7 +83,8 @@ export default {
   components: {
     AddEventItem,
     AddPropItem,
-      Editor
+    // Editor
+    // VueEditor 
   },
   data: () => ({
       renderConfig: {
@@ -115,3 +118,11 @@ export default {
   }
 }
 </script>
+<style lang="css">
+@import "~vue2-editor/dist/vue2-editor.css";
+
+/* Import the Quill styles you want */
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
+</style>
