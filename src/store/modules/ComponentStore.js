@@ -23,10 +23,12 @@ const state = {
     },
     add_to_cache(state, val) {
       state.cache.push(val)
-      console.log(state.cache)
     },
     set_active_component(state, val) {
       state.activeComponent = val
+    },
+    change_like(state, val) {
+      state.activeComponent.liked = val;
     }
   }
 
@@ -49,11 +51,22 @@ const state = {
           commit('set_active_component', resp.data)
           commit('add_to_cache', resp.data)
       })
-    }
+    },
 
 
     //POST
-    
+    like({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        Axios.post('Component/like', { id: state.activeComponent.id })
+        .then(resp => {
+          console.log(resp)
+          commit('change_like', resp.data)
+          resolve(resp)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    }
 
     //DELETE
     // softDelete(_, payload) {

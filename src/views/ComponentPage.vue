@@ -18,8 +18,8 @@
                 <v-card-text>
                   From library: VueLib
                 </v-card-text>
-                <v-btn color="primary" icon>
-                  <v-icon>mdi-heart-outline</v-icon>
+                <v-btn @click="like" :loading="likeBtnLoading" color="primary" icon>
+                  <v-icon>{{ likeIcon }}</v-icon>
                 </v-btn>
                 <v-btn color="primary" icon>
                   <v-icon>mdi-download-outline</v-icon>
@@ -80,21 +80,25 @@ export default {
   },
   data: () => ({
     tab: 'tab-1',
+    likeBtnLoading: false
   }),
   computed: {
     ...mapState({
       component: s => s.ComponentStore.activeComponent
-    })
+    }),
+    likeIcon() {
+      return this.component.liked ? 'mdi-heart' : 'mdi-heart-outline'
+    }
   },
-  // watch: {
-  //   c() {
-  //     this.component = this.c
-  //   }
-  // },
   methods: {
     fetch() {
       this.$store.dispatch('ComponentStore/getComponent', this.$route.params.id)
     },
+    like() {
+      this.likeBtnLoading = true
+      this.$store.dispatch('ComponentStore/like')
+        .then(() => this.likeBtnLoading = false)
+    }
     
   },
   beforeRouteUpdate (to, from, next) {

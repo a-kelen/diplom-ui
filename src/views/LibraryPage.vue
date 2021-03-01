@@ -27,8 +27,8 @@
                 <v-card-text>
                   {{ library.author }}
                 </v-card-text>
-                <v-btn color="primary" icon>
-                  <v-icon>mdi-heart-outline</v-icon>
+                <v-btn @click="like" :loading="likeBtnLoading" color="primary" icon>
+                  <v-icon>{{ likeIcon }}</v-icon>
                 </v-btn>
                 <v-btn color="primary" icon>
                   <v-icon>mdi-download-outline</v-icon>
@@ -74,17 +74,26 @@ export default {
     ComponentRow
   },
   data: () => ({
-    tab: 'tab-1'
+    tab: 'tab-1',
+    likeBtnLoading: false
   }),
   computed: {
     ...mapState({
       library: s => s.LibraryStore.activeLibrary
-    })
+    }),
+    likeIcon() {
+      return this.library.liked ? 'mdi-heart' : 'mdi-heart-outline'
+    }
   },
   methods: {
     fetch() {
       this.$store.dispatch('LibraryStore/getLibrary', this.$route.params.id)
     },
+    like() {
+      this.likeBtnLoading = true
+      this.$store.dispatch('LibraryStore/like')
+        .then(() => this.likeBtnLoading = false)
+    }
     
   },
   beforeRouteUpdate (to, from, next) {

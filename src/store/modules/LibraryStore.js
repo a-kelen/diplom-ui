@@ -26,6 +26,9 @@ const state = {
     },
     set_active_library(state, val) {
       state.activeLibrary = val
+    },
+    change_like(state, val) {
+      state.activeLibrary.liked = val;
     }
   }
 
@@ -52,6 +55,17 @@ const state = {
         .then(resp => {
           commit('set_active_library', resp.data)
           commit('add_to_cache', resp.data)
+      })
+    },
+    like({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        Axios.post('Library/like', { id: state.activeLibrary.id })
+        .then(resp => {
+          commit('change_like', resp.data)
+          resolve(resp)
+        }).catch(err => {
+          reject(err)
+        })
       })
     }
   }
