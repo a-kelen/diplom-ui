@@ -29,6 +29,9 @@ const state = {
     },
     change_like(state, val) {
       state.activeComponent.liked = val;
+    },
+    set_owned(state, val) {
+      state.activeComponent.owned = val;
     }
   }
 
@@ -66,8 +69,18 @@ const state = {
           reject(err)
         })
       })
+    },
+    getOwn({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        Axios.post('Component/get-own', { id: state.activeComponent.id })
+        .then(resp => {
+          commit('set_owned', resp.data.id == state.activeComponent.id)
+          resolve(resp)
+        }).catch(err => {
+          reject(err)
+        })
+      })
     }
-
     //DELETE
     // softDelete(_, payload) {
     //   return new Promise(() => {

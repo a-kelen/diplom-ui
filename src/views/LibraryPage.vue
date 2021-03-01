@@ -33,7 +33,13 @@
                 <v-btn color="primary" icon>
                   <v-icon>mdi-download-outline</v-icon>
                 </v-btn>
-                <v-btn color="primary">Get</v-btn>
+               <v-btn 
+                  v-if="!userIsOwner"
+                  @click="getOwn" 
+                  :color="getOwnBtnColor"
+                  >
+                    {{ getOwnBtnText }}
+                  </v-btn>
               </v-sheet>
             </v-col>
           </v-row>
@@ -75,14 +81,25 @@ export default {
   },
   data: () => ({
     tab: 'tab-1',
-    likeBtnLoading: false
+    likeBtnLoading: false,
+    getOwnBtnLoading: false
   }),
   computed: {
     ...mapState({
-      library: s => s.LibraryStore.activeLibrary
+      library: s => s.LibraryStore.activeLibrary,
+      user: s => s.UserStore.user
     }),
     likeIcon() {
       return this.library.liked ? 'mdi-heart' : 'mdi-heart-outline'
+    },
+    getOwnBtnText() {
+      return this.library.owned ? 'Owned' : 'Get'
+    },
+    getOwnBtnColor() {
+      return this.library.owned ? 'white' : 'primary'
+    },
+    userIsOwner() {
+      return this.library.author == this.user.username
     }
   },
   methods: {
@@ -93,7 +110,12 @@ export default {
       this.likeBtnLoading = true
       this.$store.dispatch('LibraryStore/like')
         .then(() => this.likeBtnLoading = false)
-    }
+    },
+    getOwn() {
+      this.getOwnLoading = true
+      this.$store.dispatch('LibraryStore/getOwn')
+        .then(() => this.getOwnLoading = false)
+    },
     
   },
   beforeRouteUpdate (to, from, next) {

@@ -41,9 +41,8 @@ const actions = {
         Axios({ url: 'User', method: 'GET' })
           .then(resp => {
             const user = {
-              email: resp.data.email,
-              name: resp.data.name,
-              nickname: resp.data.nickname
+              email: resp.data.displayName,
+              username: resp.data.username
             }
             commit('reauth_success', user)
             resolve(resp)
@@ -59,7 +58,6 @@ const actions = {
       commit('auth_request')
       Axios.post('user', user)
         .then(resp => {
-          console.log(resp)
           const token = resp.data.token
           const user = {
             email: resp.data.email,
@@ -120,6 +118,7 @@ const mutations = {
     state.status = 'success'
     state.token = localStorage.getItem('token')
     state.user = user
+    console.log(user)
   },
   auth_error (state) {
     state.status = 'error'
