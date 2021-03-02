@@ -95,7 +95,7 @@ import LibraryItem from '../components/items/LibraryItem.vue';
 
 
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     ComponentItem,
     LibraryItem,

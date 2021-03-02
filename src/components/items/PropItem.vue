@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: "PropItem",
+  name: 'PropItem',
   props: [
       'isLast',
       'prop'

@@ -52,7 +52,7 @@
 import DescribeComponentTab from '../dialogs/DescribeComponentTab.vue'
 
 export default {
-  name: "PrimaryComponentItem",
+  name: 'PrimaryComponentItem',
   components: {
     DescribeComponentTab
   },

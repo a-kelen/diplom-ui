@@ -38,17 +38,17 @@
 import PrimaryComponentItem from '../items/PrimaryComponentItem.vue';
 import { mapState} from 'vuex';
 export default {
-  name: "DescribeLibraryTab",
+  name: 'DescribeLibraryTab',
   components: {
     PrimaryComponentItem
   },
   data: () => ({
       dialog: false,
-      text: "",
+      text: '',
       renderConfig: {
         // Mermaid config
         mermaid: {
-          theme: "dark"
+          theme: 'dark'
         },
         emoji: false
       },

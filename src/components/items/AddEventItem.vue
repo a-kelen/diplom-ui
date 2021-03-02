@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  name: "AddEventItem",
+  name: 'AddEventItem',
   props: ['item'],
   data: () => ({
   })

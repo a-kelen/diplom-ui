@@ -34,12 +34,16 @@
                   <v-icon>mdi-download-outline</v-icon>
                 </v-btn>
                <v-btn 
-                  v-if="!userIsOwner"
-                  @click="getOwn" 
+                  v-if="!userIsOwner && !library.owned"
+                  @click="getOwn"
+                  :loading="getOwnBtnLoading"
                   :color="getOwnBtnColor"
                   >
                     {{ getOwnBtnText }}
-                  </v-btn>
+                </v-btn>
+                <div class="title teal--text text--darken-3" v-if="library.owned">
+                  Owned
+                </div>
               </v-sheet>
             </v-col>
           </v-row>
@@ -75,7 +79,7 @@
 import ComponentRow from '../components/items/ComponentRow.vue'
 import { mapState } from 'vuex'
 export default {
-  name: "Library",
+  name: 'Library',
   components: {
     ComponentRow
   },

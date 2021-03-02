@@ -47,7 +47,7 @@
 
 <script>
 export default {
-  name: "ComponentItem",
+  name: 'ComponentItem',
   props: ['component'],
   data: () => ({
     rating: 4.5

@@ -65,7 +65,7 @@
 
 <script>
 export default {
-  name: "LibraryItem",
+  name: 'LibraryItem',
   data: () => ({
     rating: 4.5
   }),

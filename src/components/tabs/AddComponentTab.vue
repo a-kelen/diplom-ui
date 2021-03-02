@@ -79,7 +79,7 @@ import AddPropItem from '../items/AddPropItem.vue';
 import { mapState } from 'vuex';
 
 export default {
-  name: "AddComponentTab",
+  name: 'AddComponentTab',
   components: {
     AddEventItem,
     AddPropItem,
@@ -90,7 +90,7 @@ export default {
       renderConfig: {
         // Mermaid config
         mermaid: {
-          theme: "dark"
+          theme: 'dark'
         },
         emoji: false
       }

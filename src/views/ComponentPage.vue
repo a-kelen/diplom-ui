@@ -27,6 +27,7 @@
                 <v-btn 
                   v-if="!userIsOwner"
                   @click="getOwn" 
+                  :loading="getOwnBtnLoading"
                   :color="getOwnBtnColor"
                   >
                     {{ getOwnBtnText }}
@@ -79,7 +80,7 @@ import EventItem from '../components/items/EventItem.vue';
 import PropItem from '../components/items/PropItem.vue';
 import { mapState } from 'vuex'
 export default {
-  name: "ComponentPage",
+  name: 'ComponentPage',
   components: {
     EventItem,
     PropItem

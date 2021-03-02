@@ -1,6 +1,7 @@
 import Axios from '../axios'
 const state = {
   ownLibraries: [],
+  ownedLibraries: [],
   activeLibrary: {},
   cache: []
 }
@@ -17,6 +18,9 @@ const mutations = {
   },
   set_own_libraries(state, val) {
     state.ownLibraries = val
+  },
+  set_owned_libraries(state, val) {
+    state.ownedLibraries = val
   },
   add_own_library(state, val) {
     state.ownLibraries.push(val)
@@ -38,11 +42,24 @@ const mutations = {
 const actions = {
   //GET
   getOwnLibraryList({commit}) {
-    Axios.get('Library/ownLibraryList/')
-      .then(resp => {
-        commit('set_own_libraries', resp.data)
-      })
+      return new Promise((resolve, reject) => {
+      Axios.get('Library/ownLibraryList/')
+        .then(resp => {
+          commit('set_own_libraries', resp.data)
+          resolve(resp.data)
+        }).catch(err => {
+          reject(err)
+        })
+    })
   },
+
+  getOwnedLibraryList({ commit }) {
+    Axios.get('Library/ownedLibraryList/')
+      .then(resp => {
+        commit('set_owned_libraries', resp.data)
+      })
+},
+
   createLibrary ({ commit }, payload) {
     Axios.post('Library/', payload)
       .then(resp => {
@@ -71,6 +88,7 @@ const actions = {
       })
     })
   },
+  
   getOwn({ commit, state }) {
     return new Promise((resolve, reject) => {
       Axios.post('Library/get-own', { id: state.activeLibrary.id })

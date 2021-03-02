@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: "EventItem",
+  name: 'EventItem',
   props: [
     'isLast',
     'event'

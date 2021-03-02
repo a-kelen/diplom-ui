@@ -60,7 +60,7 @@
 
 <script>
 export default {
-  name: "AuthorItem",
+  name: 'AuthorItem',
   data: () => ({
     rating: 4.5
   })

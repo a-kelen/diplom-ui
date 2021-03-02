@@ -37,10 +37,9 @@
 </template>
 
 <script>
-// import {mapState} from "vuex"
 
 export default {
-  name: "SelectTypeTab",
+  name: 'SelectTypeTab',
   data: () => ({
   }),
   computed: {

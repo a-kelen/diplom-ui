@@ -76,10 +76,10 @@
 <script>
 import AddEventItem from '../items/AddEventItem.vue';
 import AddPropItem from '../items/AddPropItem.vue';
-import { Editor } from "vuetify-markdown-editor";
+import { Editor } from 'vuetify-markdown-editor';
 
 export default {
-  name: "DescribeComponentTab",
+  name: 'DescribeComponentTab',
   components: {
     AddEventItem,
     AddPropItem,
@@ -90,7 +90,7 @@ export default {
     renderConfig: {
     // Mermaid config
     mermaid: {
-        theme: "dark"
+        theme: 'dark' 
     },
     emoji: false
     }

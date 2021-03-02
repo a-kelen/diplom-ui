@@ -2,6 +2,8 @@ import Axios from '../axios'
 const state = {
     activeComponent: {},
     ownComponents: [],
+    ownedComponents: [],
+    likedList: [],
     cache: []
   }
 
@@ -17,6 +19,9 @@ const state = {
     },
     set_own_components(state, val) {
       state.ownComponents = val
+    },
+    set_owned_components(state, val) {
+      state.ownedComponents = val
     },
     add_own_component(state, val) {
       state.ownComponents.push(val)
@@ -42,6 +47,13 @@ const state = {
           .then(resp => {
             commit('set_own_components', resp.data)
           })
+    },
+
+    getOwnedComponentList({ commit }) {
+      Axios.get('Component/ownedComponentList/')
+        .then(resp => {
+          commit('set_owned_components', resp.data)
+        })
     },
 
     getComponent({ commit, state }, id) {
@@ -70,6 +82,7 @@ const state = {
         })
       })
     },
+    
     getOwn({ commit, state }) {
       return new Promise((resolve, reject) => {
         Axios.post('Component/get-own', { id: state.activeComponent.id })

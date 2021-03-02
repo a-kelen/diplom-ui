@@ -40,7 +40,7 @@
 
 <script>
 export default {
-  name: "UserProfile",
+  name: 'UserProfile',
   data: () => ({
   })
 };

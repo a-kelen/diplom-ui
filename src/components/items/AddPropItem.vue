@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: "AddPropItem",
+  name: 'AddPropItem',
   props: ['item'],
   data: () => ({
   })

@@ -11,13 +11,20 @@ const state = {
       description: '',
       status: true
     },
-    components: []
+    components: [],
+
+    likedList: []
   }
 
   const getters = {
   }
   
   const mutations = {
+    set_liked(state, val) {
+      state.likedList = val
+      // state.likedList.sort((a,b)=>a.created - b.created);
+      
+    },
     updateElementType (state, val) {
       state.elementSelectType = val
     },
@@ -55,13 +62,24 @@ const state = {
   }
 
   const actions = {
+
+    getLikedLibraries({ commit }) {
+      return new Promise((resolve, reject) => {
+        Axios.get('Like/liked')
+        .then(resp => {
+          commit('set_liked', resp.data)
+          resolve(resp)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
     createElement ({ commit, state }) {
       if(state.elementSelectType == 0) {
         var libraryFiles = [];
         for(var i=0; i<state.components.length; i++){
           libraryFiles = libraryFiles.concat(state.components[i].files);
         }
-        console.log(libraryFiles);
         let payload = {
           name: state.newLibraryName,
           description: state.newLibraryDescription,

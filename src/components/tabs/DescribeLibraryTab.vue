@@ -20,18 +20,18 @@
 </template>
 
 <script>
-import { Editor } from "vuetify-markdown-editor";
+import { Editor } from 'vuetify-markdown-editor';
 export default {
-  name: "DescribeLibraryTab",
+  name: 'DescribeLibraryTab',
   components: {
       Editor
   },
   data: () => ({
-      text: "",
+      text: '',
       renderConfig: {
         // Mermaid config
         mermaid: {
-          theme: "dark"
+          theme: 'dark'
         },
         emoji: false
       }

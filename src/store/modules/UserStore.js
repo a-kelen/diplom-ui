@@ -118,7 +118,6 @@ const mutations = {
     state.status = 'success'
     state.token = localStorage.getItem('token')
     state.user = user
-    console.log(user)
   },
   auth_error (state) {
     state.status = 'error'

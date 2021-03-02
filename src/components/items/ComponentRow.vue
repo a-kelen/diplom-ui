@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: "ComponentRow",
+  name: 'ComponentRow',
   data: () => ({
   }),
   props: ['component']
