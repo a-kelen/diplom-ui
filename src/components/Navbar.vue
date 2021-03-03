@@ -13,7 +13,7 @@
           <v-img src="https://randomuser.me/api/portraits/men/1.jpg"></v-img>
         </v-list-item-avatar>
 
-        <v-list-item-title>asda</v-list-item-title>
+        <v-list-item-title>{{ user.name }}</v-list-item-title>
 
         <v-btn
           icon
@@ -57,7 +57,7 @@
           medium
           v-on="on"
         >
-          email@gmail.com
+          {{ user.email }}
           <v-icon class="ml-2">mdi-chevron-down</v-icon>
         </v-chip>
       </template>
@@ -68,7 +68,7 @@
           <v-list-item-title>Change Theme</v-list-item-title>
         </v-list-item>
         <v-list-item
-          @click="go"
+          @click="logout"
         >
           <v-list-item-title>Log Out</v-list-item-title>
         </v-list-item>
@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data: () => ({
     drawer : false,
@@ -90,9 +91,15 @@ export default {
           { title: 'Sets', icon: 'mdi-folder-multiple' , path : '/chats'},
         ],
   }),
+  computed: {
+    ...mapState({
+      user: s => s.UserStore.user
+    })
+  },
   methods: {
-    go() {
-      
+    logout() {
+      this.$store.dispatch('UserStore/logout')
+        .then( () => this.$router.push({ name: 'Login' }))
     }
   }
 }

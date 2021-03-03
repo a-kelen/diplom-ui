@@ -1,13 +1,13 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Home from '../views/Home.vue'
 
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: "/",
-    name: "Home",
+  { 
+    path: '/',
+    name: 'Home',
     component: Home
   },
   {
@@ -31,29 +31,29 @@ const routes = [
     component: () => import('../views/CreateElementPage.vue')
   },
   {
-    path: "/about",
-    name: "About",
-    component: () => import("../views/About.vue")
+    path: '/about',
+    name: 'About',
+    component: () => import('../views/About.vue')
   },
   {
-    path: "/login",
-    name: "Login",
-    component: () => import("../views/Login.vue")
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue')
   },
   {
-    path: "/register",
-    name: "Register",
-    component: () => import("../views/Register.vue")
+    path: '/register',
+    name: 'Register',
+    component: () => import('../views/Register.vue')
   },
   {
-    path: "/profile",
-    name: "UserPRofile",
-    component: () => import("../views/UserProfile.vue")
+    path: '/profile',
+    name: 'UserPRofile',
+    component: () => import('../views/UserProfile.vue')
   }
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
   routes
 });

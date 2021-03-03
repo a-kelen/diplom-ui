@@ -41,14 +41,16 @@ const actions = {
         Axios({ url: 'User', method: 'GET' })
           .then(resp => {
             const user = {
-              email: resp.data.displayName,
-              username: resp.data.username
+              email: resp.data.email,
+              username: resp.data.username,
+              name: resp.data.name
             }
             commit('reauth_success', user)
             resolve(resp)
           })
           .catch(err => {
             reject(err)
+            commit('auth_error', err)
           })
       }
     })
@@ -63,7 +65,7 @@ const actions = {
             email: resp.data.email,
             id: resp.data.id,
             name: resp.data.name,
-            nickname: resp.data.nickname
+            username: resp.data.username
           }
           localStorage.setItem('token', token)
           Axios.defaults.headers.common.Authorization = token
