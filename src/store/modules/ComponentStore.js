@@ -43,17 +43,25 @@ const state = {
   const actions = {
     //GET
     getOwnComponentList({ commit }) {
+      return new Promise((resolve, reject) => {
         Axios.get('Component/ownComponentList/')
           .then(resp => {
             commit('set_own_components', resp.data)
+            resolve()
           })
+          .catch(err => reject(err))
+      })
     },
 
     getOwnedComponentList({ commit }) {
-      Axios.get('Component/ownedComponentList/')
-        .then(resp => {
-          commit('set_owned_components', resp.data)
-        })
+      return new Promise((resolve, reject) => {
+        Axios.get('Component/ownedComponentList/')
+          .then(resp => {
+            commit('set_owned_components', resp.data)
+            resolve()
+          })
+          .catch(err => reject(err))
+      })
     },
 
     getComponent({ commit, state }, id) {

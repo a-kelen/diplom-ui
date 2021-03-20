@@ -13,7 +13,7 @@
         </v-col>
         <v-col>
             <v-textarea 
-            v-model="item.desciption"
+            v-model="item.description"
             label="Event description"
             rows="1"
             auto-grow

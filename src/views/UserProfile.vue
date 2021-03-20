@@ -14,10 +14,10 @@
             <v-col>
               <v-sheet class="transparent d-flex align-center">
                 <div><v-card-text class="py-2 px-0 text-h4">
-                  Name
+                  {{ profile.username }}
                 </v-card-text>
                 <p class="body-2">
-                  Firstname Lastname
+                  {{ profile.name }}
                 </p></div>
                 <v-btn color="primary" class="ml-auto" x-large>Follow</v-btn>
               </v-sheet>
@@ -28,8 +28,8 @@
               <v-sheet class="transparent gap d-flex align-center">
                 <v-chip>129 followers</v-chip>
                 <v-chip>231 stars</v-chip>
-                <v-chip>2 components</v-chip>
-                <v-chip>5 libraries</v-chip>
+                <v-chip>{{ componentsCount }} components</v-chip>
+                <v-chip>{{ librariesCount }} libraries</v-chip>
               </v-sheet>
             </v-col>
           </v-row>
@@ -38,11 +38,35 @@
     </v-container>
 </template>
 
-<script>
+<script> 
+import { mapState } from 'vuex'
 export default {
   name: 'UserProfile',
   data: () => ({
-  })
+  }),
+  methods: {
+    fetch() {
+      this.$store.dispatch('UserStore/getProfile', this.$route.params.username)
+    },
+  },
+  computed: {
+    ...mapState({
+      profile: s => s.UserStore.activeProfile
+    }),
+    componentsCount() {
+      return this.profile.components ? this.profile.components.length : 0
+    },
+    librariesCount() {
+       return this.profile.libraries ? this.profile.libraries.length : 0
+    },
+  },
+  beforeRouteUpdate (to, from, next) {
+      this.fetch()
+      next()
+  },
+  beforeRouteEnter (to, from, next) {
+      next(vm => vm.fetch())
+  },
 };
 </script>
 

@@ -16,13 +16,16 @@
             <v-col>
               <v-sheet class="transparent gap d-flex align-center">
                 <v-card-text>
-                  From library: VueLib
+                  {{ componentAuthor }}
                 </v-card-text>
-                <v-btn @click="like" :loading="likeBtnLoading" color="primary" icon>
+                <v-btn v-if="componentIsDepended" @click="like" :loading="likeBtnLoading" color="primary" icon>
                   <v-icon>{{ likeIcon }}</v-icon>
                 </v-btn>
                 <v-btn color="primary" icon>
                   <v-icon>mdi-download-outline</v-icon>
+                </v-btn>
+                <v-btn v-if="userIsOwner" color="primary" icon @click="changeEditMode">
+                  <v-icon>mdi-pencil-outline</v-icon>
                 </v-btn>
                 <v-btn 
                   v-if="!userIsOwner"
@@ -52,7 +55,7 @@
                 {{component.description}}
               </v-tab-item>
               <v-tab-item  value="tab-2">
-                <event-item 
+                <event-item
                   v-for="(e, i) in component.events" 
                   :key="i"
                   :event="e"
@@ -72,21 +75,57 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-dialog
+        v-if="editMode"
+        v-model="editMode"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar
+            dark
+            color="primary"
+          >
+            <v-btn
+              icon
+              dark
+              @click="editMode = false"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-toolbar-title>Edit component</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+              <v-btn
+                dark
+                icon
+                @click="editMode = false"
+              >
+                <v-icon>mdi-content-save</v-icon>
+              </v-btn>
+            </v-toolbar-items>
+          </v-toolbar>
+          <edit-component :component="component" class="py-10"/>
+        </v-card>
+      </v-dialog>
     </v-container>
 </template>
 
 <script>
-import EventItem from '../components/items/EventItem.vue';
-import PropItem from '../components/items/PropItem.vue';
+import EventItem from '../components/items/EventItem.vue'
+import PropItem from '../components/items/PropItem.vue'
+import EditComponent from '../components/dialogs/EditComponent.vue'
 import { mapState } from 'vuex'
 export default {
   name: 'ComponentPage',
   components: {
     EventItem,
-    PropItem
+    PropItem,
+    EditComponent
   },
   data: () => ({
     tab: 'tab-1',
+    editMode: false,
     likeBtnLoading: false,
     getOwnBtnLoading: false
   }),
@@ -106,6 +145,12 @@ export default {
     },
     userIsOwner() {
       return this.component.author == this.user.username
+    },
+    componentAuthor() {
+      return this.component.library != null ? `From library: ${this.component.library}` : `Author: ${this.component.author}`
+    },
+    componentIsDepended() {
+      return this.component.library == null
     }
   },
   methods: {
@@ -121,6 +166,9 @@ export default {
       this.getOwnLoading = true
       this.$store.dispatch('ComponentStore/getOwn')
         .then(() => this.getOwnLoading = false)
+    },
+    changeEditMode() {
+      this.editMode = !this.editMode
     },
 
     

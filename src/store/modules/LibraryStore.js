@@ -30,6 +30,11 @@ const mutations = {
   },
   set_active_library(state, val) {
     state.activeLibrary = val
+    // for(let c of state.activeLibrary.components) {
+    //   c.author = state.activeLibrary.author
+    //   c.library = state.activeLibrary.name
+    //   console.log(c)
+    // }
   },
   change_like(state, val) {
     state.activeLibrary.liked = val;
@@ -54,10 +59,14 @@ const actions = {
   },
 
   getOwnedLibraryList({ commit }) {
-    Axios.get('Library/ownedLibraryList/')
-      .then(resp => {
-        commit('set_owned_libraries', resp.data)
-      })
+    return new Promise((resolve, reject) => {
+      Axios.get('Library/ownedLibraryList/')
+        .then(resp => {
+          commit('set_owned_libraries', resp.data)
+          resolve()
+        })
+        .catch(err => reject(err))
+    })
 },
 
   createLibrary ({ commit }, payload) {

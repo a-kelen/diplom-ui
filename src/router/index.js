@@ -13,7 +13,29 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('../views/Dashboard.vue')
+    component: () => import('../views/Dashboard.vue'),
+    children: [
+      {
+        path: 'liked',
+        component: () => import('../views/DashboardPages/LikesPage.vue')
+      },
+      {
+        path: 'libraries',
+        component: () => import('../views/DashboardPages/LibrariesPage.vue')
+      },
+      {
+        path: 'components',
+        component: () => import('../views/DashboardPages/ComponentsPage.vue')
+      },
+      {
+        path: 'owned-libraries',
+        component: () => import('../views/DashboardPages/OwnedLibrariesPage.vue')
+      },
+      {
+        path: 'owned-components',
+        component: () => import('../views/DashboardPages/OwnedComponentsPage.vue')
+      }
+    ]
   },
   {
     path: '/library/:id',
@@ -46,8 +68,8 @@ const routes = [
     component: () => import('../views/Register.vue')
   },
   {
-    path: '/profile',
-    name: 'UserPRofile',
+    path: '/profile/:username',
+    name: 'UserProfile',
     component: () => import('../views/UserProfile.vue')
   }
 ];

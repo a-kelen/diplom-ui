@@ -44,6 +44,12 @@
                 <div class="title teal--text text--darken-3" v-if="library.owned">
                   Owned
                 </div>
+                <v-btn v-if="userIsOwner" color="primary" icon @click="changeEditMode">
+                  <v-icon>{{ editButtonIcon }}</v-icon>
+                </v-btn>
+                <v-btn v-if="isChanged" color="primary" @click="saveChanges" icon>
+                  <v-icon>mdi-content-save-outline</v-icon>
+                </v-btn>
               </v-sheet>
             </v-col>
           </v-row>
@@ -60,7 +66,10 @@
             </v-tabs>
             <v-tabs-items class="transparent-body" v-model="tab">
               <v-tab-item background-opacity="0" value="tab-1">
-                {{ library.description }}
+                <Editor v-if="editMode" 
+                  v-model="library.description"
+                />
+                <div v-else> {{ library.description }} </div>
               </v-tab-item>
               <v-tab-item value="tab-2">
                   <component-row v-for="(c, i) in library.components" :key="i" :component="c" />
@@ -77,14 +86,18 @@
 
 <script>
 import ComponentRow from '../components/items/ComponentRow.vue'
+import { Editor } from 'vuetify-markdown-editor'
 import { mapState } from 'vuex'
 export default {
   name: 'Library',
   components: {
-    ComponentRow
+    ComponentRow,
+    Editor
   },
   data: () => ({
     tab: 'tab-1',
+    editMode: false,
+    savedDescription: '',
     likeBtnLoading: false,
     getOwnBtnLoading: false
   }),
@@ -104,7 +117,26 @@ export default {
     },
     userIsOwner() {
       return this.library.author == this.user.username
+    },
+    libraryDescription() {
+      return this.library.description
+    },
+    isChanged() {
+      return this.savedDescription != this.library.description
+    },
+    editButtonIcon() {
+      return this.editMode ? 'mdi-pencil' : 'mdi-pencil-outline'
     }
+  },
+  watch: {
+    library() {
+      this.savedDescription = ''
+    },
+    libraryDescription() {
+      if(this.savedDescription == '') {
+          this.savedDescription = this.library.description
+      }
+    },
   },
   methods: {
     fetch() {
@@ -120,10 +152,15 @@ export default {
       this.$store.dispatch('LibraryStore/getOwn')
         .then(() => this.getOwnLoading = false)
     },
-    
+    changeEditMode() {
+      this.editMode = !this.editMode
+    },
+    saveChanges() {
+
+    }
   },
   beforeRouteUpdate (to, from, next) {
-      this.fetch()
+      this.fetch()  
       next()
   },
   beforeRouteEnter (to, from, next) {

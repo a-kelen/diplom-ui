@@ -1,47 +1,6 @@
 <template>
   <v-container>
     <v-row>
-        <v-file-input
-            v-model="component.files"
-            color="primary"
-            counter
-            multiple
-            placeholder="Select your files"
-            prepend-icon="mdi-paperclip"
-            outlined
-            :show-size="1000"
-        >
-            <template v-slot:selection="{ index, text }">
-            <v-chip
-                v-if="index < 2"
-                color="primary"
-                dark
-                label
-                small
-            >
-                {{ text }}
-            </v-chip>
-
-            <span
-                v-else-if="index === 2"
-                class="overline grey--text text--darken-3 mx-2"
-            >
-                +{{ component.files.length - 2 }} File(s)
-            </span>
-            </template>
-        </v-file-input>
-    </v-row>
-    <v-row>
-        <v-list>
-            <v-list-item v-for="(f, i) in component.files" :key="i">
-                <v-card class="rounded-pill pa-1 pr-3">
-                    <v-icon class="mx-1">mdi-vuejs</v-icon>
-                    {{f.name}}
-                </v-card>
-            </v-list-item>
-        </v-list>
-    </v-row>
-    <v-row>
         <v-col>
             <v-btn class="ma-2" color="primary" @click="addProp">Add prop</v-btn>
         </v-col>
@@ -74,19 +33,20 @@
 </template>
 
 <script>
+import { Editor } from 'vuetify-markdown-editor'
 import AddEventItem from '../items/AddEventItem.vue'
 import AddPropItem from '../items/AddPropItem.vue'
-import { Editor } from 'vuetify-markdown-editor'
 
 export default {
-  name: 'DescribeComponentTab',
+  name: 'EditComponent',
   components: {
-    AddEventItem,
+    Editor,
     AddPropItem,
-      Editor
+    AddEventItem
   },
   props: ['component'],
   data: () => ({
+    editMode: false,
     renderConfig: {
     // Mermaid config
     mermaid: {
@@ -95,6 +55,16 @@ export default {
     emoji: false
     }
   }),
+  computed: {
+    componentDescription() {
+        return this.component.description
+    }
+  },
+  watch: {
+      componentDescription() {
+          console.log('A    ')
+      }
+  },
   methods: {
     addProp() {
         this.component.props.push({

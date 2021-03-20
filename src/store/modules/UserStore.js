@@ -2,7 +2,9 @@ import Axios from '../axios'
 const state = {
   status: '',
   token: localStorage.getItem('token') || '',
-  user: {}
+  user: {},
+  activeProfile: {}
+
 }
 // getters
 const getters = {
@@ -53,6 +55,18 @@ const actions = {
             commit('auth_error', err)
           })
       }
+    })
+  },
+  getProfile ({ commit }, username) {
+    return new Promise((resolve, reject) => {
+        Axios(`User/${ username }`)
+          .then(resp => {
+            commit('set_active_profile', resp.data)
+            resolve(resp)
+          })
+          .catch(err => {
+            reject(err)
+          })
     })
   },
   register ({ commit }, user) {
@@ -131,6 +145,9 @@ const mutations = {
   },
   update_user (state, user) {
     state.user.name = user.name
+  },
+  set_active_profile (state, user) {
+    state.activeProfile = user
   }
 }
 export default {

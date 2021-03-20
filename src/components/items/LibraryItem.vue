@@ -47,7 +47,9 @@
         </v-row>
         <v-row>
           <v-col>
-            <div class="grey--text pa-1 text--darken-1">{{ library.author }}</div>
+            <router-link :to="{ name: 'UserProfile', params: {username: library.author} }">
+              <div class="grey--text pa-1 text--darken-1">{{ library.author }}</div>
+            </router-link>
           </v-col>
           <v-col>
             <v-rating

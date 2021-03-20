@@ -4,7 +4,8 @@
         <v-col md="3">
             <v-text-field
                 v-model="item.name"
-                label="Prop name"
+                label="Event name"
+                id="id"
                 filled
                 outlined
                 rounded
@@ -12,8 +13,8 @@
         </v-col>
         <v-col>
             <v-textarea 
-            v-model="item.description"
-            label="Prop description"
+            v-model="item.desciption"
+            label="Event description"
             rows="1"
             auto-grow
             filled/>
@@ -24,7 +25,7 @@
 
 <script>
 export default {
-  name: 'AddPropItem',
+  name: 'EditEventItem',
   props: ['item'],
   data: () => ({
   })

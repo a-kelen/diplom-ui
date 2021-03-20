@@ -2,13 +2,13 @@ import Axios from '../axios'
 const state = {
     elementSelectType: 0,
     status: true,
-    newLibraryName: 'a',
-    newLibraryDescription: 'a',
+    newLibraryName: 'Library name',
+    newLibraryDescription: 'Library Description',
     newComponent: {
       files: [],
       events: [],
       props: [],
-      description: '',
+      description: 'Description ...',
       status: true
     },
     components: [],
@@ -44,7 +44,7 @@ const state = {
         files: [],
         events: [],
         props: [],
-        description: ''
+        description: 'Description ...'
       })
     },
     refreshNewComponent(state) {
