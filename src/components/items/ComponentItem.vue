@@ -29,7 +29,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <div class="grey--text pa-1 text--darken-1">author-a</div>
+            <div class="grey--text pa-1 text--darken-1">{{ component.author }}</div>
           </v-col>
           <v-col>
             <v-rating

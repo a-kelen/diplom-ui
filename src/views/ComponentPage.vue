@@ -9,6 +9,7 @@
                   Title
                 </v-card-text>
                 <v-chip label>Format</v-chip>
+                <v-icon class="mx-2" v-if="statusIcon">mdi-lock-outline</v-icon>
               </v-sheet>
             </v-col>
           </v-row>
@@ -21,20 +22,23 @@
                 <v-btn v-if="componentIsDepended" @click="like" :loading="likeBtnLoading" color="primary" icon>
                   <v-icon>{{ likeIcon }}</v-icon>
                 </v-btn>
-                <v-btn color="primary" icon>
+                <v-btn v-if="componentIsDepended" color="primary" icon>
                   <v-icon>mdi-download-outline</v-icon>
                 </v-btn>
                 <v-btn v-if="userIsOwner" color="primary" icon @click="changeEditMode">
                   <v-icon>mdi-pencil-outline</v-icon>
                 </v-btn>
                 <v-btn 
-                  v-if="!userIsOwner"
-                  @click="getOwn" 
+                  v-if="!userIsOwner && !component.owned"
+                  @click="getOwn"
                   :loading="getOwnBtnLoading"
                   :color="getOwnBtnColor"
                   >
                     {{ getOwnBtnText }}
-                  </v-btn>
+                </v-btn>
+                <div class="title teal--text text--darken-3" v-if="component.owned">
+                  Owned
+                </div>
               </v-sheet>
             </v-col>
           </v-row>
@@ -89,7 +93,7 @@
             <v-btn
               icon
               dark
-              @click="editMode = false"
+              @click="closeUpdateDialog"
             >
               <v-icon>mdi-close</v-icon>
             </v-btn>
@@ -99,19 +103,50 @@
               <v-btn
                 dark
                 icon
-                @click="editMode = false"
+                @click="saveChanges"
+                :loading="saveLoading"
               >
                 <v-icon>mdi-content-save</v-icon>
               </v-btn>
             </v-toolbar-items>
           </v-toolbar>
-          <edit-component :component="component" class="py-10"/>
+          <edit-component :component="cloneComponent" class="py-10"/>
         </v-card>
       </v-dialog>
+
+      <v-dialog
+      v-model="agreeDialog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Discharge changes?
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="agreeDialog = false"
+          >
+            No
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dischargeUpdates"
+          >
+            Yes
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     </v-container>
 </template>
 
 <script>
+import clone from '../utils/clone'
 import EventItem from '../components/items/EventItem.vue'
 import PropItem from '../components/items/PropItem.vue'
 import EditComponent from '../components/dialogs/EditComponent.vue'
@@ -127,13 +162,21 @@ export default {
     tab: 'tab-1',
     editMode: false,
     likeBtnLoading: false,
-    getOwnBtnLoading: false
+    saveLoading: false,
+    agreeDialog: false,
+    getOwnBtnLoading: false,
   }),
   computed: {
     ...mapState({
       component: s => s.ComponentStore.activeComponent,
       user: s => s.UserStore.user
     }),
+    statusIcon() {
+      return this.component.status == 'Private'
+    },
+    cloneComponent() {
+      return clone(this.component)
+    },
     likeIcon() {
       return this.component.liked ? 'mdi-heart' : 'mdi-heart-outline'
     },
@@ -170,9 +213,34 @@ export default {
     changeEditMode() {
       this.editMode = !this.editMode
     },
+    closeUpdateDialog() {
+      this.agreeDialog = true
+    },
+    saveChanges() {
+      this.saveLoading = true
 
-    
+      let payload = {
+        id: this.component.id,
+        description: this.component.description,
+        events: this.component.events,
+        props: this.component.props
+      }
+      this.$store.dispatch('ComponentStore/updateComponent', payload)
+        .then(() => {
+          this.editMode = false
+          this.saveLoading = false
+        })
+        .catch(() => {
+          this.saveLoading = false
+        })
+    },
+    dischargeUpdates() {
+      this.cloneComponent = clone(this.component)
+      this.editMode = false
+      this.agreeDialog = false
+    }
   },
+
   beforeRouteUpdate (to, from, next) {
       this.fetch()
       next()

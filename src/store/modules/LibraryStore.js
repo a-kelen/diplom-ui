@@ -67,14 +67,8 @@ const actions = {
         })
         .catch(err => reject(err))
     })
-},
-
-  createLibrary ({ commit }, payload) {
-    Axios.post('Library/', payload)
-      .then(resp => {
-        commit('add_own_library', resp.data)
-      })
   },
+
   getLibrary({ commit, state }, id) {
     if(state.cache.some(c => c.id == id)) {
       commit('set_active_library', state.cache.find(c => c.id == id))
@@ -84,6 +78,18 @@ const actions = {
       .then(resp => {
         commit('set_active_library', resp.data)
         commit('add_to_cache', resp.data)
+    })
+  },
+
+  //POST
+  createLibrary ({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+    Axios.post('Library/', payload)
+      .then(resp => {
+        commit('add_own_library', resp.data)
+        resolve()
+      })
+      .catch(err => reject(err))
     })
   },
   like({ commit, state }) {
@@ -108,7 +114,19 @@ const actions = {
         reject(err)
       })
     })
-  }
+  },
+  
+  //PUT
+  updateLibrary ( _, payload) {
+    return new Promise((resolve, reject) => {
+    Axios.put('Library/', payload)
+      .then(resp => {
+        resolve(resp.data)
+      })
+      .catch(err => reject(err))
+    })
+  },
+  
 }
 
 

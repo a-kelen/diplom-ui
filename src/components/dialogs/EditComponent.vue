@@ -60,11 +60,6 @@ export default {
         return this.component.description
     }
   },
-  watch: {
-      componentDescription() {
-          console.log('A    ')
-      }
-  },
   methods: {
     addProp() {
         this.component.props.push({

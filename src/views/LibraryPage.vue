@@ -18,6 +18,7 @@
                   {{ library.name }}
                 </v-card-text>
                 <v-rating class="ml-auto"></v-rating>
+                <v-icon class="mx-2" v-if="statusIcon">mdi-lock-outline</v-icon>
               </v-sheet>
             </v-col>
           </v-row>
@@ -47,7 +48,7 @@
                 <v-btn v-if="userIsOwner" color="primary" icon @click="changeEditMode">
                   <v-icon>{{ editButtonIcon }}</v-icon>
                 </v-btn>
-                <v-btn v-if="isChanged" color="primary" @click="saveChanges" icon>
+                <v-btn v-if="isChanged" color="primary" :loading="saveLoading" @click="saveChanges" icon>
                   <v-icon>mdi-content-save-outline</v-icon>
                 </v-btn>
               </v-sheet>
@@ -81,6 +82,7 @@
           </v-card>
         </v-col>
       </v-row>
+      <default-snakbar :snackbar.sync="snackbarShow" :text="snackbarText"/>
     </v-container>
 </template>
 
@@ -88,17 +90,22 @@
 import ComponentRow from '../components/items/ComponentRow.vue'
 import { Editor } from 'vuetify-markdown-editor'
 import { mapState } from 'vuex'
+import DefaultSnakbar from '../components/snackbars/DefaultSnakbar.vue';
 export default {
   name: 'Library',
   components: {
     ComponentRow,
-    Editor
+    Editor,
+    DefaultSnakbar
   },
   data: () => ({
     tab: 'tab-1',
     editMode: false,
     savedDescription: '',
+    saveLoading: false,
     likeBtnLoading: false,
+    snackbarShow: false,
+    snackbarText: 'Library updated successfully',
     getOwnBtnLoading: false
   }),
   computed: {
@@ -106,6 +113,9 @@ export default {
       library: s => s.LibraryStore.activeLibrary,
       user: s => s.UserStore.user
     }),
+    statusIcon() {
+      return this.library.status == 'Private'
+    },
     likeIcon() {
       return this.library.liked ? 'mdi-heart' : 'mdi-heart-outline'
     },
@@ -156,7 +166,22 @@ export default {
       this.editMode = !this.editMode
     },
     saveChanges() {
-
+      let payload = {
+        id: this.library.id,
+        description: this.library.description
+      }
+      this.saveLoading = true
+      this.$store.dispatch('LibraryStore/updateLibrary', payload)
+        .then(() => {
+          this.savedDescription = payload.description
+          this.snackbarShow = true
+          this.saveLoading = false
+          this.editMode = false
+        })
+        .catch(() => {
+          this.library.description = this.savedDescription
+          this.saveLoading = false
+        })
     }
   },
   beforeRouteUpdate (to, from, next) {

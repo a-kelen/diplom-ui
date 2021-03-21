@@ -101,7 +101,21 @@ const state = {
           reject(err)
         })
       })
-    }
+    },
+
+    //PUT
+    updateComponent ( _, payload) {
+      return new Promise((resolve, reject) => {
+      Axios.put('Component/', payload)
+        .then(resp => {
+          resolve(resp.data)
+        })
+        .catch(err =>  { 
+          reject(err) 
+        })
+      })
+    },
+
     //DELETE
     // softDelete(_, payload) {
     //   return new Promise(() => {
