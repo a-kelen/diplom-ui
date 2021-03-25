@@ -46,8 +46,10 @@ const mutations = {
 
 const actions = {
   //GET
-  getOwnLibraryList({commit}) {
+  getOwnLibraryList({commit, state}) {
       return new Promise((resolve, reject) => {
+      if(state.ownLibraries.length > 0)
+      resolve()
       Axios.get('Library/ownLibraryList/')
         .then(resp => {
           commit('set_own_libraries', resp.data)
@@ -58,8 +60,10 @@ const actions = {
     })
   },
 
-  getOwnedLibraryList({ commit }) {
+  getOwnedLibraryList({ commit , state}) {
     return new Promise((resolve, reject) => {
+      if(state.ownedLibraries.length > 0)
+        resolve()
       Axios.get('Library/ownedLibraryList/')
         .then(resp => {
           commit('set_owned_libraries', resp.data)

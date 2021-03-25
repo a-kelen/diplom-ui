@@ -19,17 +19,17 @@
                 <v-card-text>
                   {{ componentAuthor }}
                 </v-card-text>
-                <v-btn v-if="componentIsDepended" @click="like" :loading="likeBtnLoading" color="primary" icon>
+                <v-btn v-if="componentIsIndepended" @click="like" :loading="likeBtnLoading" color="primary" icon>
                   <v-icon>{{ likeIcon }}</v-icon>
                 </v-btn>
-                <v-btn v-if="componentIsDepended" color="primary" icon>
+                <v-btn v-if="componentIsIndepended" color="primary" icon>
                   <v-icon>mdi-download-outline</v-icon>
                 </v-btn>
                 <v-btn v-if="userIsOwner" color="primary" icon @click="changeEditMode">
                   <v-icon>mdi-pencil-outline</v-icon>
                 </v-btn>
                 <v-btn 
-                  v-if="!userIsOwner && !component.owned"
+                  v-if="!userIsOwner && !component.owned && componentIsIndepended"
                   @click="getOwn"
                   :loading="getOwnBtnLoading"
                   :color="getOwnBtnColor"
@@ -165,7 +165,13 @@ export default {
     saveLoading: false,
     agreeDialog: false,
     getOwnBtnLoading: false,
+    cloneComponent: null
   }),
+  watch: {
+    component() {
+      this.cloneComponent = clone(this.component)
+    }
+  },
   computed: {
     ...mapState({
       component: s => s.ComponentStore.activeComponent,
@@ -173,9 +179,6 @@ export default {
     }),
     statusIcon() {
       return this.component.status == 'Private'
-    },
-    cloneComponent() {
-      return clone(this.component)
     },
     likeIcon() {
       return this.component.liked ? 'mdi-heart' : 'mdi-heart-outline'
@@ -187,12 +190,12 @@ export default {
       return this.component.owned ? 'white' : 'primary'
     },
     userIsOwner() {
-      return this.component.author == this.user.username
+      return this.component.author == this.user.username || this.component.library.author == this.user.username
     },
     componentAuthor() {
-      return this.component.library != null ? `From library: ${this.component.library}` : `Author: ${this.component.author}`
+      return this.component.library != null ? `From library: ${this.component.library.name }` : `Author: ${this.component.author}`
     },
-    componentIsDepended() {
+    componentIsIndepended() {
       return this.component.library == null
     }
   },
@@ -220,15 +223,18 @@ export default {
       this.saveLoading = true
 
       let payload = {
-        id: this.component.id,
-        description: this.component.description,
-        events: this.component.events,
-        props: this.component.props
+        id: this.cloneComponent.id,
+        description: this.cloneComponent.description,
+        events: this.cloneComponent.events,
+        props: this.cloneComponent.props
       }
       this.$store.dispatch('ComponentStore/updateComponent', payload)
         .then(() => {
           this.editMode = false
           this.saveLoading = false
+          this.component.description = clone(this.cloneComponent.description)
+          this.component.events = clone(this.cloneComponent.events)
+          this.component.props = clone(this.cloneComponent.props)
         })
         .catch(() => {
           this.saveLoading = false

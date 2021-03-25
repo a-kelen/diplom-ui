@@ -6,7 +6,7 @@
         </v-col>
     </v-row>
     <v-row>
-        <add-prop-item :key="index" v-for="(prop, index) in component.props" :item="prop"/>
+        <add-prop-item :key="index" v-for="(prop, index) in component.props" @deleteProp="deleteProp" :item="prop"/>
     </v-row>
     <v-row>
         <v-col>
@@ -14,7 +14,7 @@
         </v-col>
     </v-row>
     <v-row>
-        <add-event-item :key="index" v-for="(event, index) in component.events" :item="event"/>
+        <add-event-item :key="index" v-for="(event, index) in component.events" @deleteEvent="deleteEvent" :item="event"/>
     </v-row>
     <v-row>
         <v-card-text class="text-h5">Description</v-card-text>
@@ -70,10 +70,17 @@ export default {
     },
     addEvent() {
         this.component.events.push({
-        id: this.component.props.length + 1,
+        id: this.component.events.length + 1,
         name: '',
         desciption: ''  
         })
+    },
+    deleteEvent(id) {
+      console.log(id)
+      this.component.events = this.component.events.filter(x => x.id != id)
+    },
+    deleteProp(id) {
+      this.component.props = this.component.props.filter(x => x.id != id)
     }
   }
 }

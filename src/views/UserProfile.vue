@@ -19,7 +19,15 @@
                 <p class="body-2">
                   {{ profile.name }}
                 </p></div>
-                <v-btn color="primary" class="ml-auto" x-large>Follow</v-btn>
+                <v-btn
+                  @click="follow" 
+                  class="ml-auto" 
+                  x-large
+                  :color="followBtnColor"
+                  :loading="loading"
+                  >
+                    {{ followBtnText }}
+                  </v-btn>
               </v-sheet>
             </v-col>
           </v-row>
@@ -43,11 +51,19 @@ import { mapState } from 'vuex'
 export default {
   name: 'UserProfile',
   data: () => ({
+    loading: false
   }),
   methods: {
     fetch() {
       this.$store.dispatch('UserStore/getProfile', this.$route.params.username)
     },
+    follow() {
+      this.loading = true
+      this.$store.dispatch('UserStore/followUser', this.profile.username)
+        .then(() => {
+          this.loading = false
+        })
+    }
   },
   computed: {
     ...mapState({
@@ -58,6 +74,12 @@ export default {
     },
     librariesCount() {
        return this.profile.libraries ? this.profile.libraries.length : 0
+    },
+    followBtnColor() {
+      return this.profile.followed ? 'white' : 'primary'
+    },
+    followBtnText() {
+      return this.profile.followed ? 'unfollow' : 'follow'
     },
   },
   beforeRouteUpdate (to, from, next) {

@@ -93,6 +93,18 @@ const actions = {
         })
     })
   },
+  followUser ({ commit }, username) {
+    return new Promise((resolve, reject) => {
+      Axios.post('User/follow', {username: username})
+        .then(resp => {
+          commit('follow_user', resp.data)
+          resolve(resp.data)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
   logout ({ commit }) {
     return new Promise((resolve) => {
       commit('logout')
@@ -148,6 +160,9 @@ const mutations = {
   },
   set_active_profile (state, user) {
     state.activeProfile = user
+  },
+  follow_user (state, val) {
+    state.activeProfile.followed = val
   }
 }
 export default {

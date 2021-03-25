@@ -42,8 +42,10 @@ const state = {
 
   const actions = {
     //GET
-    getOwnComponentList({ commit }) {
+    getOwnComponentList({ commit, state}) {
       return new Promise((resolve, reject) => {
+        if(state.ownComponents.length > 0)
+        resolve()
         Axios.get('Component/ownComponentList/')
           .then(resp => {
             commit('set_own_components', resp.data)
@@ -53,8 +55,10 @@ const state = {
       })
     },
 
-    getOwnedComponentList({ commit }) {
+    getOwnedComponentList({ commit, state }) {
       return new Promise((resolve, reject) => {
+        if(state.ownedComponents.length > 0)
+        resolve()
         Axios.get('Component/ownedComponentList/')
           .then(resp => {
             commit('set_owned_components', resp.data)
@@ -82,7 +86,6 @@ const state = {
       return new Promise((resolve, reject) => {
         Axios.post('Component/like', { id: state.activeComponent.id })
         .then(resp => {
-          console.log(resp)
           commit('change_like', resp.data)
           resolve(resp)
         }).catch(err => {
@@ -108,6 +111,7 @@ const state = {
       return new Promise((resolve, reject) => {
       Axios.put('Component/', payload)
         .then(resp => {
+          
           resolve(resp.data)
         })
         .catch(err =>  { 
