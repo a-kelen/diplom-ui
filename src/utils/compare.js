@@ -13,8 +13,7 @@ export default function compare(obj1, obj2) {
 
     if (obj1 instanceof Object && obj2 instanceof Object) {
       for (var attr in obj1) {
-        if (obj2.hasOwnProperty(attr))
-          if (compare(obj1[attr], obj2[attr]) === false) return false;
+        if (compare(obj1[attr], obj2[attr]) === false) return false;
       }
       return true;
     }

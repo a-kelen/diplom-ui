@@ -6,7 +6,16 @@
         </v-col>
     </v-row>
     <v-row>
-        <add-prop-item :key="index" v-for="(prop, index) in component.props" @deleteProp="deleteProp" :item="prop"/>
+        <sortable v-for="(prop, index) in component.props"
+            v-model="dragPropData"
+            :key="prop.id"
+            :index="index"
+            drag-direction="vertical"
+            replace-direction="vertical"
+            @sortend="sortProps" 
+        >
+            <add-prop-item @deleteProp="deleteProp" :item="prop"/>
+        </sortable>
     </v-row>
     <v-row>
         <v-col>
@@ -14,7 +23,16 @@
         </v-col>
     </v-row>
     <v-row>
-        <add-event-item :key="index" v-for="(event, index) in component.events" @deleteEvent="deleteEvent" :item="event"/>
+      <sortable v-for="(event, index) in component.events"
+        v-model="dragEventData"
+        :key="event.id"
+        :index="index"
+        drag-direction="vertical"
+        replace-direction="vertical"
+        @sortend="sortEvents" 
+      >
+        <add-event-item @deleteEvent="deleteEvent" :item="event"/>
+      </sortable>
     </v-row>
     <v-row>
         <v-card-text class="text-h5">Description</v-card-text>
@@ -36,13 +54,15 @@
 import { Editor } from 'vuetify-markdown-editor'
 import AddEventItem from '../items/AddEventItem.vue'
 import AddPropItem from '../items/AddPropItem.vue'
+import Sortable from 'vue-drag-sortable'
 
 export default {
   name: 'EditComponent',
   components: {
     Editor,
     AddPropItem,
-    AddEventItem
+    AddEventItem,
+    Sortable
   },
   props: ['component'],
   data: () => ({
@@ -53,7 +73,9 @@ export default {
         theme: 'dark' 
     },
     emoji: false
-    }
+    },
+    dragEventData: {},
+    dragPropData: {},
   }),
   computed: {
     componentDescription() {
@@ -81,6 +103,26 @@ export default {
     },
     deleteProp(id) {
       this.component.props = this.component.props.filter(x => x.id != id)
+    },
+    sortend (e, list) {
+      const { oldIndex, newIndex } = e
+      this.rearrange(list, oldIndex, newIndex)
+    },
+    rearrange (array, oldIndex, newIndex) {
+      if (oldIndex > newIndex) {
+        array.splice(newIndex, 0, array[oldIndex])
+        array.splice(oldIndex + 1, 1)
+      }
+      else {
+        array.splice(newIndex + 1, 0, array[oldIndex])
+        array.splice(oldIndex, 1)
+      }
+    },
+    sortEvents(e) {
+        this.sortend(e, this.component.events)
+    },
+    sortProps(e) {
+        this.sortend(e, this.component.props)
     }
   }
 }

@@ -1,17 +1,21 @@
 <template>
 <v-container>
-  <v-card elevation="3" class="d-flex pa-2 align-center">
-      <v-icon size="30" color="blue" >mdi-vuejs</v-icon>
-      <v-chip color="blue" class="mx-2" dark  label>Format</v-chip>
-      <div class="mx-2">Component</div>
-      
-      <v-btn  icon color="primary" @click="addNewComponent" class="ml-auto">
-        <v-icon>mdi-pen</v-icon>
-      </v-btn>
-      <v-btn @click="deleteComponent" icon color="primary" class="ml-2">
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-  </v-card>
+  <v-row>
+    <v-col>
+    <v-card elevation="3" class="d-flex pa-2 align-center">
+        <v-icon size="30" color="blue" >mdi-vuejs</v-icon>
+        <v-chip color="blue" class="mx-2" dark  label>Format</v-chip>
+        <div class="mx-2">Component</div>
+        
+        <v-btn icon color="primary" @click="addNewComponent" class="ml-auto">
+          <v-icon>mdi-pen</v-icon>
+        </v-btn>
+        <v-btn @click="deleteComponent" icon color="primary" class="ml-2">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+    </v-card>
+    </v-col>
+  </v-row>
   <v-dialog
       v-if="dialog"
       v-model="dialog"

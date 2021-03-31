@@ -44,7 +44,16 @@
         </v-col>
     </v-row>
     <v-row>
-       <add-prop-item :key="index" v-for="(prop, index) in component.props" :item="prop"/>
+      <sortable v-for="(prop, index) in component.props"
+          v-model="dragPropData"
+          :key="prop.id"
+          :index="index"
+          drag-direction="vertical"
+          replace-direction="vertical"
+          @sortend="sortProps" 
+      >
+          <add-prop-item @deleteProp="deleteProp" :item="prop"/>
+      </sortable>
     </v-row>
     <v-row>
         <v-col>
@@ -52,7 +61,16 @@
         </v-col>
     </v-row>
     <v-row>
-        <add-event-item :key="index" v-for="(event, index) in component.events" :item="event"/>
+      <sortable v-for="(event, index) in component.events"
+        v-model="dragEventData"
+        :key="event.id"
+        :index="index"
+        drag-direction="vertical"
+        replace-direction="vertical"
+        @sortend="sortEvents" 
+      >
+        <add-event-item @deleteEvent="deleteEvent" :item="event"/>
+      </sortable>
     </v-row>
     <v-row>
         <v-card-text class="text-h5" v-model="component.description">Description</v-card-text>
@@ -77,23 +95,28 @@ import AddPropItem from '../items/AddPropItem.vue';
 // import { Editor } from "vuetify-markdown-editor";
 // import { VueEditor } from "vue2-editor";
 import { mapState } from 'vuex';
+import Sortable from 'vue-drag-sortable'
 
 export default {
   name: 'AddComponentTab',
   components: {
     AddEventItem,
     AddPropItem,
+    Sortable,
     // Editor
     // VueEditor 
   },
   data: () => ({
-      renderConfig: {
-        // Mermaid config
-        mermaid: {
-          theme: 'dark'
-        },
-        emoji: false
-      }
+    renderConfig: {
+    // Mermaid config
+    mermaid: {
+        theme: 'dark'
+    },
+    emoji: false
+    },
+    dragEventData: {},
+    dragPropData: {},
+
   }),
   computed: {
       ...mapState({
@@ -110,10 +133,37 @@ export default {
     },
     addEvent() {
         this.component.events.push({
-        id: this.component.props.length + 1,
+        id: this.component.events.length + 1,
         name: '',
         desciption: ''  
         })
+    },
+    deleteEvent(id) {
+      console.log(id)
+      this.component.events = this.component.events.filter(x => x.id != id)
+    },
+    deleteProp(id) {
+      this.component.props = this.component.props.filter(x => x.id != id)
+    },
+    sortend (e, list) {
+      const { oldIndex, newIndex } = e
+      this.rearrange(list, oldIndex, newIndex)
+    },
+    rearrange (array, oldIndex, newIndex) {
+      if (oldIndex > newIndex) {
+        array.splice(newIndex, 0, array[oldIndex])
+        array.splice(oldIndex + 1, 1)
+      }
+      else {
+        array.splice(newIndex + 1, 0, array[oldIndex])
+        array.splice(oldIndex, 1)
+      }
+    },
+    sortEvents(e) {
+        this.sortend(e, this.component.events)
+    },
+    sortProps(e) {
+        this.sortend(e, this.component.props)
     }
   }
 }

@@ -38,7 +38,7 @@ const routes = [
     ]
   },
   {
-    path: '/library/:id',
+    path: '/library/:author/:name',
     name: 'LibraryPage',
     component: () => import('../views/LibraryPage.vue')
   },

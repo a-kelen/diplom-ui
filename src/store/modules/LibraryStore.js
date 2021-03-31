@@ -37,7 +37,8 @@ const mutations = {
     // }
   },
   change_like(state, val) {
-    state.activeLibrary.liked = val;
+    state.activeLibrary.liked = val
+    state.activeLibrary.likes += val ? 1 : -1
   },
   set_owned(state, val) {
     state.activeLibrary.owned = val;
@@ -73,12 +74,12 @@ const actions = {
     })
   },
 
-  getLibrary({ commit, state }, id) {
-    if(state.cache.some(c => c.id == id)) {
-      commit('set_active_library', state.cache.find(c => c.id == id))
+  getLibrary({ commit, state }, payload) {
+    if(state.cache.some(c => c.author == payload.author && c.name == payload.name)) {
+      commit('set_active_library', state.cache.find(c => c.author == payload.author && c.name == payload.name))
       return
     }
-    Axios.get(`Library/${id}`)
+    Axios.get(`Library/${payload.author}/${payload.name}`)
       .then(resp => {
         commit('set_active_library', resp.data)
         commit('add_to_cache', resp.data)

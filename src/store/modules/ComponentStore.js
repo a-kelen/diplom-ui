@@ -33,10 +33,11 @@ const state = {
       state.activeComponent = val
     },
     change_like(state, val) {
-      state.activeComponent.liked = val;
+      state.activeComponent.liked = val
+      state.activeComponent.likes += val ? 1 : -1
     },
     set_owned(state, val) {
-      state.activeComponent.owned = val;
+      state.activeComponent.owned = val
     }
   }
 

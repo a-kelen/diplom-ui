@@ -8,6 +8,7 @@
                 filled
                 outlined
                 rounded
+                dense
             />
         </v-col>
         <v-col md="5">

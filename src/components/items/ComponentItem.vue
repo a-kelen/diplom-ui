@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-sheet  elevation="5" class="pa-3">
+    <v-sheet  elevation="5" class="px-3">
       <router-link :to="{ name: 'ComponentPage', params: {id: component.id} }">
         <v-row >
           <v-col md="auto">
@@ -29,15 +29,17 @@
         </v-row>
         <v-row>
           <v-col>
-            <div class="grey--text pa-1 text--darken-1">{{ component.author }}</div>
+            <div class="grey--text text--darken-1">{{ component.author }}</div>
           </v-col>
-          <v-col>
-            <v-rating
+          <v-spacer></v-spacer>
+          <v-col md="2">
+            <!-- <v-rating
               v-model="rating"
               background-color="purple lighten-3"
               color="green"
               small
-            ></v-rating>
+            ></v-rating> -->
+            <div>{{ component.likes }}</div>
           </v-col>
         </v-row>
       </router-link>

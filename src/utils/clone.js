@@ -1,29 +1,29 @@
 export default function clone(obj) {
     let copy;
-    if (null == obj || 'object' != typeof obj) return obj;
+    if(null == obj || 'object' != typeof obj) return obj
 
-    if (obj instanceof Date) {
+    if(obj instanceof Date) {
         copy = new Date();
-        copy.setTime(obj.getTime());
-        return copy;
+        copy.setTime(obj.getTime())
+        return copy
     }
 
-    if (obj instanceof Array) {
+    if(obj instanceof Array) {
         copy = [];
-        for (let i = 0, len = obj.length; i < len; i++) {
-            copy[i] = clone(obj[i]);
+        for(let i = 0; i < obj.length; i++) {
+            copy[i] = clone(obj[i])
         }
-        return copy;
+        return copy
     }
  
-    if (obj instanceof Object) {
-        copy = {};
+    if(obj instanceof Object) {
+        copy = {}
         for (var attr in obj) {
-            copy[attr] = clone(obj[attr]);
+            copy[attr] = clone(obj[attr])
         }
-        return copy;
+        return copy
     }
 
-    throw new Error('Unable to copy obj!');
+    throw new Error('Unable to copy obj!')
 }
   

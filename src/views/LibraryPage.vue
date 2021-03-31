@@ -17,7 +17,7 @@
                 <v-card-text class="text-h4">
                   {{ library.name }}
                 </v-card-text>
-                <v-rating class="ml-auto"></v-rating>
+                <!-- <v-rating class="ml-auto"></v-rating> -->
                 <v-icon class="mx-2" v-if="statusIcon">mdi-lock-outline</v-icon>
               </v-sheet>
             </v-col>
@@ -28,6 +28,7 @@
                 <v-card-text>
                   {{ library.author }}
                 </v-card-text>
+                <div class="text-body-1 mr-n4 primary--text">{{ library.likes }}</div>
                 <v-btn @click="like" :loading="likeBtnLoading" color="primary" icon>
                   <v-icon>{{ likeIcon }}</v-icon>
                 </v-btn>
@@ -150,7 +151,11 @@ export default {
   },
   methods: {
     fetch() {
-      this.$store.dispatch('LibraryStore/getLibrary', this.$route.params.id)
+      let payload = {
+        author: this.$route.params.author,
+        name: this.$route.params.name
+      }
+      this.$store.dispatch('LibraryStore/getLibrary', payload)
     },
     like() {
       this.likeBtnLoading = true

@@ -19,10 +19,24 @@
                 <v-card-text>
                   {{ componentAuthor }}
                 </v-card-text>
-                <v-btn v-if="componentIsIndepended" @click="like" :loading="likeBtnLoading" color="primary" icon>
+                <div 
+                  v-if="componentIsIndepended"
+                  class="text-body-1 mr-n4 primary--text"
+                  >
+                    {{ component.likes }}
+                  </div>
+                <v-btn 
+                  v-if="componentIsIndepended" 
+                  @click="like" 
+                  :loading="likeBtnLoading" 
+                  color="primary" 
+                  icon
+                  >
                   <v-icon>{{ likeIcon }}</v-icon>
                 </v-btn>
-                <v-btn v-if="componentIsIndepended" color="primary" icon>
+                <v-btn 
+                  v-if="componentIsIndepended" 
+                  color="primary" icon>
                   <v-icon>mdi-download-outline</v-icon>
                 </v-btn>
                 <v-btn v-if="userIsOwner" color="primary" icon @click="changeEditMode">
@@ -147,6 +161,7 @@
 
 <script>
 import clone from '../utils/clone'
+import compare from '../utils/compare'
 import EventItem from '../components/items/EventItem.vue'
 import PropItem from '../components/items/PropItem.vue'
 import EditComponent from '../components/dialogs/EditComponent.vue'
@@ -217,7 +232,10 @@ export default {
       this.editMode = !this.editMode
     },
     closeUpdateDialog() {
-      this.agreeDialog = true
+      if(!compare(this.component, this.cloneComponent))
+        this.agreeDialog = true
+      else
+        this.editMode = false
     },
     saveChanges() {
       this.saveLoading = true
