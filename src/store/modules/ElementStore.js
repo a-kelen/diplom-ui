@@ -3,6 +3,7 @@ const state = {
     elementSelectType: 0,
     status: true,
     newLibraryName: 'Library name',
+    newLibraryAvatar: null,
     newLibraryDescription: 'Library Description',
     newComponent: {
       files: [],
@@ -33,6 +34,9 @@ const state = {
     },
     updateNewLibraryName (state, val) {
       state.newLibraryName = val
+    },
+    updateNewLibraryAvatar (state, val) {
+      state.newLibraryAvatar = val
     },
     updateNewLibraryDescription (state, val) {
       state.newLibraryDescription = val
@@ -74,7 +78,7 @@ const state = {
         })
       })
     },
-    createElement ({ commit, state }) {
+    createElement ({ commit, dispatch, state }) {
       if(state.elementSelectType == 0) {
         var libraryFiles = [];
         for(var i=0; i<state.components.length; i++){
@@ -95,11 +99,15 @@ const state = {
             .then(resp => {
               formData.append('elementId', resp.data.id)
               formData.append('descriminator', 'library')
-              commit('ComponentStore/add_own_component', resp.data)
+              dispatch(
+                'LibraryStore/saveAvatar',
+                { libraryId: resp.data.id, blob: state.newLibraryAvatar },
+                { root: true }
+              )
               Axios.post('File/upload-files', formData)
                 .then(resp => {
                   commit('LibraryStore/add_own_library', resp.data, { root: true })
-                  resolve(resp.data)
+                    resolve(resp.data)
                 }).catch(err => {
                   reject(err)
                 })
@@ -117,7 +125,6 @@ const state = {
             .then(resp => {
               formData.append('elementId', resp.data.id)
               formData.append('descriminator', 'component')
-              commit('ComponentStore/add_own_component', resp.data)
               Axios.post('File/upload-files', formData)
                 .then(resp => {
                   commit('ComponentStore/add_own_component', resp.data, { root: true })

@@ -1,5 +1,13 @@
 <template>
   <v-container>
+    <v-row class="d-flex">
+      <v-text-field
+        label="Name"
+        outlined
+        dense
+        class="my-1"
+      ></v-text-field>
+    </v-row>
     <v-row>
         <v-file-input
             v-model="component.files"
@@ -7,8 +15,10 @@
             counter
             multiple
             placeholder="Select your files"
-            prepend-icon="mdi-paperclip"
+            append-outer-icon="mdi-paperclip"
+            prepend-icon=""
             outlined
+            dense
             :show-size="1000">
             <template v-slot:selection="{ index, text }">
                 <v-chip

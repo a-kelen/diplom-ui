@@ -4,7 +4,7 @@
       <router-link :to="{ name: 'ComponentPage', params: {id: component.id} }">
         <v-row >
           <v-col md="auto">
-            <v-tooltip top nudge-top>
+            <v-tooltip top nudge-top :position-y="100">
               <template v-slot:activator="{ on, attrs }">
                 <div class="text-h5 text-truncate" v-bind="attrs"
                   v-on="on">Component</div>
@@ -39,7 +39,10 @@
               color="green"
               small
             ></v-rating> -->
-            <div>{{ component.likes }}</div>
+            <v-layout row wrap class="mt-0">
+              {{component.likes}}
+              <v-icon small color="primary">mdi-heart</v-icon>
+            </v-layout>
           </v-col>
         </v-row>
       </router-link>

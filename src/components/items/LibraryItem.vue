@@ -9,8 +9,12 @@
               size="40"
               tile
               >
-                  <span class="white--text headline">LIB</span>
-              </v-avatar>
+                <img
+                :src="avatar"
+                v-if="avatar"
+              >
+              <span v-else class="white--text headline">{{ library.name[0] }}</span>
+            </v-avatar>
           </v-col>
           <v-col md="auto">
             <v-tooltip top>
@@ -26,6 +30,8 @@
           <v-col md="auto">
             <v-chip
               dark
+              small
+              label
               class="green"
             >{{ componentsCount }} components</v-chip>
           </v-col>
@@ -33,8 +39,10 @@
               <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
                       <v-icon v-bind="attrs"
-                          v-on="on" class="my-1">
-                          mdi-library
+                        v-on="on" class="my-1"
+                        small
+                      >
+                        mdi-library
                       </v-icon> 
                   </template>
                   <span>Library</span>
@@ -42,13 +50,13 @@
             
           </v-col>
           <v-col>
-            <v-icon v-if="status" class="my-1">mdi-lock-outline</v-icon> 
+            <v-icon v-if="status" small class="mt-1">mdi-lock-outline</v-icon> 
           </v-col>
         </v-row>
         <v-row>
           <v-col>
             <router-link :to="{ name: 'UserProfile', params: {username: library.author} }">
-              <div class="grey--text text--darken-1">{{ library.author }}</div>
+              <div class="grey--text text-body-2 text--darken-1">{{ library.author }}</div>
             </router-link>
           </v-col>
           <v-spacer></v-spacer>
@@ -59,7 +67,10 @@
               color="green"
               small
             ></v-rating> -->
-            <div class="text--title">{{library.likes}}</div>
+            <v-layout row class="mt-0">
+              <div :class="textColor">{{ library.likes }}</div>
+              <v-icon small :color="color">mdi-heart</v-icon>
+            </v-layout>
           </v-col>
         </v-row>
       </router-link>
@@ -68,10 +79,12 @@
 </template>
 
 <script>
+import axios from '../../store/axios';
 export default {
   name: 'LibraryItem',
   data: () => ({
-    rating: 4.5
+    rating: 4.5,
+    avatar: ''
   }),
   computed: {
     componentsCount() {
@@ -82,8 +95,31 @@ export default {
         return true
       else 
         return false
+    },
+    color() {
+      return this.library.liked ? 'primary' : 'grey'
+    },
+    textColor() {
+      return this.library.liked ? 'primary--text' : 'grey--text'
     }
   },
-  props: ['library']
-};
+  props: ['library'],
+  methods: {
+    getAvatar() {
+      axios.get(`Library/avatar/${this.library.id}`, {
+          responseType: 'blob'
+      }).then(resp => {
+          var reader = new FileReader()
+          reader.readAsDataURL(resp.data)
+          reader.onload = () => {
+            this.avatar = reader.result
+          }
+        })
+    }
+  },
+  created() {
+    if(this.library.hasAvatar)
+      this.getAvatar()
+  }
+}
 </script>

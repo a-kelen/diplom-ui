@@ -20,6 +20,7 @@
                   {{ profile.name }}
                 </p></div>
                 <v-btn
+                  v-if="!ownProfile"
                   @click="follow" 
                   class="ml-auto" 
                   x-large
@@ -60,14 +61,16 @@ export default {
     follow() {
       this.loading = true
       this.$store.dispatch('UserStore/followUser', this.profile.username)
-        .then(() => {
+        .finally(() => {
           this.loading = false
         })
     }
   },
   computed: {
     ...mapState({
-      profile: s => s.UserStore.activeProfile
+      profile: s => s.UserStore.activeProfile,
+      currentUser: s => s.UserStore.user
+      
     }),
     componentsCount() {
       return this.profile.components ? this.profile.components.length : 0
@@ -81,6 +84,9 @@ export default {
     followBtnText() {
       return this.profile.followed ? 'unfollow' : 'follow'
     },
+    ownProfile() {
+      return this.profile.username == this.currentUser.username
+    }
   },
   beforeRouteUpdate (to, from, next) {
       this.fetch()

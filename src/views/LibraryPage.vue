@@ -2,13 +2,21 @@
     <v-container>
       <v-row>
         <v-col md="2">
-          <v-avatar
-            size="150"
-            color="teal"
-            tile
-          >
-            RR
-          </v-avatar>
+          <v-hover v-slot:default="{ hover }" :disabled="!editMode">
+            <v-avatar
+              tile
+              size="150"
+              color="primary"
+            >
+              <v-img
+                :src="avatar"
+                v-if="avatar"
+              >
+                <library-avatar-dialog @saveAvatar="saveAvatar" v-if="editMode" :hover="hover"/>
+              </v-img>
+              <library-avatar-dialog @saveAvatar="saveAvatar" v-if="editMode && !avatar" :hover="hover"/>
+            </v-avatar>
+          </v-hover>
         </v-col>
         <v-col md="10">
           <v-row>
@@ -91,16 +99,20 @@
 import ComponentRow from '../components/items/ComponentRow.vue'
 import { Editor } from 'vuetify-markdown-editor'
 import { mapState } from 'vuex'
-import DefaultSnakbar from '../components/snackbars/DefaultSnakbar.vue';
+import DefaultSnakbar from '../components/snackbars/DefaultSnakbar.vue'
+import LibraryAvatarDialog from '../components/dialogs/LibraryAvatarDialog.vue'
+import axios from '../store/axios'
 export default {
   name: 'Library',
   components: {
     ComponentRow,
     Editor,
-    DefaultSnakbar
+    DefaultSnakbar,
+    LibraryAvatarDialog
   },
   data: () => ({
     tab: 'tab-1',
+    avatar: '',
     editMode: false,
     savedDescription: '',
     saveLoading: false,
@@ -142,6 +154,12 @@ export default {
   watch: {
     library() {
       this.savedDescription = ''
+      this.editMode = false
+      if(this.library.hasAvatar)
+        this.getAvatar()
+      else 
+        this.avatar = null
+      
     },
     libraryDescription() {
       if(this.savedDescription == '') {
@@ -156,6 +174,25 @@ export default {
         name: this.$route.params.name
       }
       this.$store.dispatch('LibraryStore/getLibrary', payload)
+    },
+    saveAvatar(canvas) {
+      canvas.toBlob(blob => {
+        this.$store.dispatch('LibraryStore/saveAvatar', { libraryId: this.library.id,  blob: blob })
+          .then(() => {
+            this.getAvatar()
+          })
+      })
+    },
+    getAvatar() {
+      axios.get(`Library/avatar/${this.library.id}`, {
+          responseType: 'blob'
+      }).then(resp => {
+          var reader = new FileReader()
+          reader.readAsDataURL(resp.data)
+          reader.onload = () => {
+            this.avatar = reader.result
+          }
+        })
     },
     like() {
       this.likeBtnLoading = true
@@ -203,7 +240,17 @@ export default {
 .gap {
   gap: 1rem;
 }
+.max {
+  max-width: 150px;
+}
 .transparent-body {
   background: transparent
 }
+.icon {
+  transition: opacity .4s ease-in-out;
+}
+
+.icon:not(.on-hover) {
+  opacity: 0;
+ }
 </style>

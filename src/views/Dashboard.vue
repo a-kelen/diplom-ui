@@ -3,11 +3,15 @@
           <v-col
             md="2">
             <v-btn 
-            class="my-6 " 
+            class="my-5 text-caption" 
             rounded 
             block
             dark
-            color="teal darken-3" :to="{ name: 'CreateElementPage' }">Create element</v-btn>
+            color="teal darken-3" 
+            :to="{ name: 'CreateElementPage' }"
+            >
+              Create element
+            </v-btn>
             <v-sheet elevation="6">              
               <v-navigation-drawer permanent>
                 <v-list-item active-class="highlighted" >
@@ -49,6 +53,7 @@
               placeholder="Input text"
               filled
               rounded
+              dense
             ></v-text-field>
             </v-col>
           </v-row>

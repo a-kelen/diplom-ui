@@ -79,6 +79,7 @@ const actions = {
       commit('set_active_library', state.cache.find(c => c.author == payload.author && c.name == payload.name))
       return
     }
+
     Axios.get(`Library/${payload.author}/${payload.name}`)
       .then(resp => {
         commit('set_active_library', resp.data)
@@ -97,6 +98,7 @@ const actions = {
       .catch(err => reject(err))
     })
   },
+
   like({ commit, state }) {
     return new Promise((resolve, reject) => {
       Axios.post('Library/like', { id: state.activeLibrary.id })
@@ -125,6 +127,19 @@ const actions = {
   updateLibrary ( _, payload) {
     return new Promise((resolve, reject) => {
     Axios.put('Library/', payload)
+      .then(resp => {
+        resolve(resp.data)
+      })
+      .catch(err => reject(err))
+    })
+  },
+
+  saveAvatar (  _, payload) {
+    return new Promise((resolve, reject) => {
+      const form = new FormData()
+      form.append('libraryId', payload.libraryId)
+      form.append('image', payload.blob)
+    Axios.put('Library/avatar', form)
       .then(resp => {
         resolve(resp.data)
       })
