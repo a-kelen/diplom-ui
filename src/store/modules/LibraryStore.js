@@ -10,24 +10,39 @@ const getters = {
 }
 
 const mutations = {
+  reset_state(state) {
+    Object.assign(state, {
+      ownLibraries: [],
+      ownedLibraries: [],
+      activeLibrary: {},
+      cache: []
+    })
+  },
+
   updateElementType (state, val) {
     state.elementSelectType = val
   },
+
   updateNewLibraryName (state, val) {
     state.newLibraryName = val
   },
+
   set_own_libraries(state, val) {
     state.ownLibraries = val
   },
+
   set_owned_libraries(state, val) {
     state.ownedLibraries = val
   },
+
   add_own_library(state, val) {
     state.ownLibraries.push(val)
   },
+
   add_to_cache(state, val) {
     state.cache.push(val)
   },
+
   set_active_library(state, val) {
     state.activeLibrary = val
     // for(let c of state.activeLibrary.components) {
@@ -36,10 +51,12 @@ const mutations = {
     //   console.log(c)
     // }
   },
+
   change_like(state, val) {
     state.activeLibrary.liked = val
     state.activeLibrary.likes += val ? 1 : -1
   },
+  
   set_owned(state, val) {
     state.activeLibrary.owned = val;
   }

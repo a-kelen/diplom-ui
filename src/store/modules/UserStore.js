@@ -25,7 +25,7 @@ const actions = {
             nickname: resp.data.nickname
           }
           localStorage.setItem('token', token)
-          Axios.defaults.headers.common.Authorization = token
+          Axios.defaults.headers.common.Authorization = 'Bearer ' + token
           commit('auth_success', { token, user })
           resolve(resp)
         })
@@ -138,9 +138,13 @@ const actions = {
 
   logout ({ commit }) {
     return new Promise((resolve) => {
-      commit('logout')
+      commit('reset_state')
+      commit('ComponentStore/reset_state', null, { root: true })
+      commit('ElementStore/reset_state', null, { root: true })
+      commit('LibraryStore/reset_state', null, { root: true })
       localStorage.removeItem('token')
       delete Axios.defaults.headers.common.Authorization
+      
       resolve(true)
     })
   },
@@ -158,30 +162,41 @@ const mutations = {
   auth_request (state) {
     state.status = 'loading'
   },
+
   auth_success (state, payload) {
     state.status = 'success'
     state.token = payload.token
     state.user = payload.user
   },
+
   reauth_success (state, user) {
     state.status = 'success'
     state.token = localStorage.getItem('token')
     state.user = user
   },
+
   auth_error (state) {
     state.status = 'error'
   },
-  logout (state) {
-    state.status = ''
-    state.token = ''
-    state.user = {}
+
+  reset_state() {
+    Object.assign(state, {
+      status: '',
+      token: localStorage.getItem('token') || '',
+      user: {},
+      activeProfile: {}
+    
+    })
   },
+
   update_user (state, user) {
     state.user.name = user.name
   },
+
   set_active_profile (state, user) {
     state.activeProfile = user
   },
+
   follow_user (state, val) {
     state.activeProfile.followed = val
     state.activeProfile.followersCount += val ? 1 : -1

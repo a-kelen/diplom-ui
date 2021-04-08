@@ -11,6 +11,16 @@ const state = {
   }
   
   const mutations = {
+    reset_state(state) {
+      Object.assign(state, {
+        activeComponent: {},
+        ownComponents: [],
+        ownedComponents: [],
+        likedList: [],
+        cache: []
+      })
+    },
+
     updateElementType(state, val) {
       state.elementSelectType = val
     },

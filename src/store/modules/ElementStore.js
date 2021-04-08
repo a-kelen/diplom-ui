@@ -21,6 +21,26 @@ const state = {
   }
   
   const mutations = {
+    reset_state(state) {
+      Object.assign(state, {
+        elementSelectType: 0,
+        status: true,
+        newLibraryName: 'Library name',
+        newLibraryAvatar: null,
+        newLibraryDescription: 'Library Description',
+        newComponent: {
+          files: [],
+          events: [],
+          props: [],
+          description: 'Description ...',
+          status: true
+        },
+        components: [],
+    
+        likedList: []
+      })
+    },
+
     set_liked(state, val) {
       state.likedList = val
       // state.likedList.sort((a,b)=>a.created - b.created);
