@@ -4,12 +4,13 @@
         <v-col>
           <v-row>
             <v-col>
-              <v-sheet class="transparent d-flex align-center">
+              <v-sheet class="transparent d-flex gap align-center">
                 <v-card-text class="text-h4">
                   Title
                 </v-card-text>
                 <v-chip label>Format</v-chip>
                 <v-icon class="mx-2" v-if="statusIcon">mdi-lock-outline</v-icon>
+                <report-bottom-sheet @submit="reportToComponent" :visibility.sync="reportSheet"/>
               </v-sheet>
             </v-col>
           </v-row>
@@ -165,17 +166,20 @@ import compare from '../utils/compare'
 import EventItem from '../components/items/EventItem.vue'
 import PropItem from '../components/items/PropItem.vue'
 import EditComponent from '../components/dialogs/EditComponent.vue'
+import ReportBottomSheet from '../components/sheets/ReportBottomSheet.vue'
 import { mapState } from 'vuex'
 export default {
   name: 'ComponentPage',
   components: {
     EventItem,
     PropItem,
-    EditComponent
+    EditComponent,
+    ReportBottomSheet
   },
   data: () => ({
     tab: 'tab-1',
     editMode: false,
+    reportSheet: false,
     likeBtnLoading: false,
     saveLoading: false,
     agreeDialog: false,
@@ -192,24 +196,31 @@ export default {
       component: s => s.ComponentStore.activeComponent,
       user: s => s.UserStore.user
     }),
+
     statusIcon() {
       return this.component.status == 'Private'
     },
+
     likeIcon() {
       return this.component.liked ? 'mdi-heart' : 'mdi-heart-outline'
     },
+
     getOwnBtnText() {
       return this.component.owned ? 'Owned' : 'Get'
     },
+
     getOwnBtnColor() {
       return this.component.owned ? 'white' : 'primary'
     },
+
     userIsOwner() {
       return this.component.author == this.user.username || this.component.library.author == this.user.username
     },
+
     componentAuthor() {
       return this.component.library != null ? `From library: ${this.component.library.name }` : `Author: ${this.component.author}`
     },
+
     componentIsIndepended() {
       return this.component.library == null
     }
@@ -218,25 +229,30 @@ export default {
     fetch() {
       this.$store.dispatch('ComponentStore/getComponent', this.$route.params.id)
     },
+
     like() {
       this.likeBtnLoading = true
       this.$store.dispatch('ComponentStore/like')
         .then(() => this.likeBtnLoading = false)
     },
+
     getOwn() {
       this.getOwnLoading = true
       this.$store.dispatch('ComponentStore/getOwn')
         .then(() => this.getOwnLoading = false)
     },
+
     changeEditMode() {
       this.editMode = !this.editMode
     },
+
     closeUpdateDialog() {
       if(!compare(this.component, this.cloneComponent))
         this.agreeDialog = true
       else
         this.editMode = false
     },
+
     saveChanges() {
       this.saveLoading = true
 
@@ -258,10 +274,20 @@ export default {
           this.saveLoading = false
         })
     },
+
     dischargeUpdates() {
       this.cloneComponent = clone(this.component)
       this.editMode = false
       this.agreeDialog = false
+    },
+
+    reportToComponent(content) {
+      this.$store.dispatch('ComponentStore/report', {
+        id: this.component.id,
+        content
+      }).then(() => {
+        this.reportSheet = false
+      })
     }
   },
 

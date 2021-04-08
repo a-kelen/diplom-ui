@@ -107,6 +107,20 @@ const state = {
       })
     },
 
+    report (_, payload) {
+      return new Promise((resolve, reject) => {
+        Axios.post('Component/report', payload)
+          .then(resp => {
+            if (resp.data) {
+              resolve(resp.data)
+            } else {
+              reject(resp.data)
+            }
+          })
+          .catch((err) => reject(err))
+      })
+    },
+
     //PUT
     updateComponent ( _, payload) {
       return new Promise((resolve, reject) => {

@@ -4,7 +4,7 @@
         <v-col md="2">
           <v-hover v-slot:default="{ hover }" :disabled="!editMode">
             <v-avatar
-              tile
+              rounded
               size="150"
               color="primary"
             >
@@ -21,12 +21,13 @@
         <v-col md="10">
           <v-row>
             <v-col>
-              <v-sheet class="transparent d-flex align-center">
+              <v-sheet class="transparent d-flex gap align-center">
                 <v-card-text class="text-h4">
                   {{ library.name }}
                 </v-card-text>
                 <!-- <v-rating class="ml-auto"></v-rating> -->
-                <v-icon class="mx-2" v-if="statusIcon">mdi-lock-outline</v-icon>
+                <v-icon class="" v-if="statusIcon">mdi-lock-outline</v-icon>
+                <report-bottom-sheet v-if="!userIsOwner" @submit="reportToLibrary"  :visibility.sync="reportSheet"/>
               </v-sheet>
             </v-col>
           </v-row>
@@ -91,7 +92,9 @@
           </v-card>
         </v-col>
       </v-row>
+
       <default-snakbar :snackbar.sync="snackbarShow" :text="snackbarText"/>
+      
     </v-container>
 </template>
 
@@ -101,6 +104,7 @@ import { Editor } from 'vuetify-markdown-editor'
 import { mapState } from 'vuex'
 import DefaultSnakbar from '../components/snackbars/DefaultSnakbar.vue'
 import LibraryAvatarDialog from '../components/dialogs/LibraryAvatarDialog.vue'
+import ReportBottomSheet from '../components/sheets/ReportBottomSheet.vue'
 import axios from '../store/axios'
 export default {
   name: 'Library',
@@ -108,12 +112,14 @@ export default {
     ComponentRow,
     Editor,
     DefaultSnakbar,
-    LibraryAvatarDialog
+    LibraryAvatarDialog,
+    ReportBottomSheet
   },
   data: () => ({
     tab: 'tab-1',
     avatar: '',
     editMode: false,
+    reportSheet: false,
     savedDescription: '',
     saveLoading: false,
     likeBtnLoading: false,
@@ -175,6 +181,7 @@ export default {
       }
       this.$store.dispatch('LibraryStore/getLibrary', payload)
     },
+
     saveAvatar(canvas) {
       canvas.toBlob(blob => {
         this.$store.dispatch('LibraryStore/saveAvatar', { libraryId: this.library.id,  blob: blob })
@@ -183,6 +190,7 @@ export default {
           })
       })
     },
+
     getAvatar() {
       axios.get(`Library/avatar/${this.library.id}`, {
           responseType: 'blob'
@@ -194,19 +202,23 @@ export default {
           }
         })
     },
+
     like() {
       this.likeBtnLoading = true
       this.$store.dispatch('LibraryStore/like')
         .then(() => this.likeBtnLoading = false)
     },
+
     getOwn() {
       this.getOwnLoading = true
       this.$store.dispatch('LibraryStore/getOwn')
         .then(() => this.getOwnLoading = false)
     },
+
     changeEditMode() {
       this.editMode = !this.editMode
     },
+
     saveChanges() {
       let payload = {
         id: this.library.id,
@@ -224,6 +236,15 @@ export default {
           this.library.description = this.savedDescription
           this.saveLoading = false
         })
+    },
+
+    reportToLibrary(content) {
+      this.$store.dispatch('LibraryStore/report', {
+        id: this.library.id,
+        content
+      }).then(() => {
+        this.reportSheet = false
+      })
     }
   },
   beforeRouteUpdate (to, from, next) {
@@ -253,4 +274,9 @@ export default {
 .icon:not(.on-hover) {
   opacity: 0;
  }
+
+.breakFlexRow {
+  flex-basis: 100%;
+  height: 0;
+}
 </style>

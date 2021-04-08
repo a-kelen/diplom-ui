@@ -137,6 +137,20 @@ const state = {
       }
       
     },
+
+    report (_, payload) {
+      return new Promise((resolve, reject) => {
+        Axios.post('User/report', payload)
+          .then(resp => {
+            if (resp.data) {
+              resolve(resp.data)
+            } else {
+              reject(resp.data)
+            }
+          }).catch((err) => reject(err))
+      })
+    },
+
     uploadFiles ({ state }) {
       Axios.post('File/upload-files', state.newComponent.files)
         .then(resp => {

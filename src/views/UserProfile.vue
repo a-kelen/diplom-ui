@@ -35,10 +35,11 @@
           <v-row>
             <v-col class="py-2">
               <v-sheet class="transparent gap d-flex align-center">
-                <v-chip>129 followers</v-chip>
+                <v-chip>{{ profile.followersCount }} followers</v-chip>
                 <v-chip>231 stars</v-chip>
                 <v-chip>{{ componentsCount }} components</v-chip>
                 <v-chip>{{ librariesCount }} libraries</v-chip>
+                <report-bottom-sheet v-if="currentUser.username != profile.username" @submit="reportToUser"  :visibility.sync="reportSheet"/>
               </v-sheet>
             </v-col>
           </v-row>
@@ -49,21 +50,33 @@
 
 <script> 
 import { mapState } from 'vuex'
+import ReportBottomSheet from '../components/sheets/ReportBottomSheet.vue'
 export default {
+  components: { ReportBottomSheet },
   name: 'UserProfile',
   data: () => ({
-    loading: false
+    loading: false,
+    reportSheet: false
   }),
   methods: {
     fetch() {
       this.$store.dispatch('UserStore/getProfile', this.$route.params.username)
     },
+    
     follow() {
       this.loading = true
       this.$store.dispatch('UserStore/followUser', this.profile.username)
         .finally(() => {
           this.loading = false
         })
+    },
+    reportToUser(content) {
+      this.$store.dispatch('UserStore/report', {
+        username: this.profile.username,
+        content
+      }).then(() => {
+        this.reportSheet = false
+      })
     }
   },
   computed: {

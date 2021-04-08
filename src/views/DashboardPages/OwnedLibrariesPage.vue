@@ -1,5 +1,6 @@
 <template>
-    <v-row>
+  <v-container class="pa-0 ma-0">
+    <v-row v-if="ownedLibraries.length == 0">
       <v-col :key="i" v-for="i in skeletons" cols="4">
         <v-skeleton-loader
           class="mx-auto"
@@ -7,12 +8,15 @@
           type="article"
         ></v-skeleton-loader>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col 
           v-for="library in ownedLibraries" :key="library.id"
           cols="4">
           <library-item :library="library"/>
       </v-col>
     </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -29,7 +33,7 @@ export default {
       ownedLibraries: s => s.LibraryStore.ownedLibraries
     }),
   },
-  mounted() {
+  created() {
     this.$store.dispatch('LibraryStore/getOwnedLibraryList')
       .then(() => this.skeletons = [])
   }, 

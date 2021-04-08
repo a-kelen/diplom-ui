@@ -1,13 +1,13 @@
 <template>
   <v-container>
-    <v-sheet elevation="5" class="px-3">
+    <v-sheet elevation="3" class="px-3">
       <router-link :to="{ name: 'LibraryPage', params: {author: library.author, name: library.name} }">
         <v-row>
           <v-col md="2">
               <v-avatar
               color="green"
               size="40"
-              tile
+              rounded
               >
                 <img
                 :src="avatar"
@@ -19,7 +19,7 @@
           <v-col md="auto">
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
-                <div class="mx-2 text-h6 text-truncate" v-bind="attrs"
+                <div class=" text-h6 text-truncate" v-bind="attrs"
                   v-on="on">{{ library.name }}</div>
               </template>
               <span>{{ library.name }}</span>
@@ -29,10 +29,11 @@
         <v-row>
           <v-col md="auto">
             <v-chip
-              dark
+              
               small
               label
-              class="green"
+              text-color="white"
+              class="primary"
             >{{ componentsCount }} components</v-chip>
           </v-col>
           <v-col md="auto">
@@ -50,13 +51,13 @@
             
           </v-col>
           <v-col>
-            <v-icon v-if="status" small class="mt-1">mdi-lock-outline</v-icon> 
+            <v-icon v-if="status" small class="my-1">mdi-lock-outline</v-icon> 
           </v-col>
         </v-row>
-        <v-row>
+        <v-row class="">
           <v-col>
             <router-link :to="{ name: 'UserProfile', params: {username: library.author} }">
-              <div class="grey--text text-body-2 text--darken-1">{{ library.author }}</div>
+              <div class="grey--text text-body-2 text--darken-2">{{ library.author }}</div>
             </router-link>
           </v-col>
           <v-spacer></v-spacer>

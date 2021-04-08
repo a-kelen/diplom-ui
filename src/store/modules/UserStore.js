@@ -36,6 +36,7 @@ const actions = {
         })
     })
   },
+
   getCurrentUser ({ commit }) {
     return new Promise((resolve, reject) => {
       commit('auth_request')
@@ -57,6 +58,7 @@ const actions = {
       }
     })
   },
+
   getProfile ({ commit }, username) {
     return new Promise((resolve, reject) => {
         Axios(`User/${ username }`)
@@ -69,10 +71,11 @@ const actions = {
           })
     })
   },
+
   register ({ commit }, user) {
     return new Promise((resolve, reject) => {
       commit('auth_request')
-      Axios.post('user', user)
+      Axios.post('User', user)
         .then(resp => {
           const token = resp.data.token
           const user = {
@@ -93,6 +96,7 @@ const actions = {
         })
     })
   },
+
   followUser ({ commit }, username) {
     return new Promise((resolve, reject) => {
       Axios.post('User/follow', {username: username})
@@ -105,23 +109,10 @@ const actions = {
         })
     })
   },
-  logout ({ commit }) {
-    return new Promise((resolve) => {
-      commit('logout')
-      localStorage.removeItem('token')
-      delete Axios.defaults.headers.common.Authorization
-      resolve(true)
-    })
-  },
-  changeProfile ({ commit }, user) {
-    Axios.put('user', user)
-      .then(resp => {
-        commit('update_user', resp.data)
-      })
-  },
+
   changePassword (_, payload) {
     return new Promise((resolve, reject) => {
-      Axios.post('user/password', payload)
+      Axios.post('User/password', payload)
         .then(resp => {
           if (resp.data) {
             resolve(resp.data)
@@ -130,7 +121,37 @@ const actions = {
           }
         })
     })
-  }
+  },
+
+  report (_, payload) {
+    return new Promise((resolve, reject) => {
+      Axios.post('User/report', payload)
+        .then(resp => {
+          if (resp.data) {
+            resolve(resp.data)
+          } else {
+            reject(resp.data)
+          }
+        })
+    })
+  },
+
+  logout ({ commit }) {
+    return new Promise((resolve) => {
+      commit('logout')
+      localStorage.removeItem('token')
+      delete Axios.defaults.headers.common.Authorization
+      resolve(true)
+    })
+  },
+
+  changeProfile ({ commit }, user) {
+    Axios.put('User', user)
+      .then(resp => {
+        commit('update_user', resp.data)
+      })
+  },
+  
 }
 // mutations
 const mutations = {
@@ -163,6 +184,7 @@ const mutations = {
   },
   follow_user (state, val) {
     state.activeProfile.followed = val
+    state.activeProfile.followersCount += val ? 1 : -1
   }
 }
 export default {

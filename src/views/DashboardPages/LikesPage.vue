@@ -1,5 +1,6 @@
 <template>
-    <v-row >
+  <v-container class="pa-0 ma-0">
+    <v-row v-if="liked.length == 0">
         <v-col :key="i" v-for="i in skeletons" cols="4">
             <v-skeleton-loader
             class="mx-auto"
@@ -7,6 +8,8 @@
             type="article"
             ></v-skeleton-loader>
         </v-col>
+    </v-row>
+    <v-row>
         <v-col 
             v-for="like in liked" :key="like.id"
             cols="4">
@@ -16,6 +19,7 @@
 
         </v-col>
     </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -33,7 +37,7 @@ export default {
       liked: s => s.ElementStore.likedList
     }),
   },
-  mounted() {
+  created() {
     this.$store.dispatch('ElementStore/getLikedLibraries')
         .then(() => this.skeletons = [])
   }

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-sheet  elevation="5" class="px-3">
+    <v-sheet  elevation="3" class="px-3">
       <router-link :to="{ name: 'ComponentPage', params: {id: component.id} }">
         <v-row >
           <v-col md="auto">

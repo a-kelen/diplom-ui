@@ -122,7 +122,20 @@ const actions = {
       })
     })
   },
-  
+
+  report (_, payload) {
+    return new Promise((resolve, reject) => {
+      Axios.post('Library/report', payload)
+        .then(resp => {
+          if (resp.data) {
+            resolve(resp.data)
+          } else {
+            reject(resp.data)
+          }
+        }).catch((err) => reject(err))
+    })
+  },
+
   //PUT
   updateLibrary ( _, payload) {
     return new Promise((resolve, reject) => {
