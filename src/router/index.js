@@ -62,11 +62,13 @@ const routes = [
   {
     path: '/library/:author/:name',
     name: 'LibraryPage',
+    props: {author: 'null', name: 'null'},
     component: () => import('../views/LibraryPage.vue')
   },
   {
     path: '/comp/:id',
     name: 'ComponentPage',
+    props: true,
     component: () => import('../views/ComponentPage.vue')
   },
   {
@@ -92,6 +94,7 @@ const routes = [
   {
     path: '/profile/:username',
     name: 'UserProfile',
+    props: true,
     component: () => import('../views/UserProfile.vue')
   }
 ];

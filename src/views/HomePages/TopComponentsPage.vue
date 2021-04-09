@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0 ma-0">
-    <v-row v-if="ownComponents.length == 0">
+    <v-row v-if="components.length == 0">
       <v-col :key="i" v-for="i in skeletons" cols="4">
         <v-skeleton-loader
           class="mx-auto"
@@ -10,7 +10,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="component in ownComponents" :key="component.id" cols="4">
+      <v-col v-for="component in components" :key="component.id" cols="4">
           <component-item :component="component"/>
       </v-col>
     </v-row>
@@ -28,12 +28,12 @@ export default {
   }),
   computed: {
     ...mapState({
-      ownComponents: s => s.ComponentStore.ownComponents
+      components: s => s.ComponentStore.topComponents
     }),
   },
   created() {
-    // this.$store.dispatch('ComponentStore/getOwnComponentList')
-    //   .then(() => this.skeletons = [])
+    this.$store.dispatch('ComponentStore/getTopComponentList')
+      .then(() => this.skeletons = [])
   }
 };
 </script>

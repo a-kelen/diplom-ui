@@ -31,7 +31,7 @@
     <v-checkbox
       class="mx-2"
       v-model="status"
-      label="Private"
+      label="Public"
     ></v-checkbox>
   </v-sheet>
 </template>

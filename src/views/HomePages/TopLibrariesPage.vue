@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0 ma-0">
-    <v-row v-if="ownLibraries.length == 0">
+    <v-row v-if="libraries.length == 0">
       <v-col :key="i" v-for="i in skeletons" cols="4">
         <v-skeleton-loader
           class="mx-auto"
@@ -11,7 +11,7 @@
     </v-row>
     <v-row>
       <v-col
-          v-for="library in ownLibraries" :key="library.id"
+          v-for="library in libraries" :key="library.id"
           cols="4">
           <library-item :library="library"/>
       </v-col>
@@ -30,12 +30,12 @@ export default {
   }),
   computed: {
     ...mapState({
-      ownLibraries: s => s.LibraryStore.ownLibraries
+      libraries: s => s.LibraryStore.topLibraries
     }),
   },
   created() {
-    // this.$store.dispatch('LibraryStore/getOwnLibraryList')
-    //   .then(() => this.skeletons = [])
+    this.$store.dispatch('LibraryStore/getTopLibraryList')
+      .then(() => this.skeletons = [])
   },
 };
 </script>

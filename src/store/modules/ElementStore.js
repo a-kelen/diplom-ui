@@ -1,7 +1,7 @@
 import Axios from '../axios'
 const state = {
     elementSelectType: 0,
-    status: true,
+    status: false,
     newLibraryName: 'Library name',
     newLibraryAvatar: null,
     newLibraryDescription: 'Library Description',
@@ -11,7 +11,7 @@ const state = {
       slots: [],
       props: [],
       description: 'Description ...',
-      status: true
+      status: false
     },
     components: [],
 
@@ -22,6 +22,7 @@ const state = {
   }
   
   const mutations = {
+    
     reset_state(state) {
       Object.assign(state, {
         elementSelectType: 0,
@@ -45,20 +46,24 @@ const state = {
     set_liked(state, val) {
       state.likedList = val
       // state.likedList.sort((a,b)=>a.created - b.created);
-      
     },
+
     updateElementType (state, val) {
       state.elementSelectType = val
     },
+
     updateStatus (state, val) {
       state.status = val
     },
+
     updateNewLibraryName (state, val) {
       state.newLibraryName = val
     },
+
     updateNewLibraryAvatar (state, val) {
       state.newLibraryAvatar = val
     },
+
     updateNewLibraryDescription (state, val) {
       state.newLibraryDescription = val
     },
@@ -73,6 +78,7 @@ const state = {
         description: 'Description ...'
       })
     },
+
     refreshNewComponent(state) {
       state.newComponent = {
         files: [],
@@ -83,6 +89,7 @@ const state = {
         status: true
       }
     },
+
     deleteComponent(state, val) {
       state.components = state.components.filter(x => x.id != val)
     }

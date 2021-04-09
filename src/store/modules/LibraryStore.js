@@ -3,6 +3,7 @@ const state = {
   ownLibraries: [],
   ownedLibraries: [],
   activeLibrary: {},
+  topLibraries: [],
   cache: []
 }
 
@@ -10,6 +11,7 @@ const getters = {
 }
 
 const mutations = {
+  
   reset_state(state) {
     Object.assign(state, {
       ownLibraries: [],
@@ -29,6 +31,10 @@ const mutations = {
 
   set_own_libraries(state, val) {
     state.ownLibraries = val
+  },
+
+  set_top_libraries(state, val) {
+    state.topLibraries = val
   },
 
   set_owned_libraries(state, val) {
@@ -67,7 +73,7 @@ const actions = {
   getOwnLibraryList({commit, state}) {
       return new Promise((resolve, reject) => {
       if(state.ownLibraries.length > 0)
-      resolve()
+        resolve()
       Axios.get('Library/ownLibraryList/')
         .then(resp => {
           commit('set_own_libraries', resp.data)
@@ -75,6 +81,20 @@ const actions = {
         }).catch(err => {
           reject(err)
         })
+    })
+  },
+
+  getTopLibraryList({commit, state}) {
+    return new Promise((resolve, reject) => {
+    if(state.topLibraries.length > 0)
+      resolve()
+    Axios.get('Library/topList/')
+      .then(resp => {
+        commit('set_top_libraries', resp.data)
+        resolve(resp.data)
+      }).catch(err => {
+        reject(err)
+      })
     })
   },
 

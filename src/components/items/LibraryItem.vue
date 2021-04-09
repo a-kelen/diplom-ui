@@ -29,7 +29,6 @@
         <v-row>
           <v-col md="auto">
             <v-chip
-              
               small
               label
               text-color="white"
@@ -56,7 +55,7 @@
         </v-row>
         <v-row class="">
           <v-col>
-            <router-link :to="{ name: 'UserProfile', params: {username: library.author} }">
+            <router-link :to="{ name: 'UserProfile', params: {username: library.author} }" >
               <div class="grey--text text-body-2 text--darken-2">{{ library.author }}</div>
             </router-link>
           </v-col>
@@ -83,6 +82,7 @@
 import axios from '../../store/axios';
 export default {
   name: 'LibraryItem',
+  props: ['library'],
   data: () => ({
     rating: 4.5,
     avatar: ''
@@ -104,7 +104,6 @@ export default {
       return this.library.liked ? 'primary--text' : 'grey--text'
     }
   },
-  props: ['library'],
   methods: {
     getAvatar() {
       axios.get(`Library/avatar/${this.library.id}`, {

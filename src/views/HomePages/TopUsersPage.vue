@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0 ma-0">
-    <v-row v-if="ownComponents.length == 0">
+    <v-row v-if="authors.length == 0">
       <v-col :key="i" v-for="i in skeletons" cols="4">
         <v-skeleton-loader
           class="mx-auto"
@@ -10,8 +10,8 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="component in ownComponents" :key="component.id" cols="4">
-          <component-item :component="component"/>
+      <v-col v-for="author in authors" :key="author.username" cols="4">
+          <author-item :author="author"/>
       </v-col>
     </v-row>
   </v-container>
@@ -19,21 +19,21 @@
 
 <script>
 import { mapState } from 'vuex'
-import ComponentItem from '../../components/items/ComponentItem.vue'
+import AuthorItem from '../../components/items/AuthorItem.vue'
 export default {
-  components: { ComponentItem },
+  components: { AuthorItem },
   name: 'TopUsersPage',
   data: () => ({
     skeletons: [1, 2, 3, 4, 5, 6, 7]
   }),
   computed: {
     ...mapState({
-      ownComponents: s => s.ComponentStore.ownComponents
+      authors: s => s.UserStore.topUsers
     }),
   },
   created() {
-    // this.$store.dispatch('ComponentStore/getOwnComponentList')
-    //   .then(() => this.skeletons = [])
+    this.$store.dispatch('UserStore/getTopUsersList')
+      .then(() => this.skeletons = [])
   }
 };
 </script>

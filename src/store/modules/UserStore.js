@@ -3,7 +3,8 @@ const state = {
   status: '',
   token: localStorage.getItem('token') || '',
   user: {},
-  activeProfile: {}
+  activeProfile: {},
+  topUsers: []
 
 }
 // getters
@@ -11,29 +12,75 @@ const getters = {
   isLoggedIn: state => !!state.token,
   authStatus: state => state.status
 }
+
+// mutations
+const mutations = {
+  auth_request (state) {
+    state.status = 'loading'
+  },
+
+  auth_success (state, payload) {
+    state.status = 'success'
+    state.token = payload.token
+    state.user = payload.user
+  },
+
+  reauth_success (state, user) {
+    state.status = 'success'
+    state.token = localStorage.getItem('token')
+    state.user = user
+  },
+
+  auth_error (state) {
+    state.status = 'error'
+  },
+
+  set_top_users(state, val) {
+    state.topUsers = val
+  },
+
+  reset_state() {
+    Object.assign(state, {
+      status: '',
+      token: localStorage.getItem('token') || '',
+      user: {},
+      activeProfile: {}
+    
+    })
+  },
+
+  logout() {
+    location.reload()
+  },
+
+  update_user (state, user) {
+    state.user.name = user.name
+  },
+
+  set_active_profile (state, user) {
+    state.activeProfile = user
+  },
+
+  follow_user (state, val) {
+    state.activeProfile.followed = val
+    state.activeProfile.followersCount += val ? 1 : -1
+  }
+}
+
 // actions
 const actions = {
-  login ({ commit }, user) {
+
+  getTopUsersList({commit, state}) {
     return new Promise((resolve, reject) => {
-      commit('auth_request')
-      Axios({ url: 'User/login', data: user, method: 'POST' })
-        .then(resp => {
-          const token = resp.data.token
-          const user = {
-            email: resp.data.email,
-            name: resp.data.name,
-            nickname: resp.data.nickname
-          }
-          localStorage.setItem('token', token)
-          Axios.defaults.headers.common.Authorization = 'Bearer ' + token
-          commit('auth_success', { token, user })
-          resolve(resp)
-        })
-        .catch(err => {
-          commit('auth_error', err)
-          localStorage.removeItem('token')
-          reject(err)
-        })
+    if(state.topUsers.length > 0)
+      resolve()
+    Axios.get('User/topList/')
+      .then(resp => {
+        commit('set_top_users', resp.data)
+        resolve(resp.data)
+      }).catch(err => {
+        reject(err)
+      })
     })
   },
 
@@ -86,6 +133,30 @@ const actions = {
           }
           localStorage.setItem('token', token)
           Axios.defaults.headers.common.Authorization = token
+          commit('auth_success', { token, user })
+          resolve(resp)
+        })
+        .catch(err => {
+          commit('auth_error', err)
+          localStorage.removeItem('token')
+          reject(err)
+        })
+    })
+  },
+
+  login ({ commit }, user) {
+    return new Promise((resolve, reject) => {
+      commit('auth_request')
+      Axios({ url: 'User/login', data: user, method: 'POST' })
+        .then(resp => {
+          const token = resp.data.token
+          const user = {
+            email: resp.data.email,
+            name: resp.data.name,
+            nickname: resp.data.nickname
+          }
+          localStorage.setItem('token', token)
+          Axios.defaults.headers.common.Authorization = 'Bearer ' + token
           commit('auth_success', { token, user })
           resolve(resp)
         })
@@ -154,55 +225,7 @@ const actions = {
   },
   
 }
-// mutations
-const mutations = {
-  auth_request (state) {
-    state.status = 'loading'
-  },
 
-  auth_success (state, payload) {
-    state.status = 'success'
-    state.token = payload.token
-    state.user = payload.user
-  },
-
-  reauth_success (state, user) {
-    state.status = 'success'
-    state.token = localStorage.getItem('token')
-    state.user = user
-  },
-
-  auth_error (state) {
-    state.status = 'error'
-  },
-
-  reset_state() {
-    Object.assign(state, {
-      status: '',
-      token: localStorage.getItem('token') || '',
-      user: {},
-      activeProfile: {}
-    
-    })
-  },
-
-  logout() {
-    location.reload()
-  },
-
-  update_user (state, user) {
-    state.user.name = user.name
-  },
-
-  set_active_profile (state, user) {
-    state.activeProfile = user
-  },
-
-  follow_user (state, val) {
-    state.activeProfile.followed = val
-    state.activeProfile.followersCount += val ? 1 : -1
-  }
-}
 export default {
   namespaced: true,
   state,
