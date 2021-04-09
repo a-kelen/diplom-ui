@@ -8,6 +8,7 @@ const state = {
     newComponent: {
       files: [],
       events: [],
+      slots: [],
       props: [],
       description: 'Description ...',
       status: true
@@ -68,6 +69,7 @@ const state = {
         files: [],
         events: [],
         props: [],
+        slots: [],
         description: 'Description ...'
       })
     },
@@ -76,6 +78,7 @@ const state = {
         files: [],
         events: [],
         props: [],
+        slots: [],
         description: '',
         status: true
       }

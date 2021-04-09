@@ -4,7 +4,7 @@
         <v-col md="5">
             <v-text-field
                 v-model="item.name"
-                label="Prop name"
+                :label="nameTitle"
                 filled
                 outlined
                 rounded
@@ -14,13 +14,13 @@
         <v-col md="5">
             <v-textarea 
             v-model="item.description"
-            label="Prop description"
+            :label="descriptionTitle"
             rows="1"
             auto-grow
             filled/>
         </v-col>
         <v-col md="1">
-          <v-btn @click="deleteProp" icon color="primary" class="ml-2">
+          <v-btn @click="deleteItem" icon color="primary" class="ml-2">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
@@ -30,13 +30,13 @@
 
 <script>
 export default {
-  name: 'AddPropItem',
-  props: ['item'],
+  name: 'AddComponentField',
+  props: ['item', 'nameTitle', 'descriptionTitle'],
   data: () => ({
   }),
   methods: {
-    deleteProp() {
-      this.$emit('deleteProp', this.item.id)
+    deleteItem() {
+      this.$emit('deleteItem', this.item.id)
     }
   }
 };

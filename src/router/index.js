@@ -7,14 +7,36 @@ Vue.use(VueRouter);
 const routes = [
   { 
     path: '/',
-    name: 'Home',
-    component: Home
+    component: Home,
+    children: [
+      {
+        path: '',
+        name: 'Home',
+        component: () => import('../views/HomePages/LatestActivitiesPage.vue')
+      },
+      {
+        path: 'top-libraries',
+        component: () => import('../views/HomePages/TopLibrariesPage.vue')
+      },
+      {
+        path: 'top-components',
+        component: () => import('../views/HomePages/TopComponentsPage.vue')
+      },
+      {
+        path: 'top-users',
+        component: () => import('../views/HomePages/TopUsersPage.vue')
+      }
+    ]
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
     component: () => import('../views/Dashboard.vue'),
     children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        redirect: 'liked'
+      },
       {
         path: 'liked',
         component: () => import('../views/DashboardPages/LikesPage.vue')

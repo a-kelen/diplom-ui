@@ -14,9 +14,14 @@
             replace-direction="vertical"
             @sortend="sortProps" 
         >
-            <add-prop-item @deleteProp="deleteProp" :item="prop"/>
+            <add-component-field
+            @deleteItem="deleteProp"
+            :descriptionTitle="'Prop Description'" 
+            :nameTitle="'Prop name'" 
+            :item="prop"/>
         </sortable>
     </v-row>
+
     <v-row>
         <v-col>
             <v-btn class="ma-2" color="primary" @click="addEvent">Add event</v-btn>
@@ -31,9 +36,35 @@
         replace-direction="vertical"
         @sortend="sortEvents" 
       >
-        <add-event-item @deleteEvent="deleteEvent" :item="event"/>
+        <add-component-field
+            @deleteItem="deleteEvent"
+            :descriptionTitle="'Event Description'" 
+            :nameTitle="'Event name'" 
+            :item="event"/>
       </sortable>
     </v-row>
+
+    <v-row>
+        <v-col>
+            <v-btn class="ma-2" color="primary" @click="addSlot">Add slot</v-btn>
+        </v-col>
+    </v-row>
+    <v-row>
+      <sortable v-for="(slot, index) in component.slots"
+        v-model="dragSlotData"
+        :key="slot.id"
+        :index="index"
+        drag-direction="vertical"
+        replace-direction="vertical"
+        @sortend="sortSlots" 
+      >
+        <add-component-field
+        :descriptionTitle="'Slot Description'" 
+        :nameTitle="'Slot name'" 
+        :item="slot"/>
+      </sortable>
+    </v-row>
+
     <v-row>
         <v-card-text class="text-h5">Description</v-card-text>
     </v-row>
@@ -52,17 +83,15 @@
 
 <script>
 import { Editor } from 'vuetify-markdown-editor'
-import AddEventItem from '../items/AddEventItem.vue'
-import AddPropItem from '../items/AddPropItem.vue'
 import Sortable from 'vue-drag-sortable'
+import AddComponentField from '../items/AddComponentField.vue'
 
 export default {
   name: 'EditComponent',
   components: {
     Editor,
-    AddPropItem,
-    AddEventItem,
-    Sortable
+    Sortable,
+    AddComponentField
   },
   props: ['component'],
   data: () => ({
@@ -76,6 +105,7 @@ export default {
     },
     dragEventData: {},
     dragPropData: {},
+    dragSlotData: {},
   }),
   computed: {
     componentDescription() {
@@ -97,12 +127,22 @@ export default {
         desciption: ''  
         })
     },
+    addSlot() {
+        this.component.slots.push({
+        id: this.component.slots.length + 1,
+        name: '',
+        desciption: ''  
+        })
+    },
     deleteEvent(id) {
       console.log(id)
       this.component.events = this.component.events.filter(x => x.id != id)
     },
     deleteProp(id) {
       this.component.props = this.component.props.filter(x => x.id != id)
+    },
+    deleteSlot(id) {
+      this.component.slots = this.component.slots.filter(x => x.id != id)
     },
     sortend (e, list) {
       const { oldIndex, newIndex } = e
@@ -123,6 +163,9 @@ export default {
     },
     sortProps(e) {
         this.sortend(e, this.component.props)
+    },
+    sortSlots(e) {
+        this.sortend(e, this.component.slots)
     }
   }
 }

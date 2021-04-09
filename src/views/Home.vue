@@ -17,29 +17,8 @@
           ></v-text-field>
           </v-col>
         </v-row>
-        <v-row v-if="selectedItem == 0">
-          <v-col 
-            v-for="n in 10" 
-            :key="n"
-            cols="4">
-            <component-item />
-          </v-col>
-        </v-row>
-        <v-row v-if="selectedItem == 1">
-          <v-col 
-            v-for="n in 10" 
-            :key="n"
-            cols="4">
-            <library-item/>
-          </v-col>
-        </v-row>
-        <v-row v-if="selectedItem == 2">
-          <v-col 
-            v-for="n in 10" 
-            :key="n"
-            cols="4">
-            <author-item/>
-          </v-col>
+        <v-row>
+          <router-view></router-view>
         </v-row>
       </v-col>
       <v-col
@@ -80,7 +59,6 @@
               </v-list-item>
             </v-list>
           </v-navigation-drawer>
-          <router-view></router-view>
         </v-sheet>
       </v-col>
     </v-row>
@@ -89,24 +67,19 @@
   
 
 <script>
-import AuthorItem from '../components/items/AuthorItem.vue';
-import ComponentItem from '../components/items/ComponentItem.vue';
-import LibraryItem from '../components/items/LibraryItem.vue';
-
 
 export default {
   name: 'Home',
   components: {
-    ComponentItem,
-    LibraryItem,
-    AuthorItem
+    
   },
   data: () => ({ 
       selectedItem: 1,
       items: [
-        { title: 'Components', icon: 'mdi-view-compact', path: 'q1'},
-        { title: 'Libraries', icon: 'mdi-library', path: 'q2' },
-        { title: 'Users', icon: 'mdi-account', path: 'q3' },
+        { title: 'Latest Activities', icon: 'mdi-view-compact', path: '/'},
+        { title: 'Components', icon: 'mdi-view-compact', path: 'top-components'},
+        { title: 'Libraries', icon: 'mdi-library', path: 'top-libraries' },
+        { title: 'Users', icon: 'mdi-account', path: 'top-users' },
       ],
     }),
     methods: {

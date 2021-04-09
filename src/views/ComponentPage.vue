@@ -67,27 +67,35 @@
               <v-tab href="#tab-1">Description</v-tab>
               <v-tab href="#tab-2">Events</v-tab>
               <v-tab href="#tab-3">Props</v-tab>
-              <v-tab href="#tab-4">Dependencies</v-tab>
+              <v-tab href="#tab-4">Slots</v-tab>
+              <v-tab href="#tab-5">Dependencies</v-tab>
             </v-tabs>
             <v-tabs-items class="transparent-body" v-model="tab">
               <v-tab-item background-opacity="0" value="tab-1">
                 {{component.description}}
               </v-tab-item>
               <v-tab-item  value="tab-2">
-                <event-item
+                <component-field-item
                   v-for="(e, i) in component.events" 
                   :key="i"
-                  :event="e"
+                  :item="e"
                   :isLast="component.events.length - 1 == i"/>
               </v-tab-item>
               <v-tab-item value="tab-3">
-                <prop-item 
+                <component-field-item
                   v-for="(p, i) in component.props" 
                   :key="i"
-                  :prop="p"
+                  :item="p"
                   :isLast="component.props.length - 1 == i"/>
               </v-tab-item>
               <v-tab-item value="tab-4">
+                <component-field-item
+                  v-for="(s, i) in component.slots" 
+                  :key="i"
+                  :item="s"
+                  :isLast="component.slots.length - 1 == i"/>
+              </v-tab-item>
+              <v-tab-item value="tab-5">
                 sdfsdfsdf
               </v-tab-item>
             </v-tabs-items>
@@ -163,18 +171,16 @@
 <script>
 import clone from '../utils/clone'
 import compare from '../utils/compare'
-import EventItem from '../components/items/EventItem.vue'
-import PropItem from '../components/items/PropItem.vue'
 import EditComponent from '../components/dialogs/EditComponent.vue'
 import ReportBottomSheet from '../components/sheets/ReportBottomSheet.vue'
 import { mapState } from 'vuex'
+import ComponentFieldItem from '../components/items/ComponentFieldItem.vue'
 export default {
   name: 'ComponentPage',
   components: {
-    EventItem,
-    PropItem,
     EditComponent,
-    ReportBottomSheet
+    ReportBottomSheet,
+    ComponentFieldItem
   },
   data: () => ({
     tab: 'tab-1',

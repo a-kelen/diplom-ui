@@ -138,10 +138,7 @@ const actions = {
 
   logout ({ commit }) {
     return new Promise((resolve) => {
-      commit('reset_state')
-      commit('ComponentStore/reset_state', null, { root: true })
-      commit('ElementStore/reset_state', null, { root: true })
-      commit('LibraryStore/reset_state', null, { root: true })
+      commit('logout')
       localStorage.removeItem('token')
       delete Axios.defaults.headers.common.Authorization
       
@@ -187,6 +184,10 @@ const mutations = {
       activeProfile: {}
     
     })
+  },
+
+  logout() {
+    location.reload()
   },
 
   update_user (state, user) {
