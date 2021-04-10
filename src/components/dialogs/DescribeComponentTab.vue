@@ -19,7 +19,7 @@
                 label
                 small
             >
-                {{ text }}
+              {{ text }}
             </v-chip>
 
             <span
@@ -35,8 +35,8 @@
         <v-list>
             <v-list-item v-for="(f, i) in component.files" :key="i">
                 <v-card class="rounded-pill pa-1 pr-3">
-                    <v-icon class="mx-1">mdi-vuejs</v-icon>
-                    {{f.name}}
+                  <v-icon class="mx-1">mdi-vuejs</v-icon>
+                  {{f.name}}
                 </v-card>
             </v-list-item>
         </v-list>
@@ -121,14 +121,14 @@
         <v-card-text class="text-h5">Description</v-card-text>
     </v-row>
     <v-row>
-        <Editor
+      <Editor
         mode="editor"
         :emoji="false"
         ref="editor"
         :outline="false"
         :render-config="renderConfig"
         v-model="component.description"
-        />
+      />
     </v-row>
   </v-container>
 </template>
@@ -150,9 +150,8 @@ export default {
   props: ['component'],
   data: () => ({
     renderConfig: {
-    // Mermaid config
     mermaid: {
-        theme: 'dark' 
+        theme: 'dark'
     },
     emoji: false
     },
@@ -161,41 +160,49 @@ export default {
     dragSlotData: {},
   }),
   methods: {
+
     addProp() {
-        this.component.props.push({
-        id: this.component.props.length + 1,
-        name: '',
-        desciption: ''  
-        })
+      this.component.props.push({
+      id: this.component.props.length + 1,
+      name: '',
+      desciption: ''  
+      })
     },
+
     addEvent() {
-        this.component.events.push({
-        id: this.component.events.length + 1,
-        name: '',
-        desciption: ''  
-        })
+      this.component.events.push({
+      id: this.component.events.length + 1,
+      name: '',
+      desciption: ''  
+      })
     },
+
     addSlot() {
-        this.component.slots.push({
-        id: this.component.slots.length + 1,
-        name: '',
-        desciption: ''  
-        })
+      this.component.slots.push({
+      id: this.component.slots.length + 1,
+      name: '',
+      desciption: ''  
+      })
     },
+
     deleteEvent(id) {
       console.log(id)
       this.component.events = this.component.events.filter(x => x.id != id)
     },
+
     deleteProp(id) {
       this.component.props = this.component.props.filter(x => x.id != id)
     },
+
     deleteSlot(id) {
       this.component.slots = this.component.slots.filter(x => x.id != id)
     },
+
     sortend (e, list) {
       const { oldIndex, newIndex } = e
       this.rearrange(list, oldIndex, newIndex)
     },
+
     rearrange (array, oldIndex, newIndex) {
       if (oldIndex > newIndex) {
         array.splice(newIndex, 0, array[oldIndex])
@@ -206,15 +213,19 @@ export default {
         array.splice(oldIndex, 1)
       }
     },
+
     sortEvents(e) {
         this.sortend(e, this.component.events)
     },
+
     sortProps(e) {
         this.sortend(e, this.component.props)
     },
+
     sortSlots(e) {
         this.sortend(e, this.component.slots)
     }
+    
   }
 }
 </script>

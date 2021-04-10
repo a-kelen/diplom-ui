@@ -31,15 +31,14 @@
       />
     </v-row>
     <v-row>
-        <Editor
+      <Editor
         class="mt-7"
         mode="editor"
         :emoji="false"
         ref="editor"
         :outline="false"
         :render-config="renderConfig"
-        v-model="newLibraryDescription"
-        />
+        v-model="newLibraryDescription"/>
     </v-row>
   </v-container>
 </template>
@@ -81,6 +80,7 @@ export default {
         this.$store.commit('ElementStore/updateNewLibraryName', value)
       }
     },
+
     newLibraryDescription: {
       get () {
         return this.$store.state.ElementStore.newLibraryDescription
@@ -89,6 +89,7 @@ export default {
         this.$store.commit('ElementStore/updateNewLibraryDescription', value)
       }
     },
+
     newLibraryAvatar: {
       get () {
         return this.$store.state.ElementStore.newLibraryAvatar
@@ -97,6 +98,7 @@ export default {
         this.$store.commit('ElementStore/updateNewLibraryAvatar', value)
       }
     },
+    
   },
   methods: {
     changeAvatar({ canvas }) {

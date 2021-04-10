@@ -1,68 +1,67 @@
 <template>
-      <v-row>  
-          <v-col
-            md="2">
-            <v-btn 
-            class="my-5 text-caption" 
-            rounded 
-            block
-            dark
-            color="teal darken-3" 
-            :to="{ name: 'CreateElementPage' }"
+  <v-row>  
+    <v-col
+      md="2">
+      <v-btn 
+      class="my-5 text-caption" 
+      rounded 
+      block
+      dark
+      color="teal darken-3" 
+      :to="{ name: 'CreateElementPage' }"
+      >
+        Create element
+      </v-btn>
+      <v-sheet elevation="6">              
+        <v-navigation-drawer permanent>
+          <v-list-item active-class="highlighted" >
+            <v-list-item-content>
+              <v-list-item-title class="title">
+                Dashboard
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-divider></v-divider>
+          <v-list
+            dense
+            nav
+          >
+            <v-list-item
+              v-for="(item, i) in items"
+              :key="i"
+              :to="item.path" 
+              active-class="highlighted"
+              :class="item.path === $route.path ? 'highlighted' : ''"
             >
-              Create element
-            </v-btn>
-            <v-sheet elevation="6">              
-              <v-navigation-drawer permanent>
-                <v-list-item active-class="highlighted" >
-                  <v-list-item-content>
-                    <v-list-item-title class="title">
-                      Dashboard
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-divider></v-divider>
-                <v-list
-                  dense
-                  nav
-                >
-                  <v-list-item
-                    v-for="(item, i) in items"
-                    :key="i"
-                    :to="item.path" 
-                    active-class="highlighted"
-                    :class="item.path === $route.path ? 'highlighted' : ''"
-                  >
-                    <v-list-item-content>
-                      <v-list-item-title>{{ item.title }}</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </v-navigation-drawer>
-            </v-sheet>
-          </v-col>
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-navigation-drawer>
+      </v-sheet>
+    </v-col>
 
-          <v-col
-          cols="12"
-          md="10"
-          class="pa-6">
-          <v-row>
-            <v-col>
-              <v-text-field
-              label="Search"
-              placeholder="Input text"
-              filled
-              rounded
-              dense
-            ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <router-view></router-view>
-          </v-row>
-          
-          
-          <v-row justify="center">
+    <v-col
+      cols="12"
+      md="10"
+      class="pa-6">
+      <v-row>
+        <v-col>
+          <v-text-field
+          label="Search"
+          placeholder="Input text"
+          filled
+          rounded
+          dense
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <router-view></router-view>
+      </v-row>
+      
+      <v-row justify="center">
         <v-col cols="8">
           <v-container class="max-width">
             <!-- <v-pagination
@@ -75,8 +74,8 @@
           </v-container>
         </v-col>
       </v-row>
-        </v-col>
-      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

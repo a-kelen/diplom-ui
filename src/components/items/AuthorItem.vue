@@ -3,24 +3,23 @@
     <router-link :to="{ name: 'UserProfile', params: { username: author.username } }">
       <v-sheet min-width="250" elevation="3" class="pa-2">
         <v-row class="d-flex align-center ma-0 mb-2 flex-nowrap gap">
-          
-              <v-avatar
-              color="green" 
-              size="40"
-              >
-                  <span class="white--text headline">AU</span>
-              </v-avatar>
-          
-            <v-tooltip top nudge-top>
-              <template v-slot:activator="{ on, attrs }">
-                  <div class="text-subtitle-1 text-truncate" v-bind="attrs" v-on="on">
-                    {{ author.name }}
-                  </div>
-              </template>
-              <span>{{ author.name }}</span>
-            </v-tooltip>         
-          
+          <v-avatar
+          color="green" 
+          size="40"
+          >
+            <span class="white--text headline">AU</span>
+          </v-avatar>
+        
+          <v-tooltip top nudge-top>
+            <template v-slot:activator="{ on, attrs }">
+                <div class="text-subtitle-1 text-truncate" v-bind="attrs" v-on="on">
+                  {{ author.name }}
+                </div>
+            </template>
+            <span>{{ author.name }}</span>
+          </v-tooltip>         
         </v-row>
+
         <v-row>
           <v-col md="auto">
             <v-chip
@@ -32,7 +31,7 @@
               <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
                       <v-icon v-bind="attrs"
-                          v-on="on" class="my-1">
+                        v-on="on" class="my-1">
                           mdi-account-outline
                       </v-icon> 
                   </template>

@@ -10,7 +10,6 @@
           >
             {{ n.title }}
           </v-stepper-step>
-
           <v-divider v-if="n.id !== steps" :key="n.id"></v-divider>
         </template>
       </v-stepper-header>
@@ -22,7 +21,6 @@
           :step="n.id"
         >
           <component :is="n.component"></component>
-
           <v-btn
             color="primary"
             class="mx-3"
@@ -116,14 +114,17 @@ export default {
       components: s => s.ElementStore.components,
       newComponent: s => s.ElementStore.newComponent
     }),
+
     steps() {
       if(this.elementType == 1)
         return this.rawSteps.filter(x => ![2, 3].includes(x.id))
       else  return this.rawSteps.filter(x => ![4].includes(x.id))
     },
+
     currentStep() {
       return this.steps[this.e1].id
     },
+
     nextButtonDisable() {
       this.newLibraryName
       this.elementType
@@ -135,6 +136,7 @@ export default {
       }
       return false;
     },
+
     saveButtonDisable() {
       
       if(this.elementType == 0)
@@ -142,6 +144,7 @@ export default {
       else  
         return this.newComponent.files == 0
     },
+    
     backButtonVisible() {
       return this.currentStep > 1;
     }

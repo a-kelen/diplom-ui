@@ -1,101 +1,100 @@
 <template>
-    <v-container>
-      <v-row>
-        <v-col md="2">
-          <v-hover v-slot:default="{ hover }" :disabled="!editMode">
-            <v-avatar
-              rounded
-              size="150"
-              color="primary"
+  <v-container>
+    <v-row>
+      <v-col md="2">
+        <v-hover v-slot:default="{ hover }" :disabled="!editMode">
+          <v-avatar
+            rounded
+            size="150"
+            color="primary"
+          >
+            <v-img
+              :src="avatar"
+              v-if="avatar"
             >
-              <v-img
-                :src="avatar"
-                v-if="avatar"
+              <library-avatar-dialog @saveAvatar="saveAvatar" v-if="editMode" :hover="hover"/>
+            </v-img>
+            <library-avatar-dialog @saveAvatar="saveAvatar" v-if="editMode && !avatar" :hover="hover"/>
+          </v-avatar>
+        </v-hover>
+      </v-col>
+      <v-col md="10">
+        <v-row>
+          <v-col>
+            <v-sheet class="transparent d-flex gap align-center">
+              <v-card-text class="text-h4">
+                {{ library.name }}
+              </v-card-text>
+              <!-- <v-rating class="ml-auto"></v-rating> -->
+              <v-icon class="" v-if="statusIcon">mdi-lock-outline</v-icon>
+              <report-bottom-sheet v-if="!userIsOwner" @submit="reportToLibrary"  :visibility.sync="reportSheet"/>
+            </v-sheet>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-sheet class="transparent gap d-flex align-center">
+              <v-card-text>
+                {{ library.author }}
+              </v-card-text>
+              <div class="text-body-1 mr-n4 primary--text">{{ library.likes }}</div>
+              <v-btn @click="like" :loading="likeBtnLoading" color="primary" icon>
+                <v-icon>{{ likeIcon }}</v-icon>
+              </v-btn>
+              <v-btn color="primary" icon>
+                <v-icon>mdi-download-outline</v-icon>
+              </v-btn>
+              <v-btn 
+                v-if="!userIsOwner && !library.owned"
+                @click="getOwn"
+                :loading="getOwnBtnLoading"
+                :color="getOwnBtnColor"
               >
-                <library-avatar-dialog @saveAvatar="saveAvatar" v-if="editMode" :hover="hover"/>
-              </v-img>
-              <library-avatar-dialog @saveAvatar="saveAvatar" v-if="editMode && !avatar" :hover="hover"/>
-            </v-avatar>
-          </v-hover>
-        </v-col>
-        <v-col md="10">
-          <v-row>
-            <v-col>
-              <v-sheet class="transparent d-flex gap align-center">
-                <v-card-text class="text-h4">
-                  {{ library.name }}
-                </v-card-text>
-                <!-- <v-rating class="ml-auto"></v-rating> -->
-                <v-icon class="" v-if="statusIcon">mdi-lock-outline</v-icon>
-                <report-bottom-sheet v-if="!userIsOwner" @submit="reportToLibrary"  :visibility.sync="reportSheet"/>
-              </v-sheet>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-sheet class="transparent gap d-flex align-center">
-                <v-card-text>
-                  {{ library.author }}
-                </v-card-text>
-                <div class="text-body-1 mr-n4 primary--text">{{ library.likes }}</div>
-                <v-btn @click="like" :loading="likeBtnLoading" color="primary" icon>
-                  <v-icon>{{ likeIcon }}</v-icon>
-                </v-btn>
-                <v-btn color="primary" icon>
-                  <v-icon>mdi-download-outline</v-icon>
-                </v-btn>
-               <v-btn 
-                  v-if="!userIsOwner && !library.owned"
-                  @click="getOwn"
-                  :loading="getOwnBtnLoading"
-                  :color="getOwnBtnColor"
-                  >
-                    {{ getOwnBtnText }}
-                </v-btn>
-                <div class="title teal--text text--darken-3" v-if="library.owned">
-                  Owned
-                </div>
-                <v-btn v-if="userIsOwner" color="primary" icon @click="changeEditMode">
-                  <v-icon>{{ editButtonIcon }}</v-icon>
-                </v-btn>
-                <v-btn v-if="isChanged" color="primary" :loading="saveLoading" @click="saveChanges" icon>
-                  <v-icon>mdi-content-save-outline</v-icon>
-                </v-btn>
-              </v-sheet>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+                {{ getOwnBtnText }}
+              </v-btn>
+              <div class="title teal--text text--darken-3" v-if="library.owned">
+                Owned
+              </div>
+              <v-btn v-if="userIsOwner" color="primary" icon @click="changeEditMode">
+                <v-icon>{{ editButtonIcon }}</v-icon>
+              </v-btn>
+              <v-btn v-if="isChanged" color="primary" :loading="saveLoading" @click="saveChanges" icon>
+                <v-icon>mdi-content-save-outline</v-icon>
+              </v-btn>
+            </v-sheet>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
 
-      <v-row>
-        <v-col offset="2" >
-          <v-card class="px-2">
-            <v-tabs v-model="tab" grow>
-              <v-tab href="#tab-1">Description</v-tab>
-              <v-tab href="#tab-2">Components</v-tab>
-              <v-tab href="#tab-3">Dependencies</v-tab>
-            </v-tabs>
-            <v-tabs-items class="transparent-body" v-model="tab">
-              <v-tab-item background-opacity="0" value="tab-1">
-                <Editor v-if="editMode" 
-                  v-model="library.description"
-                />
-                <div v-else> {{ library.description }} </div>
-              </v-tab-item>
-              <v-tab-item value="tab-2">
-                  <component-row v-for="(c, i) in library.components" :key="i" :component="c" />
-              </v-tab-item>
-              <v-tab-item value="tab-3">
-                sdfsdfsdf
-              </v-tab-item>
-            </v-tabs-items>
-          </v-card>
-        </v-col>
-      </v-row>
+    <v-row>
+      <v-col offset="2" >
+        <v-card class="px-2">
+          <v-tabs v-model="tab" grow>
+            <v-tab href="#tab-1">Description</v-tab>
+            <v-tab href="#tab-2">Components</v-tab>
+            <v-tab href="#tab-3">Dependencies</v-tab>
+          </v-tabs>
+          <v-tabs-items class="transparent-body" v-model="tab">
+            <v-tab-item background-opacity="0" value="tab-1">
+              <Editor v-if="editMode" 
+                v-model="library.description"
+              />
+              <div v-else> {{ library.description }} </div>
+            </v-tab-item>
+            <v-tab-item value="tab-2">
+                <component-row v-for="(c, i) in library.components" :key="i" :component="c" />
+            </v-tab-item>
+            <v-tab-item value="tab-3">
+              sdfsdfsdf
+            </v-tab-item>
+          </v-tabs-items>
+        </v-card>
+      </v-col>
+    </v-row>
 
-      <default-snakbar :snackbar.sync="snackbarShow" :text="snackbarText"/>
-      
-    </v-container>
+    <default-snakbar :snackbar.sync="snackbarShow" :text="snackbarText"/>
+  </v-container>
 </template>
 
 <script>
@@ -247,6 +246,7 @@ export default {
       })
     }
   },
+  
   beforeRouteUpdate (to, from, next) {
       this.fetch()  
       next()

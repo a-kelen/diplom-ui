@@ -1,26 +1,25 @@
 <template>
-
  <v-row no-gutters>
-      <v-col
-        cols="14"
-        sm="6"
-        md="10"
-        class="pa-6"
-      >
-        <v-row>
-          <v-col>
-            <v-text-field
+    <v-col
+      cols="14"
+      sm="6"
+      md="10"
+      class="pa-6"
+    >
+      <v-row>
+        <v-col>
+          <v-text-field
             label="Search"
             placeholder="Input text"
             filled
             rounded
           ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <router-view></router-view>
-        </v-row>
-      </v-col>
+        </v-col>
+      </v-row>
+      <v-row>
+        <router-view></router-view>
+      </v-row>
+    </v-col>
       <v-col
         cols="2"
         md="2"

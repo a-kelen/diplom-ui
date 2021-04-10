@@ -11,9 +11,10 @@
     </v-row>
     <v-row>
       <v-col
-          v-for="library in ownLibraries" :key="library.id"
-          cols="4">
-          <library-item :library="library"/>
+        v-for="library in ownLibraries" :key="library.id"
+        cols="4"
+      >
+        <library-item :library="library"/>
       </v-col>
     </v-row>
   </v-container>

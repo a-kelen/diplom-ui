@@ -1,6 +1,6 @@
 <template>
   <nav>
-      <v-navigation-drawer
+    <v-navigation-drawer
       v-model="drawer"
       app
       :dark="theme"
@@ -8,28 +8,29 @@
       :permanent="drawer"
     >
       <v-list >
-         <v-list-item>
-        <v-list-item-avatar class="ml-n2" @click="mini = !mini">
-          <v-img src="https://randomuser.me/api/portraits/men/1.jpg"></v-img>
-        </v-list-item-avatar>
+        <v-list-item>
+          <v-list-item-avatar class="ml-n2" @click="mini = !mini">
+            <v-img src="https://randomuser.me/api/portraits/men/1.jpg"></v-img>
+          </v-list-item-avatar>
 
-        <v-list-item-title>{{ user.name }}</v-list-item-title>
+          <v-list-item-title>{{ user.name }}</v-list-item-title>
 
-        <v-btn
-          icon
-          @click.stop="mini = !mini"
-        >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
-      </v-list-item>
+          <v-btn
+            icon
+            @click.stop="mini = !mini"
+          >
+            <v-icon>mdi-chevron-left</v-icon>
+          </v-btn>
+        </v-list-item>
 
-      <v-divider></v-divider>
+        <v-divider></v-divider>
        
         <v-list-item v-for="(item, i) in items"
-        :key="i"
-        :to="item.path" 
-        active-class="highlighted"
-        :class="item.path === $route.path ? 'highlighted' : ''">
+          :key="i"
+          :to="item.path" 
+          active-class="highlighted"
+          :class="item.path === $route.path ? 'highlighted' : ''"
+        >
           <v-list-item-action >
             <v-icon>{{item.icon}}</v-icon>
           </v-list-item-action>

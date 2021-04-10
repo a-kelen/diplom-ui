@@ -11,7 +11,7 @@
     </v-row>
     <v-row>
       <v-col v-for="component in ownComponents" :key="component.id" cols="4">
-          <component-item :component="component"/>
+        <component-item :component="component"/>
       </v-col>
     </v-row>
   </v-container>

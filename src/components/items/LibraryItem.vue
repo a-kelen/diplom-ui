@@ -4,15 +4,12 @@
       <router-link :to="{ name: 'LibraryPage', params: {author: library.author, name: library.name} }">
         <v-row>
           <v-col md="2">
-              <v-avatar
+            <v-avatar
               color="green"
               size="40"
               rounded
-              >
-                <img
-                :src="avatar"
-                v-if="avatar"
-              >
+            >
+              <img :src="avatar" v-if="avatar">
               <span v-else class="white--text headline">{{ library.name[0] }}</span>
             </v-avatar>
           </v-col>
@@ -33,21 +30,22 @@
               label
               text-color="white"
               class="primary"
-            >{{ componentsCount }} components</v-chip>
+            >
+              {{ componentsCount }} components
+            </v-chip>
           </v-col>
           <v-col md="auto">
-              <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                      <v-icon v-bind="attrs"
-                        v-on="on" class="my-1"
-                        small
-                      >
-                        mdi-library
-                      </v-icon> 
-                  </template>
-                  <span>Library</span>
-              </v-tooltip>      
-            
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon v-bind="attrs"
+                    v-on="on" class="my-1"
+                    small
+                  >
+                    mdi-library
+                  </v-icon> 
+                </template>
+                <span>Library</span>
+            </v-tooltip>      
           </v-col>
           <v-col>
             <v-icon v-if="status" small class="my-1">mdi-lock-outline</v-icon> 
@@ -91,15 +89,18 @@ export default {
     componentsCount() {
       return this.library.componentsCount
     },
+
     status() {
       if(this.library.status == 'Private')
         return true
       else 
         return false
     },
+
     color() {
       return this.library.liked ? 'primary' : 'grey'
     },
+    
     textColor() {
       return this.library.liked ? 'primary--text' : 'grey--text'
     }

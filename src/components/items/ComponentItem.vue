@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <v-sheet  elevation="3" class="px-3">
+    <v-sheet elevation="3" class="px-3">
       <router-link :to="{ name: 'ComponentPage', params: {id: component.id} }">
-        <v-row >
+        <v-row>
           <v-col md="auto">
             <v-tooltip top nudge-top :position-y="100">
               <template v-slot:activator="{ on, attrs }">
@@ -11,9 +11,9 @@
               </template>
               <span>Component</span>
             </v-tooltip>
-          
           </v-col>
         </v-row>
+
         <v-row>
           <v-col md="auto">
             <v-chip
@@ -58,7 +58,6 @@ export default {
     rating: 4.5
   }),
   computed: {
-    
     status() {
       if(this.component.status == 'Private')
         return true
@@ -66,5 +65,5 @@ export default {
         return false
     }
   },
-};
+}
 </script>

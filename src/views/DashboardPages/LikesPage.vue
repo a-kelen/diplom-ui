@@ -1,23 +1,22 @@
 <template>
   <v-container class="pa-0 ma-0">
     <v-row v-if="liked.length == 0">
-        <v-col :key="i" v-for="i in skeletons" cols="4">
-            <v-skeleton-loader
-            class="mx-auto"
-            max-width="300"
-            type="article"
-            ></v-skeleton-loader>
-        </v-col>
+      <v-col :key="i" v-for="i in skeletons" cols="4">
+        <v-skeleton-loader
+        class="mx-auto"
+        max-width="300"
+        type="article"
+        ></v-skeleton-loader>
+      </v-col>
     </v-row>
     <v-row>
-        <v-col 
-            v-for="like in liked" :key="like.id"
-            cols="4">
-
-            <library-item v-if="like.library != null" :library="like.library"/>
-            <component-item v-if="like.component != null" :component="like.component"/>
-
-        </v-col>
+      <v-col 
+        v-for="like in liked" :key="like.id"
+        cols="4"
+      >
+        <library-item v-if="like.library != null" :library="like.library"/>
+        <component-item v-if="like.component != null" :component="like.component"/>
+      </v-col>
     </v-row>
   </v-container>
 </template>

@@ -23,21 +23,22 @@
                 <div 
                   v-if="componentIsIndepended"
                   class="text-body-1 mr-n4 primary--text"
-                  >
-                    {{ component.likes }}
-                  </div>
+                >
+                  {{ component.likes }}
+                </div>
                 <v-btn 
                   v-if="componentIsIndepended" 
                   @click="like" 
                   :loading="likeBtnLoading" 
                   color="primary" 
                   icon
-                  >
+                >
                   <v-icon>{{ likeIcon }}</v-icon>
                 </v-btn>
                 <v-btn 
                   v-if="componentIsIndepended" 
-                  color="primary" icon>
+                  color="primary" icon
+                >
                   <v-icon>mdi-download-outline</v-icon>
                 </v-btn>
                 <v-btn v-if="userIsOwner" color="primary" icon @click="changeEditMode">
@@ -48,8 +49,8 @@
                   @click="getOwn"
                   :loading="getOwnBtnLoading"
                   :color="getOwnBtnColor"
-                  >
-                    {{ getOwnBtnText }}
+                >
+                  {{ getOwnBtnText }}
                 </v-btn>
                 <div class="title teal--text text--darken-3" v-if="component.owned">
                   Owned
@@ -138,33 +139,33 @@
       </v-dialog>
 
       <v-dialog
-      v-model="agreeDialog"
-      persistent
-      max-width="290"
-    >
-      <v-card>
-        <v-card-title class="headline">
-          Discharge changes?
-        </v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="agreeDialog = false"
-          >
-            No
-          </v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="dischargeUpdates"
-          >
-            Yes
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+        v-model="agreeDialog"
+        persistent
+        max-width="290"
+      >
+        <v-card>
+          <v-card-title class="headline">
+            Discharge changes?
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="green darken-1"
+              text
+              @click="agreeDialog = false"
+            >
+              No
+            </v-btn>
+            <v-btn
+              color="green darken-1"
+              text
+              @click="dischargeUpdates"
+            >
+              Yes
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
 </template>
 

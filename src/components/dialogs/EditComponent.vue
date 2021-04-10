@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
         <v-col>
-            <v-btn class="ma-2" color="primary" @click="addProp">Add prop</v-btn>
+          <v-btn class="ma-2" color="primary" @click="addProp">Add prop</v-btn>
         </v-col>
     </v-row>
     <v-row>
@@ -12,9 +12,9 @@
             :index="index"
             drag-direction="vertical"
             replace-direction="vertical"
-            @sortend="sortProps" 
+            @sortend="sortProps"
         >
-            <add-component-field
+          <add-component-field
             @deleteItem="deleteProp"
             :descriptionTitle="'Prop Description'" 
             :nameTitle="'Prop name'" 
@@ -24,7 +24,7 @@
 
     <v-row>
         <v-col>
-            <v-btn class="ma-2" color="primary" @click="addEvent">Add event</v-btn>
+          <v-btn class="ma-2" color="primary" @click="addEvent">Add event</v-btn>
         </v-col>
     </v-row>
     <v-row>
@@ -37,16 +37,16 @@
         @sortend="sortEvents" 
       >
         <add-component-field
-            @deleteItem="deleteEvent"
-            :descriptionTitle="'Event Description'" 
-            :nameTitle="'Event name'" 
-            :item="event"/>
+          @deleteItem="deleteEvent"
+          :descriptionTitle="'Event Description'" 
+          :nameTitle="'Event name'" 
+          :item="event"/>
       </sortable>
     </v-row>
 
     <v-row>
         <v-col>
-            <v-btn class="ma-2" color="primary" @click="addSlot">Add slot</v-btn>
+          <v-btn class="ma-2" color="primary" @click="addSlot">Add slot</v-btn>
         </v-col>
     </v-row>
     <v-row>
@@ -59,9 +59,9 @@
         @sortend="sortSlots" 
       >
         <add-component-field
-        :descriptionTitle="'Slot Description'" 
-        :nameTitle="'Slot name'" 
-        :item="slot"/>
+          :descriptionTitle="'Slot Description'" 
+          :nameTitle="'Slot name'" 
+          :item="slot"/>
       </sortable>
     </v-row>
 
@@ -97,7 +97,6 @@ export default {
   data: () => ({
     editMode: false,
     renderConfig: {
-    // Mermaid config
     mermaid: {
         theme: 'dark' 
     },
@@ -113,41 +112,49 @@ export default {
     }
   },
   methods: {
+
     addProp() {
-        this.component.props.push({
-        id: this.component.props.length + 1,
-        name: '',
-        desciption: ''  
-        })
+      this.component.props.push({
+      id: this.component.props.length + 1,
+      name: '',
+      desciption: ''  
+      })
     },
+
     addEvent() {
-        this.component.events.push({
-        id: this.component.events.length + 1,
-        name: '',
-        desciption: ''  
-        })
+      this.component.events.push({
+      id: this.component.events.length + 1,
+      name: '',
+      desciption: ''  
+      })
     },
+
     addSlot() {
-        this.component.slots.push({
-        id: this.component.slots.length + 1,
-        name: '',
-        desciption: ''  
-        })
+      this.component.slots.push({
+      id: this.component.slots.length + 1,
+      name: '',
+      desciption: ''  
+      })
     },
+
     deleteEvent(id) {
       console.log(id)
       this.component.events = this.component.events.filter(x => x.id != id)
     },
+
     deleteProp(id) {
       this.component.props = this.component.props.filter(x => x.id != id)
     },
+
     deleteSlot(id) {
       this.component.slots = this.component.slots.filter(x => x.id != id)
     },
+
     sortend (e, list) {
       const { oldIndex, newIndex } = e
       this.rearrange(list, oldIndex, newIndex)
     },
+
     rearrange (array, oldIndex, newIndex) {
       if (oldIndex > newIndex) {
         array.splice(newIndex, 0, array[oldIndex])
@@ -158,15 +165,19 @@ export default {
         array.splice(oldIndex, 1)
       }
     },
+
     sortEvents(e) {
         this.sortend(e, this.component.events)
     },
+
     sortProps(e) {
         this.sortend(e, this.component.props)
     },
+
     sortSlots(e) {
         this.sortend(e, this.component.slots)
     }
+    
   }
 }
 </script>

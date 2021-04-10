@@ -70,6 +70,7 @@ export default {
           this.loading = false
         })
     },
+
     reportToUser(content) {
       this.$store.dispatch('UserStore/report', {
         username: this.profile.username,
@@ -78,6 +79,7 @@ export default {
         this.reportSheet = false
       })
     }
+
   },
   computed: {
     ...mapState({
@@ -85,22 +87,28 @@ export default {
       currentUser: s => s.UserStore.user
       
     }),
+
     componentsCount() {
       return this.profile.components ? this.profile.components.length : 0
     },
+
     librariesCount() {
        return this.profile.libraries ? this.profile.libraries.length : 0
     },
+
     followBtnColor() {
       return this.profile.followed ? 'white' : 'primary'
     },
+
     followBtnText() {
       return this.profile.followed ? 'unfollow' : 'follow'
     },
+
     ownProfile() {
       return this.profile.username == this.currentUser.username
     }
   },
+  
   beforeRouteUpdate (to, from, next) {
       this.fetch()
       next()

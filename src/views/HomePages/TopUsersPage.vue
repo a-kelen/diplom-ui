@@ -11,7 +11,7 @@
     </v-row>
     <v-row>
       <v-col v-for="author in authors" :key="author.username" cols="4">
-          <author-item :author="author"/>
+        <author-item :author="author"/>
       </v-col>
     </v-row>
   </v-container>
