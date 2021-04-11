@@ -10,13 +10,15 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col 
-        v-for="like in liked" :key="like.id"
-        cols="4"
-      >
-        <library-item v-if="like.library != null" :library="like.library"/>
-        <component-item v-if="like.component != null" :component="like.component"/>
-      </v-col>
+      <div class="custom-grid">
+        <div v-for="like in liked" :key="like.id">
+          <library-item v-if="like.library != null" :library="like.library"/>
+          <component-item v-if="like.component != null" :component="like.component"/>
+        </div>
+      </div>
+    </v-row>
+    <v-row v-show="noData">
+      <no-data-component />
     </v-row>
   </v-container>
 </template>
@@ -25,11 +27,13 @@
 import { mapState } from 'vuex'
 import ComponentItem from '../../components/items/ComponentItem.vue'
 import LibraryItem from '../../components/items/LibraryItem.vue'
+import NoDataComponent from '../../components/NoDataComponent.vue';
 export default {
-  components: { LibraryItem, ComponentItem },
+  components: { LibraryItem, ComponentItem, NoDataComponent },
   name: 'LikesPage',
   data: () => ({
-      skeletons: [1, 2, 3, 4, 5, 6, 7]
+      skeletons: [1, 2, 3, 4, 5, 6, 7],
+      noData: false
   }),
   computed: {
     ...mapState({
@@ -38,7 +42,11 @@ export default {
   },
   created() {
     this.$store.dispatch('ElementStore/getLikedLibraries')
-        .then(() => this.skeletons = [])
+        .then(() => {
+        this.skeletons = []
+        if(!this.liked.length > 0)
+          this.noData = true
+      })
   }
 };
 </script>

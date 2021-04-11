@@ -11,6 +11,7 @@ const state = {
       slots: [],
       props: [],
       description: 'Description ...',
+      dependencies: '',
       status: false
     },
     components: [],
@@ -75,7 +76,8 @@ const state = {
         events: [],
         props: [],
         slots: [],
-        description: 'Description ...'
+        description: 'Description ...',
+        dependencies: ''
       })
     },
 
@@ -86,6 +88,7 @@ const state = {
         props: [],
         slots: [],
         description: '',
+        dependencies: '',
         status: true
       }
     },

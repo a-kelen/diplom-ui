@@ -9,13 +9,13 @@
         ></v-skeleton-loader>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col
-        v-for="library in ownLibraries" :key="library.id"
-        cols="4"
-      >
-        <library-item :library="library"/>
-      </v-col>
+    <v-row >
+      <div class="custom-grid ma-4">
+        <library-item v-for="library in ownLibraries" :key="library.id" :library="library"/>
+      </div>
+    </v-row>
+    <v-row v-show="noData">
+      <no-data-component />
     </v-row>
   </v-container>
 </template>
@@ -23,11 +23,13 @@
 <script>
 import { mapState } from 'vuex'
 import LibraryItem from '../../components/items/LibraryItem.vue'
+import NoDataComponent from '../../components/NoDataComponent.vue';
 export default {
-  components: { LibraryItem },
+  components: { LibraryItem, NoDataComponent },
   name: 'LibrariesPages',
   data: () => ({
-      skeletons: [1, 2, 3, 4, 5, 6, 7]
+      skeletons: [1, 2, 3, 4, 5, 6, 7],
+      noData: false
   }),
   computed: {
     ...mapState({
@@ -36,7 +38,11 @@ export default {
   },
   created() {
     this.$store.dispatch('LibraryStore/getOwnLibraryList')
-      .then(() => this.skeletons = [])
+      .then(() => {
+        this.skeletons = []
+        if(!this.ownLibraries.length > 0)
+          this.noData = true
+      })
   },
 };
 </script>

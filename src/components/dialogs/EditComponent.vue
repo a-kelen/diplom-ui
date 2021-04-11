@@ -64,7 +64,9 @@
           :item="slot"/>
       </sortable>
     </v-row>
-
+    <v-row>
+      <v-textarea class="my-5" filled no-resize label="Dependencies" v-model="component.dependencies"/>
+    </v-row>
     <v-row>
         <v-card-text class="text-h5">Description</v-card-text>
     </v-row>

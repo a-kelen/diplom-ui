@@ -116,7 +116,11 @@
     </v-row>
 
     <v-row>
-      <v-card-text class="text-h5" v-model="component.description">Description</v-card-text>
+      <v-textarea class="my-5" filled no-resize label="Dependencies" v-model="component.dependencies"/>
+    </v-row>
+
+    <v-row>
+      <v-card-text class="text-h5">Description</v-card-text>
     </v-row>
     <v-row>
         <!-- <Editor

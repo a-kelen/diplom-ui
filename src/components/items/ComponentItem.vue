@@ -1,6 +1,5 @@
 <template>
-  <v-container>
-    <v-sheet elevation="3" class="px-3">
+    <v-sheet elevation="3" class="pa-3">
       <router-link :to="{ name: 'ComponentPage', params: {id: component.id} }">
         <v-row>
           <v-col md="auto">
@@ -15,39 +14,25 @@
         </v-row>
 
         <v-row>
-          <v-col md="auto">
+          <v-col class="d-flex">
             <v-chip
               label
               dark
               small
               class="green"
             >Format</v-chip>
-          </v-col>
-          <v-col>
-            <v-icon v-if="status" class="my-1" small>mdi-lock-outline</v-icon> 
+            <v-icon v-if="!status" class="mx-2" small>mdi-lock-outline</v-icon> 
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
-            <div class="grey--text text--darken-1">{{ component.author }}</div>
-          </v-col>
-          <v-spacer></v-spacer>
-          <v-col md="2">
-            <!-- <v-rating
-              v-model="rating"
-              background-color="purple lighten-3"
-              color="green"
-              small
-            ></v-rating> -->
-            <v-layout row wrap class="mt-0">
-              {{component.likes}}
-              <v-icon small color="primary">mdi-heart</v-icon>
-            </v-layout>
+          <v-col class="d-flex">
+              <div class=" grey--text text-body-2 text--darken-2">{{ component.author }}</div>
+              <div class="ml-auto" :class="textColor">{{ component.likes  }}</div>
+              <v-icon class="ml-1" small :color="color">mdi-heart</v-icon>
           </v-col>
         </v-row>
       </router-link>
     </v-sheet>
-  </v-container>
 </template>
 
 <script>
@@ -63,6 +48,14 @@ export default {
         return true
       else 
         return false
+    },
+
+    color() {
+      return this.component.liked ? 'primary' : 'grey'
+    },
+    
+    textColor() {
+      return this.component.liked ? 'primary--text' : 'grey--text'
     }
   },
 }

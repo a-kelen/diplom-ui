@@ -1,9 +1,9 @@
 <template>
-  <v-container>
-    <v-sheet elevation="3" class="px-3">
+  <div>
+    <v-card elevation="3" class="pa-3">
       <router-link :to="{ name: 'LibraryPage', params: {author: library.author, name: library.name} }">
-        <v-row>
-          <v-col md="2">
+        <v-row class="">
+          <v-layout class="d-flex ma-3 gap">
             <v-avatar
               color="green"
               size="40"
@@ -12,8 +12,7 @@
               <img :src="avatar" v-if="avatar">
               <span v-else class="white--text headline">{{ library.name[0] }}</span>
             </v-avatar>
-          </v-col>
-          <v-col md="auto">
+          
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
                 <div class=" text-h6 text-truncate" v-bind="attrs"
@@ -21,10 +20,10 @@
               </template>
               <span>{{ library.name }}</span>
             </v-tooltip>         
-          </v-col>
+          </v-layout>
         </v-row>
         <v-row>
-          <v-col md="auto">
+          <v-col class="d-flex">
             <v-chip
               small
               label
@@ -33,12 +32,10 @@
             >
               {{ componentsCount }} components
             </v-chip>
-          </v-col>
-          <v-col md="auto">
-            <v-tooltip bottom>
+            <v-tooltip  bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon v-bind="attrs"
-                    v-on="on" class="my-1"
+                    v-on="on" class="mx-2 "
                     small
                   >
                     mdi-library
@@ -46,34 +43,21 @@
                 </template>
                 <span>Library</span>
             </v-tooltip>      
-          </v-col>
-          <v-col>
             <v-icon v-if="status" small class="my-1">mdi-lock-outline</v-icon> 
           </v-col>
         </v-row>
-        <v-row class="">
-          <v-col>
+        <v-row >
+          <v-col class="d-flex">
             <router-link :to="{ name: 'UserProfile', params: {username: library.author} }" >
-              <div class="grey--text text-body-2 text--darken-2">{{ library.author }}</div>
+              <div class=" grey--text text-body-2 text--darken-2">{{ library.author }}</div>
             </router-link>
-          </v-col>
-          <v-spacer></v-spacer>
-          <v-col md="2">
-            <!-- <v-rating
-              v-model="rating"
-              background-color="purple lighten-3"
-              color="green"
-              small
-            ></v-rating> -->
-            <v-layout row class="mt-0">
-              <div :class="textColor">{{ library.likes }}</div>
-              <v-icon small :color="color">mdi-heart</v-icon>
-            </v-layout>
+              <div class="ml-auto" :class="textColor">{{ library.likes }}</div>
+              <v-icon class="ml-1" small :color="color">mdi-heart</v-icon>
           </v-col>
         </v-row>
       </router-link>
-    </v-sheet>
-  </v-container>
+    </v-card>
+  </div>
 </template>
 
 <script>

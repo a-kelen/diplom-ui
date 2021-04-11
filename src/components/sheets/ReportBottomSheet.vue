@@ -53,31 +53,37 @@
 <script>
 
 export default {
-    name: 'ReportBottomSheet',
-    data: () => ({
-        content: ''
-    }),
-    props: ['visibility'],
-    computed: {
-        reportSheet: {
-            get: function() {
-                return this.visibility
-            },
-            set: function(value) {
-                this.$emit('update:visibility', value)
-            }
-        },
-        
-        buttonDisabled() {
-            return this.content == ''
-        }
+  name: 'ReportBottomSheet',
+  data: () => ({
+      content: ''
+  }),
+  props: ['visibility'],
+  computed: {
+    reportSheet: {
+      get: function() {
+        return this.visibility
+      },
+      set: function(value) {
+        this.$emit('update:visibility', value)
+      }
     },
-    methods: {
-        submit() {
-            if(this.content != '')
-                this.$emit('submit', this.content)
-        }
+      
+    buttonDisabled() {
+        return this.content == ''
     }
+  },
+  methods: {
+    submit() {
+      if(this.content != '')
+        this.$emit('submit', this.content)
+    }
+  },
+  watch: {
+    visibility() {
+      if(!this.visibility)
+        this.content = ''
+    }
+  }
 }
 </script>
 

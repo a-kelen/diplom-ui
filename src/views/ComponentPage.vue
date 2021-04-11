@@ -96,8 +96,8 @@
                   :item="s"
                   :isLast="component.slots.length - 1 == i"/>
               </v-tab-item>
-              <v-tab-item value="tab-5">
-                sdfsdfsdf
+              <v-tab-item value="tab-5" class="py-3 px-7">
+                <div v-for="line in dependencies" :key="line"> {{ line }}</div>
               </v-tab-item>
             </v-tabs-items>
           </v-card>
@@ -221,7 +221,7 @@ export default {
     },
 
     userIsOwner() {
-      return this.component.author == this.user.username || this.component.library.author == this.user.username
+      return this.component?.author == this.user.username || this.component.library?.author == this.user.username
     },
 
     componentAuthor() {
@@ -230,6 +230,10 @@ export default {
 
     componentIsIndepended() {
       return this.component.library == null
+    },
+
+    dependencies() {
+      return this.component.dependencies?.split('\n')
     }
   },
   methods: {
@@ -266,6 +270,7 @@ export default {
       let payload = {
         id: this.cloneComponent.id,
         description: this.cloneComponent.description,
+        dependencies: this.cloneComponent.dependencies,
         events: this.cloneComponent.events,
         props: this.cloneComponent.props
       }
@@ -274,6 +279,7 @@ export default {
           this.editMode = false
           this.saveLoading = false
           this.component.description = clone(this.cloneComponent.description)
+          this.component.dependencies = clone(this.cloneComponent.dependencies)
           this.component.events = clone(this.cloneComponent.events)
           this.component.props = clone(this.cloneComponent.props)
         })

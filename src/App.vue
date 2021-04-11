@@ -32,10 +32,19 @@ export default {
   #app {
     background-color: #f5fffd;
   }
+  
   a {
     text-decoration: none !important;
   }
+
   .gap {
     gap: 1rem;
   }
+
+.custom-grid {
+  display: grid;
+  width: 100em;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
 </style>

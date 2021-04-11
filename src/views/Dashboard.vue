@@ -99,17 +99,7 @@ export default {
         { title: 'Owned Components', icon: 'mdi-account', path: '/dashboard/owned-components'}
       ],
   }),
-  // mounted() {
-  //   this.dashboardReady = false
-  //   this.$store.dispatch('ComponentStore/getOwnComponentList')
-  //   this.$store.dispatch('ComponentStore/getOwnedComponentList')
-  //   this.$store.dispatch('LibraryStore/getOwnedLibraryList')
-  //   this.$store.dispatch('LibraryStore/getOwnLibraryList')
-  //     .then(() => this.dashboardReady = true)
-  //   this.$store.dispatch('ElementStore/getLikedLibraries')
-      
 
-  // }, 
   computed: {
     ...mapState({
 

@@ -118,6 +118,10 @@
     </v-row>
 
     <v-row>
+      <v-textarea class="my-5" filled no-resize label="Dependencies" v-model="component.dependencies"/>
+    </v-row>
+
+    <v-row>
         <v-card-text class="text-h5">Description</v-card-text>
     </v-row>
     <v-row>
@@ -134,8 +138,6 @@
 </template>
 
 <script>
-// import AddEventItem from '../items/AddEventItem.vue'
-// import AddPropItem from '../items/AddPropItem.vue'
 import AddComponentField from '../items/AddComponentField.vue'
 import { Editor } from 'vuetify-markdown-editor'
 import Sortable from 'vue-drag-sortable'
