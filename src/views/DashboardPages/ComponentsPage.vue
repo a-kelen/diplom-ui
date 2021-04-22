@@ -11,7 +11,7 @@
     </v-row>
     <v-row>
       <div class="custom-grid ma-4">
-        <component-item v-for="component in ownComponents" :key="component.id" :component="component"/>
+        <component-item v-for="component in components" :key="component.id" :component="component"/>
       </div>
     </v-row>
     <v-row v-show="noData">
@@ -29,12 +29,19 @@ export default {
   name: 'ComponentsPage',
   data: () => ({
     skeletons: [1, 2, 3, 4, 5, 6, 7],
-      noData: false
+    noData: false
   }),
   computed: {
     ...mapState({
-      ownComponents: s => s.ComponentStore.ownComponents
+      ownComponents: s => s.ComponentStore.ownComponents,
+      filter: s => s.SearchStore.dashboardSearchQuery,
     }),
+    components() {
+      if(this.filter)
+        return this.ownComponents.filter(x => x.name.toLowerCase().includes(this.filter.toLowerCase()))
+      else
+        return this.ownComponents
+    }
   },
   created() {
     this.$store.dispatch('ComponentStore/getOwnComponentList')

@@ -8,8 +8,8 @@
                 <v-card-text class="text-h4">
                   Title
                 </v-card-text>
-                <v-chip label>Format</v-chip>
-                <v-icon class="mx-2" v-if="statusIcon">mdi-lock-outline</v-icon>
+                <v-chip label >Format</v-chip>
+                <v-icon v-if="statusIcon">mdi-lock-outline</v-icon>
                 <report-bottom-sheet @submit="reportToComponent" :visibility.sync="reportSheet"/>
               </v-sheet>
             </v-col>

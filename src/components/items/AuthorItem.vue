@@ -60,7 +60,6 @@ export default {
   name: 'AuthorItem',
   props: ['author'],
   data: () => ({
-    rating: 4.5
   })
 };
 </script>

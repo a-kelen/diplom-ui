@@ -89,7 +89,8 @@ export default {
      items: [
           { title: 'Home', icon: 'mdi-home', path : '/'},
           { title: 'Dashboard', icon: 'mdi-view-dashboard' , path : '/dashboard' },
-          { title: 'Sets', icon: 'mdi-folder-multiple' , path : '/chats'},
+          { title: 'History', icon: 'mdi-history' , path : '/history'},
+          { title: 'Settings', icon: 'mdi-account-settings' , path : '/settings'},
         ],
   }),
   computed: {

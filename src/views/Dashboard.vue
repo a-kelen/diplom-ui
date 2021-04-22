@@ -1,14 +1,15 @@
 <template>
   <v-row>  
     <v-col
-      md="2">
+      md="2"
+    >
       <v-btn 
-      class="my-5 text-caption" 
-      rounded 
-      block
-      dark
-      color="teal darken-3" 
-      :to="{ name: 'CreateElementPage' }"
+        class="my-5 text-caption" 
+        rounded 
+        block
+        dark
+        color="teal darken-3" 
+        :to="{ name: 'CreateElementPage' }"
       >
         Create element
       </v-btn>
@@ -54,11 +55,15 @@
           filled
           rounded
           dense
+          v-model="searchQuery"
+
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
-        <router-view></router-view>
+        <transition name="fade" mode="out-in">
+          <router-view></router-view>
+        </transition>
       </v-row>
       
       <v-row justify="center">
@@ -79,7 +84,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 
 export default {
   name: 'Dashboard',
@@ -101,9 +105,14 @@ export default {
   }),
 
   computed: {
-    ...mapState({
-
-    }),
+    searchQuery: {
+      get () {
+        return this.$store.state.SearchStore.dashboardSearchQuery
+      },
+      set (value) {
+        this.$store.commit('SearchStore/updateDashboardSearchQuery', value)
+      }
+    },
   }
 };
 </script>

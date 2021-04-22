@@ -11,7 +11,7 @@
     </v-row>
     <v-row>
       <div class="custom-grid">
-        <component-item  v-for="component in ownedComponents" :key="component.id" :component="component"/>
+        <component-item  v-for="component in components" :key="component.id" :component="component"/>
       </div>
     </v-row>
     <v-row v-show="noData">
@@ -33,8 +33,15 @@ export default {
   }),
   computed: {
     ...mapState({
-      ownedComponents: s => s.ComponentStore.ownedComponents
+      ownedComponents: s => s.ComponentStore.ownedComponents,
+      filter: s => s.SearchStore.dashboardSearchQuery
     }),
+    components() {
+      if(this.filter)  
+        return this.ownedComponents.filter(x => x.name.toLowerCase().includes(this.filter.toLowerCase()))
+      else
+        return this.ownedComponents
+    }
   },
   created() {
     this.$store.dispatch('ComponentStore/getOwnedComponentList')

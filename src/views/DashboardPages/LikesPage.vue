@@ -37,8 +37,18 @@ export default {
   }),
   computed: {
     ...mapState({
-      liked: s => s.ElementStore.likedList
+      liked: s => s.ElementStore.likedList,
+      filter: s => s.SearchStore.dashboardSearchQuery
     }),
+    filteredLiked() {
+      return this.liked.filter(x => {
+        if(x.component)
+          return x.component.name.toLowerCase().includes(this.filter.toLowerCase())
+        else 
+          return x.library.name.toLowerCase().includes(this.filter.toLowerCase())
+
+      })
+    }
   },
   created() {
     this.$store.dispatch('ElementStore/getLikedLibraries')

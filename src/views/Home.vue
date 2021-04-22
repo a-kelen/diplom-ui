@@ -7,17 +7,9 @@
       class="pa-6"
     >
       <v-row>
-        <v-col>
-          <v-text-field
-            label="Search"
-            placeholder="Input text"
-            filled
-            rounded
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <router-view></router-view>
+        <transition name="fade" mode="out-in">
+          <router-view></router-view>
+        </transition>
       </v-row>
     </v-col>
       <v-col
@@ -79,6 +71,7 @@ export default {
         { title: 'Components', icon: 'mdi-view-compact', path: 'top-components'},
         { title: 'Libraries', icon: 'mdi-library', path: 'top-libraries' },
         { title: 'Users', icon: 'mdi-account', path: 'top-users' },
+        { title: 'Search', icon: 'mdi-magnify', path: 'search' },
       ],
     }),
     methods: {

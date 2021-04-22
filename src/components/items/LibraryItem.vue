@@ -46,7 +46,7 @@
             <v-icon v-if="status" small class="my-1">mdi-lock-outline</v-icon> 
           </v-col>
         </v-row>
-        <v-row >
+        <v-row>
           <v-col class="d-flex">
             <router-link :to="{ name: 'UserProfile', params: {username: library.author} }" >
               <div class=" grey--text text-body-2 text--darken-2">{{ library.author }}</div>

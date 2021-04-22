@@ -11,7 +11,7 @@
     </v-row>
     <v-row>
       <div class="custom-grid">
-        <library-item v-for="library in ownedLibraries" :key="library.id" :library="library"/>
+        <library-item v-for="library in libraries" :key="library.id" :library="library"/>
       </div>
     </v-row>
     <v-row v-show="noData">
@@ -23,7 +23,7 @@
 <script>
 import { mapState } from 'vuex'
 import LibraryItem from '../../components/items/LibraryItem.vue'
-import NoDataComponent from '../../components/NoDataComponent.vue';
+import NoDataComponent from '../../components/NoDataComponent.vue'
 export default {
   components: { LibraryItem, NoDataComponent },
   name: 'OwnedLibrariesPage',
@@ -33,8 +33,15 @@ export default {
   }),
   computed: {
     ...mapState({
-      ownedLibraries: s => s.LibraryStore.ownedLibraries
+      ownedLibraries: s => s.LibraryStore.ownedLibraries,
+      filter: s => s.SearchStore.dashboardSearchQuery
     }),
+    libraries() {
+      if(this.filter)  
+        return this.ownedLibraries.filter(x => x.name.toLowerCase().includes(this.filter.toLowerCase()))
+      else
+        return this.ownedLibraries
+    }
   },
   created() {
     this.$store.dispatch('LibraryStore/getOwnedLibraryList')

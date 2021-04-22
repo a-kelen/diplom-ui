@@ -25,6 +25,10 @@ const routes = [
       {
         path: 'top-users',
         component: () => import('../views/HomePages/TopUsersPage.vue')
+      },
+      {
+        path: 'search',
+        component: () => import('../views/HomePages/SearchPage.vue')
       }
     ]
   },
@@ -95,7 +99,7 @@ const routes = [
     path: '/profile/:username',
     name: 'UserProfile',
     props: true,
-    component: () => import('../views/UserProfile.vue')
+    component: () => import('../views/UserProfile.vue'),
   }
 ];
 

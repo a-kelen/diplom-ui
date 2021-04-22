@@ -45,18 +45,46 @@
           </v-row>
         </v-col>
       </v-row>
+
+      <v-row>
+        <v-col>
+          <v-tabs v-model="tab" grow>
+            <v-tab href="#tab-1">Activities</v-tab>
+            <v-tab href="#tab-2">Components ({{ componentsCount }})</v-tab>
+            <v-tab href="#tab-3">Libraries ({{ librariesCount }})</v-tab>
+          </v-tabs>
+          <v-tabs-items class="transparent-body pa-3" v-model="tab">
+            <v-tab-item background-opacity="0" value="tab-1">
+              <activities-page :activities="activities"/>
+            </v-tab-item>
+            <v-tab-item value="tab-2">
+               <components-page :components="profile.components"/>
+            </v-tab-item>
+            <v-tab-item value="tab-3">
+              <libraries-page :libraries="profile.libraries"/>
+            </v-tab-item>
+          </v-tabs-items>
+        </v-col>  
+      </v-row>
     </v-container>
 </template>
 
 <script> 
 import { mapState } from 'vuex'
 import ReportBottomSheet from '../components/sheets/ReportBottomSheet.vue'
+import ActivitiesPage from './ProfilePages/ActivitiesPage.vue'
+import ComponentsPage from './ProfilePages/ComponentsPage.vue'
+import LibrariesPage from './ProfilePages/LibrariesPage.vue'
 export default {
-  components: { ReportBottomSheet },
+  components: { ReportBottomSheet, LibrariesPage, ComponentsPage, ActivitiesPage },
   name: 'UserProfile',
   data: () => ({
     loading: false,
-    reportSheet: false
+    reportSheet: false,
+    tab: null,
+        items: [
+          'web', 'shopping', 'videos', 'images', 'news',
+        ],
   }),
   methods: {
     fetch() {
@@ -94,6 +122,36 @@ export default {
 
     librariesCount() {
        return this.profile.libraries ? this.profile.libraries.length : 0
+    },
+
+    activities() {
+      if(!this.profile.components)
+        return null
+      let arr = []
+      this.profile.components.forEach(element => {
+        arr.push({
+          type: 'component',
+          author: element.author,
+          name: element.name,
+          date: element.created
+        })
+      })
+      this.profile.libraries.forEach(element => {
+        arr.push({
+          type: 'library',
+          author: element.author,
+          name: element.name,
+          date: element.created
+        })
+      })
+
+      arr = arr.sort((a, b) => {
+          let d1 = new Date(a.date)
+          let d2 = new Date(b.date)
+          return d2 - d1
+        })
+      
+      return arr
     },
 
     followBtnColor() {

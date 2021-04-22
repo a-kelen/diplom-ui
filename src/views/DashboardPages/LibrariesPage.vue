@@ -11,7 +11,7 @@
     </v-row>
     <v-row >
       <div class="custom-grid ma-4">
-        <library-item v-for="library in ownLibraries" :key="library.id" :library="library"/>
+        <library-item v-for="library in libraries" :key="library.id" :library="library"/>
       </div>
     </v-row>
     <v-row v-show="noData">
@@ -33,8 +33,15 @@ export default {
   }),
   computed: {
     ...mapState({
-      ownLibraries: s => s.LibraryStore.ownLibraries
+      filter: s => s.SearchStore.dashboardSearchQuery,
+      ownLibraries: s => s.LibraryStore.ownLibraries,
     }),
+    libraries() {
+      if(this.filter)  
+        return this.ownLibraries.filter(x => x.name.toLowerCase().includes(this.filter.toLowerCase()))
+      else
+        return this.ownLibraries
+    }
   },
   created() {
     this.$store.dispatch('LibraryStore/getOwnLibraryList')
