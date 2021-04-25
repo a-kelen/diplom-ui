@@ -26,7 +26,12 @@
                 {{ library.name }}
               </v-card-text>
               <!-- <v-rating class="ml-auto"></v-rating> -->
-              <v-icon class="" v-if="statusIcon">mdi-lock-outline</v-icon>
+              <v-switch
+                v-if="editMode"
+                v-model="savedStatus"
+                :label="libraryStatus"                
+            ></v-switch>
+              <v-icon class="" v-if="!statusIcon && !editMode">mdi-lock-outline</v-icon>
               <report-bottom-sheet v-if="!userIsOwner" @submit="reportToLibrary"  :visibility.sync="reportSheet"/>
             </v-sheet>
           </v-col>
@@ -120,6 +125,7 @@ export default {
     editMode: false,
     reportSheet: false,
     savedDescription: '',
+    savedStatus: null,
     saveLoading: false,
     likeBtnLoading: false,
     snackbarShow: false,
@@ -131,27 +137,39 @@ export default {
       library: s => s.LibraryStore.activeLibrary,
       user: s => s.UserStore.user
     }),
+
     statusIcon() {
-      return this.library.status == 'Private'
+      return this.library.status == 'Public'
     },
+
+    libraryStatus() {
+      return this.savedStatus ? 'Public' : 'Private'
+    },
+
     likeIcon() {
       return this.library.liked ? 'mdi-heart' : 'mdi-heart-outline'
     },
+
     getOwnBtnText() {
       return this.library.owned ? 'Owned' : 'Get'
     },
+
     getOwnBtnColor() {
       return this.library.owned ? 'white' : 'primary'
     },
+
     userIsOwner() {
       return this.library.author == this.user.username
     },
+
     libraryDescription() {
       return this.library.description
     },
+
     isChanged() {
-      return this.savedDescription != this.library.description
+      return this.savedDescription != this.library.description || this.savedStatus != this.statusIcon
     },
+
     editButtonIcon() {
       return this.editMode ? 'mdi-pencil' : 'mdi-pencil-outline'
     }
@@ -159,6 +177,7 @@ export default {
   watch: {
     library() {
       this.savedDescription = ''
+      this.savedStatus = this.library.status == 'Public'
       this.editMode = false
       if(this.library.hasAvatar)
         this.getAvatar()
@@ -221,18 +240,21 @@ export default {
     saveChanges() {
       let payload = {
         id: this.library.id,
-        description: this.library.description
+        description: this.library.description,
+        status: this.savedStatus
       }
       this.saveLoading = true
       this.$store.dispatch('LibraryStore/updateLibrary', payload)
         .then(() => {
           this.savedDescription = payload.description
+          this.library.status = this.libraryStatus
           this.snackbarShow = true
           this.saveLoading = false
           this.editMode = false
         })
         .catch(() => {
           this.library.description = this.savedDescription
+          
           this.saveLoading = false
         })
     },

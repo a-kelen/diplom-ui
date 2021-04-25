@@ -1,6 +1,7 @@
 import Axios from '../axios'
 const state = {
     dashboardSearchQuery: '',
+    userProfileSearchQuery: '',
     users: [],
     components: [],
     libraries: []
@@ -26,6 +27,10 @@ const mutations = {
 
     updateDashboardSearchQuery (state, val) {
         state.dashboardSearchQuery = val
+    },
+    
+    updateUserProfileSearchQuery (state, val) {
+        state.userProfileSearchQuery = val
     },
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card elevation="3" class="pa-3">
+    <v-card elevation="3" max-width="500px" class="pa-3">
       <router-link :to="{ name: 'LibraryPage', params: {author: library.author, name: library.name} }">
         <v-row class="">
           <v-layout class="d-flex ma-3 gap">

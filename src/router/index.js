@@ -100,7 +100,39 @@ const routes = [
     name: 'UserProfile',
     props: true,
     component: () => import('../views/UserProfile.vue'),
-  }
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: () => import('../views/Settings.vue'),
+  },
+  {
+    path: '/admin-panel',
+    component: () => import('../views/AdminPanel.vue'),
+    children: [
+      {
+        path: '',
+        name: 'AdminPanel',
+        redirect: 'users-table'
+      },
+      {
+        path: 'users-table',
+        component: () => import('../views/AdminPanelPages/UsersTablePage.vue')
+      },
+      {
+        path: 'user-reports',
+        component: () => import('../views/AdminPanelPages/UserReportsPage.vue')
+      },
+      {
+        path: 'library-reports',
+        component: () => import('../views/AdminPanelPages/LibraryReportsPage.vue')
+      },
+      {
+        path: 'component-reports',
+        component: () => import('../views/AdminPanelPages/ComponentReportsPage.vue')
+      },
+    ]
+  },
 ];
 
 const router = new VueRouter({

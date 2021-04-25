@@ -68,6 +68,9 @@
       <v-textarea class="my-5" filled no-resize label="Dependencies" v-model="component.dependencies"/>
     </v-row>
     <v-row>
+      <v-switch :label="component.status" v-model="savedStatus"></v-switch>
+    </v-row>
+    <v-row>
         <v-card-text class="text-h5">Description</v-card-text>
     </v-row>
     <v-row>
@@ -98,6 +101,7 @@ export default {
   props: ['component'],
   data: () => ({
     editMode: false,
+    savedStatus: false,
     renderConfig: {
     mermaid: {
         theme: 'dark' 
@@ -111,8 +115,17 @@ export default {
   computed: {
     componentDescription() {
         return this.component.description
+    },
+  },
+  watch: {
+    savedStatus() {
+      this.component.status = this.savedStatus ? 'Public' : 'Private'
     }
   },
+  mounted() {
+    this.savedStatus = this.component.status == 'Public'
+  },
+
   methods: {
 
     addProp() {

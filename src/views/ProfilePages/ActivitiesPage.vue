@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0 ma-auto">
-    <v-row v-for="activity in activities" :key="activity.id">
+    <v-row v-for="activity in filtredActivities" :key="activity.id">
       <v-col >
         <activity-item  :item="activity"/>
       </v-col>
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import ActivityItem from '../../components/items/ActivityItem.vue'
 import NoDataComponent from '../../components/NoDataComponent.vue'
 export default {
@@ -21,5 +22,17 @@ export default {
   data: () => ({
       noData: false
   }),
+  computed: {
+    ...mapState({
+      filter: s => s.SearchStore.userProfileSearchQuery
+    }),
+
+    filtredActivities() {
+      if(this.filter)
+        return this.activities.filter(x => x.name.toLowerCase().includes(this.filter.toLowerCase()))
+      else
+        return this.activities
+    }
+  }
 };
 </script>

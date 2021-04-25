@@ -45,7 +45,19 @@
           </v-row>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <v-text-field
+          label="Search"
+          placeholder="Input text"
+          filled
+          rounded
+          dense
+          v-model="searchQuery"
 
+          ></v-text-field>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col>
           <v-tabs v-model="tab" grow>
@@ -116,6 +128,15 @@ export default {
       
     }),
 
+    searchQuery: {
+      get () {
+        return this.$store.state.SearchStore.userProfileSearchQuery
+      },
+      set (value) {
+        this.$store.commit('SearchStore/updateUserProfileSearchQuery', value)
+      }
+    },
+
     componentsCount() {
       return this.profile.components ? this.profile.components.length : 0
     },
@@ -132,7 +153,7 @@ export default {
         arr.push({
           type: 'component',
           author: element.author,
-          name: element.name,
+          name: element.name || "",
           date: element.created
         })
       })

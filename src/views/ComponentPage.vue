@@ -270,15 +270,17 @@ export default {
       let payload = {
         id: this.cloneComponent.id,
         description: this.cloneComponent.description,
+        status: this.cloneComponent.status == 'Public',
         dependencies: this.cloneComponent.dependencies,
         events: this.cloneComponent.events,
-        props: this.cloneComponent.props
+        props: this.cloneComponent.props,
       }
       this.$store.dispatch('ComponentStore/updateComponent', payload)
         .then(() => {
           this.editMode = false
           this.saveLoading = false
           this.component.description = clone(this.cloneComponent.description)
+          this.component.status = clone(this.cloneComponent.status)
           this.component.dependencies = clone(this.cloneComponent.dependencies)
           this.component.events = clone(this.cloneComponent.events)
           this.component.props = clone(this.cloneComponent.props)
