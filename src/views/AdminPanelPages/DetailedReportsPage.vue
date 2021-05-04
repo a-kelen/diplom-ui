@@ -1,11 +1,21 @@
 <template>
   <v-container>
-    <v-data-table
+    <v-row class="my-5 mx-0 d-flex">
+        <div>
+          <div class="text-h4">Component</div>
+          <div class="text-title">Username: admin</div>
+        </div>
+        <v-card width="10rem" color="primary" class="ml-auto d-flex align-center justify-center">
+          <span class="text-h6 white--text">Active</span>
+        </v-card>
+    </v-row>
+
+      <v-data-table
         :headers="headers"
         :items="desserts"
         :single-expand="true"
         :expanded.sync="expanded"
-        item-key="email"
+        item-key="username"
         disable-sort
         show-expand
         class="elevation-1"
@@ -14,31 +24,19 @@
         <v-toolbar
             flat
         >
-            <v-toolbar-title>Users Table</v-toolbar-title>
+            <v-toolbar-title>Reports</v-toolbar-title>
             <v-divider
               class="mx-4"
               inset
               vertical
             ></v-divider>
-            <span>72934 users</span>
+            <span>43 reports</span>
             <v-divider
               class="mx-4"
               inset
               vertical
             ></v-divider>
-            <span>301 blocked </span>
-            <v-divider
-              class="mx-4"
-              inset
-              vertical
-            ></v-divider>
-            <div class="mt-6">
-              <v-text-field
-              outlined
-              dense
-              label="Search"
-            ></v-text-field>
-            </div>
+            <span> 12 approved </span>
         </v-toolbar>
         </template>
         <template v-slot:no-data>
@@ -48,7 +46,7 @@
             >
                 Reset
             </v-btn>
-        </template>  d
+        </template>  
         <!-- <template v-slot:item.status="{ item }"> 
       <v-chip
         :color="getColor(item.status)"
@@ -57,21 +55,19 @@
         {{ item.status }}
       </v-chip>
     </template> -->
-    <template v-slot:expanded-item="{ headers, item }">
-      <td :colspan="headers.length">
-        <v-btn 
-          class="ma-3"
-          :color="item.status == 'Active' ? 'red' : 'primary' "
-        >
-          {{item.status == 'Active' ? 'Block': 'Enable'}}
-        </v-btn>
-        <v-btn class="ma-3">Open Profile</v-btn>
+    <template class="elevation-0" v-slot:expanded-item="{ headers, item }">
+      <td  :colspan="headers.length">
         <div class="ma-2">
-          Reports: {{item.reportsCount}}
+          <v-btn color="primary" class="mx-2">Approve</v-btn>
+          <v-btn color="red">Decline</v-btn>
+        </div>
+        <div class="ma-4">
+          {{ item.content }}
         </div>
       </td>
     </template>
     </v-data-table>
+
   </v-container>
 </template>
 
@@ -82,8 +78,11 @@ export default {
     expanded: [],
     dialogDelete: false,
     headers: [
-      { text: 'Name', value: 'name', },
-      { text: 'Email', value: 'email' },
+      {
+        text: 'Username',
+        value: 'username',
+      },
+      { text: 'Content', value: 'content' },
       { text: 'Status', value: 'status' },
     ],
     desserts: [],
@@ -102,37 +101,32 @@ export default {
     this.initialize()
   },
 
-  methods: {
-      
+  methods: {  
     getColor(status) {
-      return status == 'Active' ? 'primary' : 'red' 
+      return status == 'Approved' ? 'grey' : 'primary'   
     },
 
     initialize () {
       this.desserts = [
         {
-          name: 'Admin Adminienko',
-          email: 'admin1@gmail.com',
-          reportsCount: 23,
-          status: 'Active'
+          username: 'admin1@gmail.com',
+          content: 'Bla bla',
+          status: 'Approved'
         },
         {
-          name: 'Admin Adminienko',
-          email: 'admin2@gmail.com',
-          reportsCount: 23,
-          status: 'Active'
+          username: 'admin2@gmail.com',
+          content: 'Bla bla',
+          status: 'Approved'
         },
         {
-          name: 'Admin Adminienko',
-          email: 'admin3@gmail.com',
-          reportsCount: 23,
-          status: 'Blocked'
+          username: 'admin3@gmail.com',
+          content: 'Bla bla',
+          status: 'Active'
         },
-        
       ]
     },
 
-      
+    
   },
 };
 </script>

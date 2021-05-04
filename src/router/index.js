@@ -130,9 +130,15 @@ const routes = [
       {
         path: 'component-reports',
         component: () => import('../views/AdminPanelPages/ComponentReportsPage.vue')
-      },
+      },    
     ]
   },
+  {
+    path: '/reports-page',
+    name: 'DetailedReportsPage',
+    component: () => import('../views/AdminPanelPages/DetailedReportsPage.vue')
+  },
+
 ];
 
 const router = new VueRouter({
