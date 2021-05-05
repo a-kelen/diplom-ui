@@ -134,9 +134,19 @@ const routes = [
     ]
   },
   {
-    path: '/reports-page',
-    name: 'DetailedReportsPage',
-    component: () => import('../views/AdminPanelPages/DetailedReportsPage.vue')
+    path: '/user-reports/:email',
+    name: 'DetailedUserReportsPage',
+    component: () => import('../views/AdminPanelPages/DetailedUserReportsPage.vue')
+  },
+  {
+    path: '/library-reports/:id',
+    name: 'DetailedLibraryReportsPage',
+    component: () => import('../views/AdminPanelPages/DetailedLibraryReportsPage.vue')
+  },
+  {
+    path: '/component-reports/:id',
+    name: 'DetailedComponentReportsPage',
+    component: () => import('../views/AdminPanelPages/DetailedComponentReportsPage.vue')
   },
 
 ];

@@ -2,7 +2,7 @@
   <v-container>
     <v-data-table
         :headers="headers"
-        :items="desserts"
+        :items="page.libraries"
         :single-expand="true"
         :expanded.sync="expanded"
         item-key="author"
@@ -28,7 +28,7 @@
         </template> 
     <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length">
-        <v-btn class="ma-3">Open Details</v-btn>
+        <v-btn @click="open(item)" class="ma-3">Open Details</v-btn>
         <div class="ma-2">
           Registred {{item.name}}
         </div>
@@ -39,11 +39,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   name: 'LibraryReportsPage',
   data: () => ({
       expanded: [],
-      dialogDelete: false,
       headers: [
         {
           text: 'Author',
@@ -54,92 +54,30 @@ export default {
         { text: 'Name', value: 'name' },
         { text: 'Reports', value: 'reportsCount' },
       ],
-      desserts: [],
-      editedIndex: -1,
   }),
-  watch: {
-      dialog (val) {
-        val || this.close()
-      },
-      dialogDelete (val) {
-        val || this.closeDelete()
-      },
-    },
 
     created () {
       this.initialize()
     },
+    computed: {
+      ...mapState({
+        page: s => s.AdminStore.reportedLibrariesPage
+      })
+    },
 
-    methods: {
-        
-        getColor(status) {
-            return status == 'Active' ? 'primary' : 'red' 
-        },
+    methods: {  
+      getColor(status) {
+          return status == 'Active' ? 'primary' : 'red' 
+      },
+
       initialize () {
-        this.desserts = [
-          {
-            name: 'LibName1',
-            author: 'admin1@gmail.com',
-            reportsCount: 23,
-            status: 'Active'
-          },
-          {
-            name: 'LibName2',
-            author: 'admin2@gmail.com',
-            reportsCount: 23,
-            status: 'Active'
-          },
-          {
-            name: 'LibName3',
-            author: 'admin3@gmail.com',
-            reportsCount: 23,
-            status: 'Blocked'
-          },
-          
-        ]
+        this.$store.dispatch('AdminStore/getReportedLibraries', {})
       },
 
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-
-      deleteItemConfirm () {
-        this.desserts.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
-      },
+      open(item) {
+        this.$router.push({ name: 'DetailedLibraryReportsPage', params: { id: item.id } })
+      }
+      
     },
 };
 </script>

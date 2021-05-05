@@ -2,20 +2,23 @@
   <v-container>
     <v-row class="my-5 mx-0 d-flex">
         <div>
-          <div class="text-h4">Component</div>
-          <div class="text-title">Username: admin</div>
+          <div class="text-h5">Library: {{ library.name }}</div>
+          <div class="text-title">Author: {{ library.author }}</div>
         </div>
         <v-card width="10rem" color="primary" class="ml-auto d-flex align-center justify-center">
           <span class="text-h6 white--text">Active</span>
         </v-card>
     </v-row>
-
+    <v-row  class="d-flex ma-2">
+      <v-btn @click="openNewTab" class="mr-4">Open in new tab</v-btn>
+      <v-btn>Block</v-btn>
+    </v-row>
       <v-data-table
         :headers="headers"
-        :items="desserts"
+        :items="page.reports"
         :single-expand="true"
         :expanded.sync="expanded"
-        item-key="username"
+        item-key="id"
         disable-sort
         show-expand
         class="elevation-1"
@@ -30,13 +33,13 @@
               inset
               vertical
             ></v-divider>
-            <span>43 reports</span>
+            <span>{{ page.totalReports }} reports</span>
             <v-divider
               class="mx-4"
               inset
               vertical
             ></v-divider>
-            <span> 12 approved </span>
+            <span> {{ page.admittedReports }} admitted </span>
         </v-toolbar>
         </template>
         <template v-slot:no-data>
@@ -72,11 +75,12 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex'
+
 export default {
-  name: 'UsersTablePage',
+  name: 'DetailedLibraryReportsPage',
   data: () => ({
     expanded: [],
-    dialogDelete: false,
     headers: [
       {
         text: 'Username',
@@ -85,20 +89,25 @@ export default {
       { text: 'Content', value: 'content' },
       { text: 'Status', value: 'status' },
     ],
-    desserts: [],
-    editedIndex: -1,
+
   }),
-  watch: {
-    dialog (val) {
-      val || this.close()
-    },
-    dialogDelete (val) {
-      val || this.closeDelete()
-    },
-  },
 
   created () {
     this.initialize()
+  },
+
+    computed: {
+    ...mapState({
+      page: s => s.AdminStore.libraryReportsPage
+    }),
+
+    ...mapGetters({
+      element: 'AdminStore/getLibraryById'
+    }),
+
+    library() {
+      return this.element(this.$route.params.id)
+    }
   },
 
   methods: {  
@@ -107,25 +116,22 @@ export default {
     },
 
     initialize () {
-      this.desserts = [
-        {
-          username: 'admin1@gmail.com',
-          content: 'Bla bla',
-          status: 'Approved'
-        },
-        {
-          username: 'admin2@gmail.com',
-          content: 'Bla bla',
-          status: 'Approved'
-        },
-        {
-          username: 'admin3@gmail.com',
-          content: 'Bla bla',
-          status: 'Active'
-        },
-      ]
+      this.$store.dispatch('AdminStore/getLibraryReports', {
+        libraryId: this.$route.params.id
+      })
     },
 
+    openNewTab() {
+      let routeData = this.$router.resolve(
+        {
+          name: 'LibraryPage',
+          params: {
+            author: this.library.author, 
+            name: this.library.name
+          }
+        })
+      open(routeData.href, '_blank');
+    }
     
   },
 };

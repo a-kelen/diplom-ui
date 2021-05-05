@@ -2,7 +2,7 @@
   <v-container>
     <v-data-table
         :headers="headers"
-        :items="desserts"
+        :items="page.users"
         :single-expand="true"
         :expanded.sync="expanded"
         item-key="email"
@@ -76,32 +76,27 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   name: 'UsersTablePage',
   data: () => ({
     expanded: [],
-    dialogDelete: false,
     headers: [
       { text: 'Name', value: 'name', },
       { text: 'Email', value: 'email' },
       { text: 'Status', value: 'status' },
     ],
-    desserts: [],
-    editedIndex: -1,
   }),
-  watch: {
-    dialog (val) {
-      val || this.close()
-    },
-    dialogDelete (val) {
-      val || this.closeDelete()
-    },
-  },
 
   created () {
     this.initialize()
   },
 
+  computed: {
+    ...mapState({
+      page: s => s.AdminStore.usersPage
+    })
+  },
   methods: {
       
     getColor(status) {
@@ -109,27 +104,7 @@ export default {
     },
 
     initialize () {
-      this.desserts = [
-        {
-          name: 'Admin Adminienko',
-          email: 'admin1@gmail.com',
-          reportsCount: 23,
-          status: 'Active'
-        },
-        {
-          name: 'Admin Adminienko',
-          email: 'admin2@gmail.com',
-          reportsCount: 23,
-          status: 'Active'
-        },
-        {
-          name: 'Admin Adminienko',
-          email: 'admin3@gmail.com',
-          reportsCount: 23,
-          status: 'Blocked'
-        },
-        
-      ]
+      this.$store.dispatch('AdminStore/getUsers', {})
     },
 
       

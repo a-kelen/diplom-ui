@@ -2,7 +2,7 @@
   <v-container>
     <v-data-table
         :headers="headers"
-        :items="desserts"
+        :items="page.users"
         :single-expand="true"
         :expanded.sync="expanded"
         item-key="email"
@@ -28,7 +28,7 @@
         </template> 
     <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length">
-        <v-btn class="ma-3">Open Details</v-btn>
+        <v-btn @click="open(item)" class="ma-3">Open Details</v-btn>
         <div class="ma-2">
           Registred {{item.name}}
         </div>
@@ -39,11 +39,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'UserReportsPage',
   data: () => ({
       expanded: [],
-      dialogDelete: false,
      headers: [
         {
           text: 'Name',
@@ -54,92 +55,31 @@ export default {
         { text: 'Email', value: 'email' },
         { text: 'Reports', value: 'reportsCount' },
       ],
-      desserts: [],
-      editedIndex: -1,
   }),
-  watch: {
-      dialog (val) {
-        val || this.close()
-      },
-      dialogDelete (val) {
-        val || this.closeDelete()
-      },
-    },
 
     created () {
       this.initialize()
     },
 
-    methods: {
-        
-        getColor(status) {
-            return status == 'Active' ? 'primary' : 'red' 
-        },
-      initialize () {
-        this.desserts = [
-          {
-            name: 'Admin Adminienko',
-            email: 'admin1@gmail.com',
-            reportsCount: 23,
-            status: 'Active'
-          },
-          {
-            name: 'Admin Adminienko',
-            email: 'admin2@gmail.com',
-            reportsCount: 23,
-            status: 'Active'
-          },
-          {
-            name: 'Admin Adminienko',
-            email: 'admin3@gmail.com',
-            reportsCount: 23,
-            status: 'Blocked'
-          },
-          
-        ]
-      },
+    computed: {
+    ...mapState({
+      page: s => s.AdminStore.reportedUsersPage
+    })
+  },
 
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-
-      deleteItemConfirm () {
-        this.desserts.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
-      },
+  methods: {
+    getColor(status) {
+        return status == 'Active' ? 'primary' : 'red' 
     },
+
+    initialize () {
+      this.$store.dispatch('AdminStore/getReportedUsers', {})
+    },
+
+    open( item ) {
+      this.$router.push({ name: 'DetailedUserReportsPage', params: { email : item.email} })
+    }
+
+  },
 };
 </script>

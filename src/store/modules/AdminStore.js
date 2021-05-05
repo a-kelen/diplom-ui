@@ -1,31 +1,56 @@
 import Axios from '../axios'
 const state = {
-    users: [],
-    userReports: [],
-    libraryReports: [],
-    componentReports: [],
+    usersPage: [],
+    userReportsPage: [],
+    libraryReportsPage: [],
+    componentReportsPage: [],
+    reportedUsersPage: [],
+    reportedLibrariesPage: [],
+    reportedComponentsPage: []
 }
 // getters
 const getters = {
- 
+    getUserById: state => id => {
+        return state.reportedUsersPage.users.find(x => x.id === id)
+    },
+
+    getLibraryById: state => id => {
+        return state.reportedLibrariesPage.libraries.find(x => x.id === id)
+    },
+
+    getComponentById: state => id => {
+        return state.reportedComponentsPage.components.find(x => x.id === id)
+    }
 }
 
 // mutations
 const mutations = {
     set_users(state, val) {
-        state.users = val
+        state.usersPage = val
     },
 
     set_user_reports(state, val) {
-        state.userReports = val
+        state.userReportsPage = val
     },
 
     set_component_reports(state, val) {
-        state.componentReports = val
+        state.componentReportsPage = val
     },
     
     set_library_reports(state, val) {
-        state.libraryReports = val
+        state.libraryReportsPage = val
+    },
+
+    set_reported_users(state, val) {
+        state.reportedUsersPage = val
+    },
+
+    set_reported_libraries(state, val) {
+        state.reportedLibrariesPage = val
+    },
+
+    set_reported_components(state, val) {
+        state.reportedComponentsPage = val
     },
 
     set_report_status(state, val) {
@@ -45,13 +70,15 @@ const mutations = {
 
 // actions
 const actions = {
-    getUsers({ commit }, parameters) {
+    getUsers({ commit }, params) {
         return new Promise((resolve, reject) => {
             Axios.get('Admin/users', { 
-                    params: parameters 
+                    numberPage: params.numberPage,
+                    pageSize: params.pageSize
                 })
                 .then(resp => {
                     commit('set_users', resp.data)
+                    
                     resolve()
                 })
                 .catch(err => {
@@ -60,11 +87,48 @@ const actions = {
         })
     },
 
-    getUserReports({ commit }, parameters) {
+    getReportedUsers({ commit }, params) {
         return new Promise((resolve, reject) => {
-            Axios.get('Admin/user-reports', { 
-                    params: parameters 
+            Axios.get('Admin/reported-users', {params})
+                .then(resp => {
+                    commit('set_reported_users', resp.data)
+                    resolve()
                 })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    getReportedLibraries({ commit }, params) {
+        return new Promise((resolve, reject) => {
+            Axios.get('Admin/reported-libraries', {params})
+                .then(resp => {
+                    commit('set_reported_libraries', resp.data)
+                    resolve()
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    getReportedComponents({ commit }, params) {
+        return new Promise((resolve, reject) => {
+            Axios.get('Admin/reported-components', {params})
+                .then(resp => {
+                    commit('set_reported_components', resp.data)
+                    resolve()
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    getUserReports({ commit }, params) {
+        return new Promise((resolve, reject) => {
+            Axios.get('Admin/user-reports', {params})
                 .then(resp => {
                     commit('set_user_reports', resp.data)
                     resolve()
@@ -75,11 +139,9 @@ const actions = {
         })
     },
 
-    getLibraryReports({ commit }, parameters) {
+    getLibraryReports({ commit }, params) {
         return new Promise((resolve, reject) => {
-            Axios.get('Admin/library-reports', { 
-                    params: parameters 
-                })
+            Axios.get('Admin/library-reports', {params})
                 .then(resp => {
                     commit('set_library_reports', resp.data)
                     resolve()
@@ -90,11 +152,9 @@ const actions = {
         })
     },
 
-    getComponentReports({ commit }, parameters) {
+    getComponentReports({ commit }, params) {
         return new Promise((resolve, reject) => {
-            Axios.get('Admin/component-reports', { 
-                    params: parameters 
-                })
+            Axios.get('Admin/component-reports', {params})
                 .then(resp => {
                     commit('set_component_reports', resp.data)
                     resolve()
