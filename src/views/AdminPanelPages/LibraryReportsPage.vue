@@ -4,6 +4,10 @@
         :headers="headers"
         :items="page.libraries"
         :single-expand="true"
+        :options.sync="pagination"
+        :footer-props="footerOptions"
+        :server-items-length="pagination.totalItems"
+        :loading="loading"
         :expanded.sync="expanded"
         item-key="author"
         disable-sort
@@ -43,41 +47,68 @@ import { mapState } from 'vuex';
 export default {
   name: 'LibraryReportsPage',
   data: () => ({
-      expanded: [],
-      headers: [
-        {
-          text: 'Author',
-          align: 'start',
-          sortable: false,
-          value: 'author',
-        },
-        { text: 'Name', value: 'name' },
-        { text: 'Reports', value: 'reportsCount' },
-      ],
+    pagination: {
+      page: 1,
+      totalItems: 0,
+    },
+    footerOptions : {
+      'items-per-page-options': [ 10, 15, 20]
+    },
+    loading: false,
+    expanded: [],
+    headers: [
+      {
+        text: 'Author',
+        align: 'start',
+        sortable: false,
+        value: 'author',
+      },
+      { text: 'Name', value: 'name' },
+      { text: 'Reports', value: 'reportsCount' },
+    ],
   }),
 
-    created () {
-      this.initialize()
-    },
-    computed: {
-      ...mapState({
-        page: s => s.AdminStore.reportedLibrariesPage
+  created () {
+    this.initialize()
+  },
+
+  watch: {
+    pagination() {
+      this.loading = true
+      this.$store.dispatch('AdminStore/getReportedLibraries', {
+        numberPage: this.pagination.page - 1,
+        pageSize: this.pagination.itemsPerPage
+      }).then(() => {
+        this.pagination.totalItems = this.page.totalReports
+        this.loading = false
       })
+    }
+  },
+
+  computed: {
+    ...mapState({
+      page: s => s.AdminStore.reportedLibrariesPage
+    })
+  },
+
+  methods: {  
+    getColor(status) {
+        return status == 'Active' ? 'primary' : 'red' 
     },
 
-    methods: {  
-      getColor(status) {
-          return status == 'Active' ? 'primary' : 'red' 
-      },
+    initialize () {
+    this.loading = true
+    this.$store.dispatch('AdminStore/getReportedLibraries', {})
+      .then(() => {
+        this.pagination.totalItems = this.page.totalReports
+        this.loading = false
+      })
+  },
 
-      initialize () {
-        this.$store.dispatch('AdminStore/getReportedLibraries', {})
-      },
-
-      open(item) {
-        this.$router.push({ name: 'DetailedLibraryReportsPage', params: { id: item.id } })
-      }
-      
-    },
+    open(item) {
+      this.$router.push({ name: 'DetailedLibraryReportsPage', params: { id: item.id } })
+    }
+    
+  },
 };
 </script>

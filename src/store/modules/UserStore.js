@@ -56,6 +56,10 @@ const mutations = {
   update_user (state, user) {
     state.user.name = user.name
   },
+  
+  set_avatar(state, val) {
+    state.user.avatar = val
+  },
 
   set_active_profile (state, user) {
     state.activeProfile = user
@@ -84,18 +88,15 @@ const actions = {
     })
   },
 
-  getCurrentUser ({ commit }) {
+  getCurrentUser ({ commit, dispatch }) {
     return new Promise((resolve, reject) => {
       commit('auth_request')
       if (localStorage.getItem('token') != null) {
         Axios({ url: 'User', method: 'GET' })
           .then(resp => {
-            const user = {
-              email: resp.data.email,
-              username: resp.data.username,
-              name: resp.data.name
-            }
+            const user = resp.data
             commit('reauth_success', user)
+            dispatch('getAvatar', user.username)
             resolve(resp)
           })
           .catch(err => {
@@ -104,6 +105,18 @@ const actions = {
           })
       }
     })
+  },
+
+  getAvatar({ commit }, username) {
+    Axios.get(`User/avatar/${ username }`, {
+        responseType: 'blob'
+    }).then(resp => {
+        var reader = new FileReader()
+        reader.readAsDataURL(resp.data)
+        reader.onload = () => {
+          commit('set_avatar', reader.result)
+        }
+      })
   },
 
   getProfile ({ commit }, username) {
@@ -183,7 +196,7 @@ const actions = {
 
   changePassword (_, payload) {
     return new Promise((resolve, reject) => {
-      Axios.post('User/password', payload)
+      Axios.post('User/change-password', payload)
         .then(resp => {
           if (resp.data) {
             resolve(resp.data)
@@ -218,10 +231,26 @@ const actions = {
   },
 
   changeProfile ({ commit }, user) {
-    Axios.put('User', user)
+    return new Promise((resolve, reject) => {
+      Axios.put('User', user)
+        .then(resp => {
+          commit('update_user', resp.data)
+          resolve()
+        }) 
+        .catch(() => reject())
+    })
+  },
+
+  saveAvatar (  _, payload) {
+    return new Promise((resolve, reject) => {
+      const form = new FormData()
+      form.append('image', payload.blob)
+    Axios.put('User/avatar', form)
       .then(resp => {
-        commit('update_user', resp.data)
+        resolve(resp.data)
       })
+      .catch(err => reject(err))
+    })
   },
   
 }

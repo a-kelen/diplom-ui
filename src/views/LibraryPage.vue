@@ -12,7 +12,12 @@
               :src="avatar"
               v-if="avatar"
             >
-              <library-avatar-dialog @saveAvatar="saveAvatar" v-if="editMode" :hover="hover"/>
+              <v-container class="d-flex">
+                <v-row align="center" justify="center">
+                  <library-avatar-dialog @saveAvatar="saveAvatar" v-if="editMode" :hover="hover"/>
+                </v-row>
+              </v-container>
+            
             </v-img>
             <library-avatar-dialog @saveAvatar="saveAvatar" v-if="editMode && !avatar" :hover="hover"/>
           </v-avatar>
@@ -185,6 +190,7 @@ export default {
         this.avatar = null
       
     },
+    
     libraryDescription() {
       if(this.savedDescription == '') {
           this.savedDescription = this.library.description

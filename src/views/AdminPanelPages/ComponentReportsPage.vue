@@ -4,6 +4,11 @@
         :headers="headers"
         :items="page.components"
         :single-expand="true"
+        :options.sync="pagination"
+        :footer-props="footerOptions"
+        :server-items-length="pagination.totalItems"
+        :loading="loading"
+
         :expanded.sync="expanded"
         item-key="author"
         disable-sort
@@ -43,6 +48,14 @@ import { mapState } from 'vuex';
 export default {
   name: 'ComponentReportsPage',
   data: () => ({
+    pagination: {
+      page: 1,
+      totalItems: 0,
+    },
+    footerOptions : {
+      'items-per-page-options': [ 10, 15, 20]
+    },
+    loading: false,
     expanded: [],
     headers: [
       {
@@ -60,6 +73,19 @@ export default {
     this.initialize()
   },
 
+   watch: {
+    pagination() {
+      this.loading = true
+      this.$store.dispatch('AdminStore/getReportedComponents', {
+        numberPage: this.pagination.page - 1,
+        pageSize: this.pagination.itemsPerPage
+      }).then(() => {
+        this.pagination.totalItems = this.page.totalReports
+        this.loading = false
+      })
+    }
+  },
+
   computed: {
     ...mapState({
       page: s => s.AdminStore.reportedComponentsPage
@@ -72,7 +98,11 @@ export default {
     },
 
     initialize () {
-      this.$store.dispatch('AdminStore/getReportedComponents', {})
+      this.loading = true
+      this.$store.dispatch('AdminStore/getReportedComponents', {}).then(() => {
+        this.pagination.totalItems = this.page.totalReports
+        this.loading = false
+      })
     },
     
     open(item) {

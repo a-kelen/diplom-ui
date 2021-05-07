@@ -10,7 +10,7 @@
       <v-list >
         <v-list-item>
           <v-list-item-avatar class="ml-n2" @click="mini = !mini">
-            <v-img src="https://randomuser.me/api/portraits/men/1.jpg"></v-img>
+            <v-img :src="user.avatar"></v-img>
           </v-list-item-avatar>
 
           <v-list-item-title>{{ user.name }}</v-list-item-title>

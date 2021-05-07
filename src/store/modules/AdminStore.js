@@ -55,15 +55,35 @@ const mutations = {
 
     set_report_status(state, val) {
         if(val.type === 'user') {
-            let elem = state.userReports.find(x => x.id === val.elementId)
+            let elem = state.userReportsPage.reports.find(x => x.id === val.elementId)
             elem.status = val.status
+            state.userReportsPage.admittedReports += val.status == 'Admitted' ? 1 : 0
+
         } else if(val.type === 'library') {
-            let elem = state.libraryReports.find(x => x.id === val.elementId)
+            let elem = state.libraryReportsPage.reports.find(x => x.id === val.elementId)
+            elem.status = val.status
+            state.libraryReportsPage.admittedReports += val.status == 'Admitted' ? 1 : 0
+
+        } else if(val.type === 'component') {
+            let elem = state.componentReportsPage.reports.find(x => x.id === val.elementId)
+            elem.status = val.status
+            state.componentReportsPage.admittedReports += val.status == 'Admitted' ? 1 : 0
+        }
+    },
+
+    set_element_status(state, val) {
+        if(val.type === 'library') {
+            let elem = state.reportedLibrariesPage.libraries.find(x => x.id === val.elementId)
             elem.status = val.status
         } else if(val.type === 'component') {
-            let elem = state.componentReports.find(x => x.id === val.elementId)
+            let elem = state.reportedComponentsPage.libraries.find(x => x.id === val.elementId)
             elem.status = val.status
         }
+    },
+
+    set_user_status(state, val) {
+        let user = state.usersPage.users.find(x => x.email == val.email)
+        user.status = val.status
     }
 
 }
@@ -78,7 +98,19 @@ const actions = {
                 })
                 .then(resp => {
                     commit('set_users', resp.data)
-                    
+                    resolve()
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    searchUsers({ commit }, params) {
+        return new Promise((resolve, reject) => {
+            Axios.get('Admin/search-users', {params})
+                .then(resp => {
+                    commit('set_users', resp.data)
                     resolve()
                 })
                 .catch(err => {
@@ -171,9 +203,9 @@ const actions = {
                 .then(resp => {
                     if(resp.data) {
                         commit('set_report_status', {
-                            type: payload.type,
-                            elementId: payload.elementId,
-                            status: 'Admited'
+                            type: payload.reportType,
+                            elementId: payload.reportId,
+                            status: 'Admitted'
                         })
                         resolve()
                     }
@@ -190,8 +222,8 @@ const actions = {
                 .then(resp => {
                     if(resp.data) {
                         commit('set_report_status', {
-                            type: payload.type,
-                            elementId: payload.elementId,
+                            type: payload.reportType,
+                            elementId: payload.reportId,
                             status: 'Rejected'
                         })
                         resolve()
@@ -204,10 +236,30 @@ const actions = {
         })
     },
 
-    blockElement( _, payload) {
+    blockElement( { commit }, payload) {
         return new Promise((resolve, reject) => {
             Axios.post('Admin/block-element', payload)
-                .then(() => {
+                .then((resp) => {
+                    if(resp.data)
+                        commit('set_element_status', {
+                            type: payload.reportType,
+                            elementId: payload.reportId,
+                            status: 'Blocked'
+                        })
+                    resolve()
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    switchBlockUser( { commit }, email) {
+        return new Promise((resolve, reject) => {
+            Axios.post('Admin/switch-block-user', {email})
+                .then((resp) => {
+                    console.log(resp.data)
+                    commit('set_user_status', resp.data)
                     resolve()
                 })
                 .catch(err => {

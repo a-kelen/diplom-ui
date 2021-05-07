@@ -5,6 +5,10 @@
         :items="page.users"
         :single-expand="true"
         :expanded.sync="expanded"
+        :options.sync="pagination"
+        :footer-props="footerOptions"
+        :server-items-length="pagination.totalItems"
+        :loading="loading"
         item-key="email"
         disable-sort
         show-expand
@@ -14,7 +18,7 @@
         <v-toolbar
             flat
         >
-            <v-toolbar-title>Library Reports</v-toolbar-title>
+            <v-toolbar-title>Reported Users</v-toolbar-title>
             
         </v-toolbar>
         </template>
@@ -44,24 +48,45 @@ import { mapState } from 'vuex'
 export default {
   name: 'UserReportsPage',
   data: () => ({
-      expanded: [],
-     headers: [
-        {
-          text: 'Name',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-        },
-        { text: 'Email', value: 'email' },
-        { text: 'Reports', value: 'reportsCount' },
-      ],
+    pagination: {
+      page: 1,
+      totalItems: 0,
+    },
+    footerOptions : {
+      'items-per-page-options': [ 10, 15, 20]
+    },
+    loading: false,
+    expanded: [],
+    headers: [
+      {
+        text: 'Name',
+        align: 'start',
+        sortable: false,
+        value: 'name',
+      },
+      { text: 'Email', value: 'email' },
+      { text: 'Reports', value: 'reportsCount' },
+    ],
   }),
 
-    created () {
-      this.initialize()
-    },
+  created () {
+    this.initialize()
+  },
 
-    computed: {
+  watch: {
+    pagination() {
+      this.loading = true
+      this.$store.dispatch('AdminStore/getReportedUsers', {
+        numberPage: this.pagination.page - 1,
+        pageSize: this.pagination.itemsPerPage
+      }).then(() => {
+        this.pagination.totalItems = this.page.totalReports
+        this.loading = false
+      })
+    }
+  },
+
+  computed: {
     ...mapState({
       page: s => s.AdminStore.reportedUsersPage
     })
@@ -69,11 +94,16 @@ export default {
 
   methods: {
     getColor(status) {
-        return status == 'Active' ? 'primary' : 'red' 
+      return status == 'Active' ? 'primary' : 'red' 
     },
 
     initialize () {
+      this.loading = true
       this.$store.dispatch('AdminStore/getReportedUsers', {})
+        .then(() => {
+          this.pagination.totalItems = this.page.totalReports
+          this.loading = false
+        })
     },
 
     open( item ) {
