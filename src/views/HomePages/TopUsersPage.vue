@@ -10,9 +10,9 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="author in authors" :key="author.username" cols="4">
-        <author-item :author="author"/>
-      </v-col>
+      <div class="custom-grid ma-4">
+        <author-item v-for="author in authors" :key="author.username"  :author="author"/>
+      </div>
     </v-row>
   </v-container>
 </template>

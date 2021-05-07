@@ -10,12 +10,9 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col
-        v-for="library in libraries" :key="library.id"
-        cols="4"
-      >
-        <library-item :library="library"/>
-      </v-col>
+      <div class="custom-grid ma-4">
+        <library-item v-for="library in libraries" :key="library.id" :library="library"/>
+      </div>
     </v-row>
   </v-container>
 </template>

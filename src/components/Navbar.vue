@@ -38,6 +38,19 @@
             <v-list-item-title>{{item.title}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item 
+          v-show="user.role === 'admin'"
+          :to="{ name: 'AdminPanel' }" 
+          active-class="highlighted"
+          
+        >
+          <v-list-item-action >
+            <v-icon>mdi-security</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Admin Panel</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -47,34 +60,34 @@
       dense
       dark
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon v-if="isLogged" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>CompoS</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-menu offset-y>
-      <template v-slot:activator="{ on }">
-        <v-chip
-          color="teal darken-3"
-          dark
-          medium
-          v-on="on"
-        >
-          {{ user.email }}
-          <v-icon class="ml-2">mdi-chevron-down</v-icon>
-        </v-chip>
-      </template>
-      <v-list>
-        <v-list-item
-          @click="theme = !theme"
-        >
-          <v-list-item-title>Change Theme</v-list-item-title>
-        </v-list-item>
-        <v-list-item
-          @click="logout"
-        >
-          <v-list-item-title>Log Out</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+      <v-menu offset-y v-if="isLogged">
+        <template v-slot:activator="{ on }">
+          <v-chip
+            color="teal darken-3"
+            dark
+            medium
+            v-on="on"
+          >
+            {{ user.email }}
+            <v-icon class="ml-2">mdi-chevron-down</v-icon>
+          </v-chip>
+        </template>
+        <v-list>
+          <v-list-item
+            @click="theme = !theme"
+          >
+            <v-list-item-title>Change Theme</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            @click="logout"
+          >
+            <v-list-item-title>Log Out</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
   </nav>
 </template>
@@ -83,6 +96,7 @@
 import { mapState } from 'vuex'
 export default {
   data: () => ({
+    isLogged: false,
     drawer : false,
     mini : false,
     theme : true,
@@ -96,8 +110,17 @@ export default {
   computed: {
     ...mapState({
       user: s => s.UserStore.user
-    })
+    }),
   },
+
+  watch: {
+    user() {
+      if(this.user.name)
+        this.isLogged = true
+    }
+  },
+
+
   methods: {
     logout() {
       this.$store.dispatch('UserStore/logout')

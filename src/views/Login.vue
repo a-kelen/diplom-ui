@@ -20,7 +20,7 @@
                 label="Password"
             ></v-text-field>
               
-            <v-btn @click="login" :loading="status" color="primary" rounded block class="mt-5">Login</v-btn>
+            <v-btn @click="login" :loading="loading" color="primary" rounded block class="mt-5">Login</v-btn>
           </v-card>
       </v-col>
     </v-row>
@@ -34,6 +34,7 @@ export default {
   name: 'Login',
   data: () => ({
     showPass: false,
+    loading: false,
     user: {
       email: '',
       password: ''
@@ -46,8 +47,12 @@ export default {
   }),
   methods: {
     login() {
+      this.loading = true
       this.$store.dispatch('UserStore/login', this.user)
-        .then(() => this.$router.push({ name: 'Home'}))
+        .then(() => {
+          this.loading = false
+          this.$router.push({ name: 'Home'})
+        })
     }
   },
   computed: {

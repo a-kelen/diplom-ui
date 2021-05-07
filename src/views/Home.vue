@@ -13,8 +13,9 @@
       </v-row>
     </v-col>
       <v-col
-        cols="2"
+        cols="3"
         md="2"
+        class="ml-auto"
       >
         <v-sheet elevation="6">
           <v-navigation-drawer permanent>

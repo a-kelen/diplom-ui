@@ -151,6 +151,7 @@ export default {
         reportId: item.id,
         reportType: 'user'
       })
+      console.log(item)
     },
 
     reject(item) {

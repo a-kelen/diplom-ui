@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <router-link :to="{ name: 'UserProfile', params: { username: author.username } }">
-      <v-sheet min-width="250" elevation="3" class="pa-2">
+      <v-sheet max-width="500px" elevation="3" class="pa-2">
         <v-row class="d-flex align-center ma-0 mb-2 flex-nowrap gap">
           <v-avatar
           color="green" 
@@ -20,24 +20,22 @@
           </v-tooltip>         
         </v-row>
 
-        <v-row>
-          <v-col md="auto">
-            <v-chip
-              dark
-              class="green"
-            >{{ author.libraryCount + author.componentCount }} elements</v-chip>
-          </v-col>
-          <v-col md="auto">
-              <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                      <v-icon v-bind="attrs"
-                        v-on="on" class="my-1">
-                          mdi-account-outline
-                      </v-icon> 
-                  </template>
-                  <span>User</span>
-              </v-tooltip>      
-          </v-col>
+        <v-row class="d-flex ma-1">
+          <v-chip
+            dark
+            class="green"
+          >{{ author.libraryCount + author.componentCount }} elements</v-chip>
+      
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-icon v-bind="attrs"
+                      v-on="on" class="mx-2">
+                        mdi-account-outline
+                    </v-icon> 
+                </template>
+                <span>User</span>
+            </v-tooltip>      
+
         </v-row>
         <v-row>
           <v-col>

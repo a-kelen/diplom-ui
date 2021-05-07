@@ -2,7 +2,10 @@ import Axios from '../axios'
 const state = {
   status: '',
   token: localStorage.getItem('token') || '',
-  user: {},
+  user: {
+    avatar: null,
+    role: ''
+  },
   activeProfile: {},
   topUsers: []
 
@@ -61,6 +64,10 @@ const mutations = {
     state.user.avatar = val
   },
 
+  set_role(state, val) {
+    state.user.role = val
+  },
+
   set_active_profile (state, user) {
     state.activeProfile = user
   },
@@ -108,14 +115,27 @@ const actions = {
   },
 
   getAvatar({ commit }, username) {
-    Axios.get(`User/avatar/${ username }`, {
-        responseType: 'blob'
-    }).then(resp => {
-        var reader = new FileReader()
-        reader.readAsDataURL(resp.data)
-        reader.onload = () => {
-          commit('set_avatar', reader.result)
-        }
+    return new Promise((resolve, reject) => {
+      Axios.get(`User/avatar/${ username }`, {
+          responseType: 'blob'
+      }).then(resp => {
+          var reader = new FileReader()
+          reader.readAsDataURL(resp.data)
+          reader.onload = () => {
+            commit('set_avatar', reader.result)
+            resolve()
+          }
+        }).catch((err) => reject(err)) 
+    })
+  },
+
+  getRole({ commit }) {
+    return new Promise((resolve, reject) => {
+      Axios.get('Admin/role')
+        .then(resp => {
+          commit('set_role', resp.data)
+          resolve()
+        }).catch((err) => reject(err))
       })
   },
 
@@ -135,18 +155,12 @@ const actions = {
   register ({ commit }, user) {
     return new Promise((resolve, reject) => {
       commit('auth_request')
-      Axios.post('User', user)
+      Axios.post('User/register', user)
         .then(resp => {
           const token = resp.data.token
-          const user = {
-            email: resp.data.email,
-            id: resp.data.id,
-            name: resp.data.name,
-            username: resp.data.username
-          }
           localStorage.setItem('token', token)
           Axios.defaults.headers.common.Authorization = token
-          commit('auth_success', { token, user })
+          commit('auth_success', { token, user: resp.data })
           resolve(resp)
         })
         .catch(err => {
