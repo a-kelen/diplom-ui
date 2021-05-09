@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import axios from '../../store/axios';
+import axios from '../../store/axios'
 export default {
   name: 'LibraryItem',
   props: ['library'],

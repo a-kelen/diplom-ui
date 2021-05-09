@@ -1,8 +1,8 @@
 <template>
-  <v-container class="pa-0 ma-auto">
+  <v-container class="pa-4 ma-auto">
     <v-row v-for="activity in filtredActivities" :key="activity.id">
       <v-col >
-        <activity-item  :item="activity"/>
+        <activity-item :item="activity"/>
       </v-col>
     </v-row>
     <v-row v-show="noData">

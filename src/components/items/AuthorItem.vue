@@ -4,10 +4,11 @@
       <v-sheet max-width="500px" elevation="3" class="pa-2">
         <v-row class="d-flex align-center ma-0 mb-2 flex-nowrap gap">
           <v-avatar
-          color="green" 
-          size="40"
+            color="green"
+            size="40"
           >
-            <span class="white--text headline">AU</span>
+            <img :src="avatar" v-if="avatar">
+            <span v-else class="white--text headline">{{ author.name[0] }}</span>
           </v-avatar>
         
           <v-tooltip top nudge-top>
@@ -43,7 +44,7 @@
           </v-col>
           <v-spacer/>
           <v-col md="auto">
-            <div class="grey--text text-h6 text--darken-3">212 
+            <div class="grey--text text-h6 text--darken-3">{{author.followerCount}} 
                 <v-icon class="mb-1">mdi-face</v-icon>
               </div>
           </v-col>
@@ -54,10 +55,33 @@
 </template>
 
 <script>
+import axios from '../../store/axios'
+
 export default {
   name: 'AuthorItem',
   props: ['author'],
   data: () => ({
-  })
+    avatar: ' '
+  }),
+  methods: {
+        getAvatar() {
+        axios.get(`User/avatar/${this.author.username}`, {
+            responseType: 'blob'
+        }).then(resp => {
+            var reader = new FileReader()
+            reader.readAsDataURL(resp.data)
+            reader.onload = () => {
+                this.avatar = reader.result
+            }
+            })
+            .catch(() => {
+
+            })
+        }
+    },
+    created() {
+        if(this.author.hasAvatar)
+            this.getAvatar()
+    }
 };
 </script>

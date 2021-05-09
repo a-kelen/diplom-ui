@@ -1,6 +1,7 @@
 import Axios from '../axios'
 const state = {
     elementSelectType: 0,
+    elementType: '',
     status: false,
     newLibraryName: 'Library name',
     newLibraryAvatar: null,
@@ -27,6 +28,7 @@ const state = {
     reset_state(state) {
       Object.assign(state, {
         elementSelectType: 0,
+        elementType: '',
         status: true,
         newLibraryName: 'Library name',
         newLibraryAvatar: null,
@@ -36,7 +38,6 @@ const state = {
           events: [],
           props: [],
           description: 'Description ...',
-          status: true
         },
         components: [],
     
@@ -51,6 +52,10 @@ const state = {
 
     updateElementType (state, val) {
       state.elementSelectType = val
+    },
+
+    updateType (state, val) {
+      state.elementType = val
     },
 
     updateStatus (state, val) {
@@ -121,7 +126,8 @@ const state = {
           name: state.newLibraryName,
           description: state.newLibraryDescription,
           components: state.components,
-          status: state.status
+          status: state.status,
+          type: state.elementType
         }
         let formData = new FormData()
         for(let i=0; i < libraryFiles.length; i++){
@@ -154,7 +160,11 @@ const state = {
         }
         state.newComponent.status = state.status
         return new Promise((resolve, reject) => {
-          Axios.post('Component/', state.newComponent)
+          Axios.post('Component/', {
+            ...state.newComponent,
+            status: state.status,
+            type: state.elementType
+          })
             .then(resp => {
               formData.append('elementId', resp.data.id)
               formData.append('descriminator', 'component')

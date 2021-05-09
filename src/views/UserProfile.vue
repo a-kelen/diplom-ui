@@ -3,11 +3,12 @@
       <v-row>
         <v-col md="2">
           <v-avatar
-            size="180"
             color="teal"
-          >
-            RR
-          </v-avatar>
+            size="180"
+        >
+            <img :src="avatar" v-if="avatar">
+            <span v-else class="white--text text-h2">{{ profileAbrev }}</span>
+        </v-avatar>
         </v-col>
         <v-col md="10">
           <v-row>
@@ -87,10 +88,12 @@ import ReportBottomSheet from '../components/sheets/ReportBottomSheet.vue'
 import ActivitiesPage from './ProfilePages/ActivitiesPage.vue'
 import ComponentsPage from './ProfilePages/ComponentsPage.vue'
 import LibrariesPage from './ProfilePages/LibrariesPage.vue'
+import axios from '../store/axios'
 export default {
   components: { ReportBottomSheet, LibrariesPage, ComponentsPage, ActivitiesPage },
   name: 'UserProfile',
   data: () => ({
+    avatar: '',
     loading: false,
     reportSheet: false,
     tab: null,
@@ -100,7 +103,12 @@ export default {
   }),
   methods: {
     fetch() {
+      this.avatar = ''
       this.$store.dispatch('UserStore/getProfile', this.$route.params.username)
+        .then(() => {
+          if(this.profile.hasAvatar)
+            this.getAvatar()
+        })
     },
     
     follow() {
@@ -118,9 +126,22 @@ export default {
       }).then(() => {
         this.reportSheet = false
       })
+    },
+
+    getAvatar() {
+      axios.get(`User/avatar/${this.profile.username}`, {
+          responseType: 'blob'
+      }).then(resp => {
+          var reader = new FileReader()
+          reader.readAsDataURL(resp.data)
+          reader.onload = () => {
+            this.avatar = reader.result
+          }
+        })
     }
 
   },
+
   computed: {
     ...mapState({
       profile: s => s.UserStore.activeProfile,
@@ -141,6 +162,10 @@ export default {
       return this.profile.components ? this.profile.components.length : 0
     },
 
+    profileAbrev() {
+      return this.profile.name ? this.profile.name[0] : ''
+    },
+
     librariesCount() {
        return this.profile.libraries ? this.profile.libraries.length : 0
     },
@@ -153,8 +178,9 @@ export default {
         arr.push({
           type: 'component',
           author: element.author,
-          name: element.name || "",
-          date: element.created
+          name: element.name || '',
+          date: element.created,
+          hasAvatar: this.profile.hasAvatar
         })
       })
       this.profile.libraries.forEach(element => {
@@ -162,7 +188,8 @@ export default {
           type: 'library',
           author: element.author,
           name: element.name,
-          date: element.created
+          date: element.created,
+          hasAvatar: this.profile.hasAvatar
         })
       })
 

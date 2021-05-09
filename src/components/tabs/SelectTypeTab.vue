@@ -30,11 +30,21 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
-    <v-checkbox
-      class="mx-2"
-      v-model="status"
-      label="Public"
-    ></v-checkbox>
+    <div class="d-flex">
+      <v-select
+        :items="typeItems"
+        v-model="selectedType"
+        outlined
+        label="Element type"
+      ></v-select>
+      <v-spacer></v-spacer>
+      <v-checkbox
+        class="mx-2"
+        v-model="status"
+        label="Public"
+      ></v-checkbox>
+    </div>
+    
   </v-sheet>
 </template>
 
@@ -43,6 +53,14 @@
 export default {
   name: 'SelectTypeTab',
   data: () => ({
+    typeItems: [
+      'VueJS',
+      'VueTS',
+      'ReactJS',
+      'ReactTS',
+      'AngularJS',
+      'AngularTS',
+    ]
   }),
   computed: {
     selectedItem: {
@@ -51,6 +69,15 @@ export default {
       },
       set (value) {
         this.$store.commit('ElementStore/updateElementType', value)
+      }
+    },
+
+    selectedType: {
+      get () {
+        return this.$store.state.ElementStore.elementType
+      },
+      set (value) {
+        this.$store.commit('ElementStore/updateType', value)
       }
     },
 

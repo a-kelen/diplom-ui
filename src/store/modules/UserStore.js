@@ -7,7 +7,9 @@ const state = {
     role: ''
   },
   activeProfile: {},
-  topUsers: []
+  topUsers: [],
+  followedUsers: [],
+  activitiesPage: []
 
 }
 // getters
@@ -42,12 +44,20 @@ const mutations = {
     state.topUsers = val
   },
 
+  set_followed_users(state, val) {
+    state.followedUsers = val
+  },
+
+  set_activities_page(state, val) {
+    state.activitiesPage = val
+  },
+
   reset_state() {
     Object.assign(state, {
       status: '',
       token: localStorage.getItem('token') || '',
       user: {},
-      activeProfile: {}
+      activities: {}
     
     })
   },
@@ -81,11 +91,37 @@ const mutations = {
 // actions
 const actions = {
 
+  getActivities({commit}, page) {
+    return new Promise((resolve, reject) => {
+    Axios.get('User/activities', {
+      params: { page }
+    })
+      .then(resp => {
+        commit('set_activities_page', resp.data)
+        resolve(resp.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  },
+
+  getFollowedUsers({commit}) {
+    return new Promise((resolve, reject) => {
+    Axios.get('User/followed-users')
+      .then(resp => {
+        commit('set_followed_users', resp.data)
+        resolve(resp.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  },
+
   getTopUsersList({commit, state}) {
     return new Promise((resolve, reject) => {
     if(state.topUsers.length > 0)
       resolve()
-    Axios.get('User/topList/')
+    Axios.get('User/topList')
       .then(resp => {
         commit('set_top_users', resp.data)
         resolve(resp.data)
@@ -135,7 +171,8 @@ const actions = {
         .then(resp => {
           commit('set_role', resp.data)
           resolve()
-        }).catch((err) => reject(err))
+        })
+        .catch(() => reject())
       })
   },
 

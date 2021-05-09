@@ -114,13 +114,23 @@ const routes = [
     }
   },
   {
-    path: '/comp/:id',
+    path: '/comp/:author/:name',
     name: 'ComponentPage',
     props: true,
     component: () => import('../views/ComponentPage.vue'),
     meta: {
       auth: true,
       title: 'Component | '
+    }
+  },
+  {
+    path: '/lib-comp/:libname/:name',
+    name: 'LibComponentPage',
+    props: true,
+    component: () => import('../views/ComponentPage.vue'),
+    meta: {
+      auth: true,
+      title: 'Lib Component | '
     }
   },
   {
@@ -167,6 +177,15 @@ const routes = [
     meta: {
       auth: true,
       title: 'User Profile | '
+    }
+  },
+  {
+    path: '/subscriptions',
+    name: 'Subscriptions',
+    component: () => import('../views/Subscriptions.vue'),
+    meta: {
+      auth: true,
+      title: 'Subscriptions'
     }
   },
   {
@@ -260,6 +279,8 @@ router.beforeEach((to, from, next) => {
   document.title = to.meta.title || 'CompoS'
     if(to.name === 'LibraryPage') 
       document.title += ` ${to.params.author} - ${to.params.name}`
+      if(to.name === 'UserProfile') 
+      document.title += ` ${to.params.username}`
   next()
 })
 

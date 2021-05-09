@@ -103,6 +103,7 @@ export default {
      items: [
           { title: 'Home', icon: 'mdi-home', path : '/'},
           { title: 'Dashboard', icon: 'mdi-view-dashboard' , path : '/dashboard' },
+          { title: 'Subscriptions', icon: 'mdi-account-multiple' , path : '/subscriptions'},
           { title: 'History', icon: 'mdi-history' , path : '/history'},
           { title: 'Settings', icon: 'mdi-account-settings' , path : '/settings'},
         ],
