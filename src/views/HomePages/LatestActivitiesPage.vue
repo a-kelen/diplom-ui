@@ -32,9 +32,6 @@ export default {
   created() {
     this.$store.dispatch('UserStore/getActivities')
       .then(() => this.skeletons = [])
-
-     this.$store.dispatch('UserStore/getFollowedUsers')
-      .then((resp) => console.log(resp))
   }
 };
 </script>

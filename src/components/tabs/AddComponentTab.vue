@@ -3,6 +3,7 @@
     <v-row class="d-flex">
       <v-text-field
         label="Name"
+        v-model="component.name" 
         outlined
         dense
         class="my-1"

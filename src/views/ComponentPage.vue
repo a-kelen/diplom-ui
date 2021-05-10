@@ -6,9 +6,9 @@
             <v-col>
               <v-sheet class="transparent d-flex gap align-center">
                 <v-card-text class="text-h4">
-                  Title
+                  {{ component.name }}
                 </v-card-text>
-                <v-chip label >Format</v-chip>
+                <v-chip label >{{ component.format }}</v-chip>
                 <v-icon v-if="statusIcon">mdi-lock-outline</v-icon>
                 <report-bottom-sheet @submit="reportToComponent" :visibility.sync="reportSheet"/>
               </v-sheet>
@@ -238,7 +238,13 @@ export default {
   },
   methods: {
     fetch() {
-      this.$store.dispatch('ComponentStore/getComponent', this.$route.params.id)
+      let params = {}
+      if(this.$route.name === 'ComponentPage')
+        params = { dependent: false, name: this.$route.params.name, owner: this.$route.params.author}
+      if(this.$route.name === 'LibComponentPage')
+        params = { dependent: true, name: this.$route.params.name, owner: this.$route.params.libname}
+
+      this.$store.dispatch('ComponentStore/getComponent', params)
     },
 
     like() {

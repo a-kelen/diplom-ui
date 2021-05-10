@@ -106,16 +106,18 @@ const state = {
       })
     },
 
-    getComponent({ commit, state }, id) {
-      if(state.cache.some(c => c.id == id)) {
-        commit('set_active_component', state.cache.find(c => c.id == id))
-        return
-      }
-      Axios.get(`Component/${id}`)
+    getComponent({ commit }, params) {
+      return new Promise((resolve, reject) => {
+      Axios.get('Component', { params })
         .then(resp => {
           commit('set_active_component', resp.data)
           commit('add_to_cache', resp.data)
+          resolve();
       })
+      .catch((err) => {
+        reject(err)
+      })
+    })
     },
 
 

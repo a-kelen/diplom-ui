@@ -63,7 +63,7 @@ const mutations = {
   },
 
   logout() {
-    location.reload()
+    //location.reload()
   },
 
   update_user (state, user) {
@@ -97,6 +97,7 @@ const actions = {
       params: { page }
     })
       .then(resp => {
+        console.log(resp.data)
         commit('set_activities_page', resp.data)
         resolve(resp.data)
       }).catch(err => {
@@ -139,7 +140,8 @@ const actions = {
           .then(resp => {
             const user = resp.data
             commit('reauth_success', user)
-            dispatch('getAvatar', user.username)
+            if(user.hasAvatar)
+              dispatch('getAvatar', user.username)
             resolve(resp)
           })
           .catch(err => {
@@ -167,13 +169,17 @@ const actions = {
 
   getRole({ commit }) {
     return new Promise((resolve, reject) => {
-      Axios.get('Admin/role')
-        .then(resp => {
-          commit('set_role', resp.data)
-          resolve()
-        })
-        .catch(() => reject())
-      })
+      try {
+        Axios.get('Admin/role')
+          .then(resp => {
+            commit('set_role', resp.data)
+            resolve()
+          })
+          .catch((err) => reject(err))
+      } catch(err) {
+        console.log(err)
+      }
+    })
   },
 
   getProfile ({ commit }, username) {

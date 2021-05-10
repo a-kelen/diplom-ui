@@ -1,9 +1,9 @@
 <template>
-  <router-link :to="{ name: 'ComponentPage', params: {id: component.id} }">
+  <router-link :to="{ name: 'LibComponentPage', params: {libname, name: component.name} }">
     <v-card class="d-flex align-center my-2 pa-2">
       <v-icon color="green">mdi-vuejs</v-icon>
-      <div class="mx-3">ComponentName</div>
-      <v-chip color="green" class="ml-auto" label>Format</v-chip>
+      <div class="mx-3">{{ component.name }}</div>
+      <v-chip color="green" class="ml-auto" label>{{ component.format }}</v-chip>
     </v-card>
   </router-link>
 </template>
@@ -13,6 +13,6 @@ export default {
   name: 'ComponentRow',
   data: () => ({
   }),
-  props: ['component']
+  props: ['component', 'libname']
 }
 </script>

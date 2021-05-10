@@ -277,10 +277,13 @@ const router = new VueRouter({
 });
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || 'CompoS'
-    if(to.name === 'LibraryPage') 
-      document.title += ` ${to.params.author} - ${to.params.name}`
-      if(to.name === 'UserProfile') 
-      document.title += ` ${to.params.username}`
+  if(to.name === 'LibraryPage') 
+    document.title += ` ${to.params.author} - ${to.params.name}`
+
+  if(to.name === 'UserProfile') 
+    document.title += ` ${to.params.username}`
+
+
   next()
 })
 

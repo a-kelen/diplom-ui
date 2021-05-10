@@ -28,6 +28,11 @@ export default {
     this.$store.dispatch('UserStore/getCurrentUser')
       .then(() => {
         this.$store.dispatch('UserStore/getRole')
+          .then(() => {
+            
+          })
+          .catch(() => {
+          })
       })
   }
 }

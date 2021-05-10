@@ -1,14 +1,14 @@
 <template>
     <v-sheet elevation="3" class="pa-3">
-      <router-link :to="{ name: 'ComponentPage', params: {id: component.id} }">
+      <router-link :to="link">
         <v-row>
           <v-col md="auto">
             <v-tooltip top nudge-top :position-y="100">
               <template v-slot:activator="{ on, attrs }">
                 <div class="text-h5 text-truncate" v-bind="attrs"
-                  v-on="on">Component</div>
+                  v-on="on">{{ component.name }}</div>
               </template>
-              <span>Component</span>
+              <span>{{ component.name }}</span>
             </v-tooltip>
           </v-col>
         </v-row>
@@ -20,8 +20,8 @@
               dark
               small
               class="green"
-            >Format</v-chip>
-            <v-icon v-if="!status" class="mx-2" small>mdi-lock-outline</v-icon> 
+            >{{ component.format }}</v-chip>
+            <v-icon v-if="status" class="mx-2" small>mdi-lock-outline</v-icon> 
           </v-col>
         </v-row>
         <v-row>
@@ -48,6 +48,10 @@ export default {
         return true
       else 
         return false
+    },
+
+    link() {
+      return { name: 'ComponentPage', params: {author: this.component.author, name: this.component.name } }
     },
 
     color() {

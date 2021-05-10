@@ -1,5 +1,14 @@
 <template>
   <v-container>
+    <v-row class="d-flex">
+      <v-text-field
+        v-model="component.name"
+        label="Name"
+        outlined
+        dense
+        class="my-1"
+      ></v-text-field>
+    </v-row>
     <v-row>
         <v-file-input
             v-model="component.files"

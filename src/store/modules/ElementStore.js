@@ -1,12 +1,13 @@
 import Axios from '../axios'
 const state = {
     elementSelectType: 0,
-    elementType: '',
+    elementType: -1,
     status: false,
     newLibraryName: 'Library name',
     newLibraryAvatar: null,
     newLibraryDescription: 'Library Description',
     newComponent: {
+      name: '',
       files: [],
       events: [],
       slots: [],
@@ -77,6 +78,7 @@ const state = {
     addNewComponentToLibrary(state) {
       state.components.push({
         id: state.components.length + 1,
+        name: '',
         files: [],
         events: [],
         props: [],
@@ -88,6 +90,7 @@ const state = {
 
     refreshNewComponent(state) {
       state.newComponent = {
+        name: '',
         files: [],
         events: [],
         props: [],

@@ -37,6 +37,7 @@ const mutations = {
 // actions
 const actions = {
     searchUsers({ commit }, searchQuery) {
+        
         return new Promise((resolve, reject) => {
             Axios.get(`User/search/${searchQuery}`)
                 .then(resp => {
@@ -66,6 +67,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             Axios.get(`Library/search/${searchQuery}`)
                 .then(resp => {
+                    
                     commit('set_libraries', resp.data)
                     resolve()
                 })

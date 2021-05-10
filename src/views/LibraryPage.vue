@@ -93,7 +93,7 @@
               <div v-else> {{ library.description }} </div>
             </v-tab-item>
             <v-tab-item value="tab-2">
-                <component-row v-for="(c, i) in library.components" :key="i" :component="c" />
+                <component-row v-for="(c, i) in library.components" :key="i" :component="c" :libname="library.name" />
             </v-tab-item>
             <v-tab-item value="tab-3">
               sdfsdfsdf
@@ -181,7 +181,7 @@ export default {
   },
   watch: {
     library() {
-      this.savedDescription = ''
+      this.savedDescription = this.library.description
       this.savedStatus = this.library.status == 'Public'
       this.editMode = false
       if(this.library.hasAvatar)

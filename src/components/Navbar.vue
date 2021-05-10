@@ -125,7 +125,10 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('UserStore/logout')
-        .then( () => this.$router.push({ name: 'Login' }))
+        .then(() => {
+          window.history.go('login')
+          location.reload()
+        })
     }
   }
 }

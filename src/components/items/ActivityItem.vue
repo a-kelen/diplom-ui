@@ -43,7 +43,6 @@ export default {
     },
     link() {
       let path = this.item.type === 'library' ? 'LibraryPage' : 'ComponentPage'
-      
       return { name: path, params: {author: this.item.author, name: this.item.name} }
     }
   },
