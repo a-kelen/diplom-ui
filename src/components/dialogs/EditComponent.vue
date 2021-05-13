@@ -75,7 +75,6 @@
     </v-row>
     <v-row>
         <Editor
-        mode="editor"
         :emoji="false"
         ref="editor"
         :outline="false"

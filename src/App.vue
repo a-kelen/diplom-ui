@@ -24,7 +24,9 @@ export default {
     Navbar
   },
   created() {
+    
     axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('token')
+
     this.$store.dispatch('UserStore/getCurrentUser')
       .then(() => {
         this.$store.dispatch('UserStore/getRole')

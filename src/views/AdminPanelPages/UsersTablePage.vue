@@ -79,7 +79,7 @@
           <span class=" ml-2 font-weight-bold">
             {{ item.admittedReports }}/{{ item.totalReports }}
           </span>
-          <span class="ml-4">({{ item.admittedReports / item.totalReports * 100 }} %)</span>
+          <span v-if="item.totalReports > 0"  class="ml-4">({{ item.admittedReports / (item.totalReports) * 100 }} %)</span>
         </div>
         
       </td>

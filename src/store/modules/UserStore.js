@@ -97,7 +97,6 @@ const actions = {
       params: { page }
     })
       .then(resp => {
-        console.log(resp.data)
         commit('set_activities_page', resp.data)
         resolve(resp.data)
       }).catch(err => {
@@ -111,7 +110,6 @@ const actions = {
     Axios.get('User/followed-users')
       .then(resp => {
         commit('set_followed_users', resp.data)
-        resolve(resp.data)
       }).catch(err => {
         reject(err)
       })
@@ -136,7 +134,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('auth_request')
       if (localStorage.getItem('token') != null) {
-        Axios({ url: 'User', method: 'GET' })
+        Axios.get('User', {withCredentials: true})
           .then(resp => {
             const user = resp.data
             commit('reauth_success', user)
@@ -175,7 +173,9 @@ const actions = {
             commit('set_role', resp.data)
             resolve()
           })
-          .catch((err) => reject(err))
+          .catch((err) => {
+            reject(err)
+          })
       } catch(err) {
         console.log(err)
       }

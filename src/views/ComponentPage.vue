@@ -35,12 +35,12 @@
                 >
                   <v-icon>{{ likeIcon }}</v-icon>
                 </v-btn>
-                <v-btn 
+                <!-- <v-btn 
                   v-if="componentIsIndepended" 
                   color="primary" icon
                 >
                   <v-icon>mdi-download-outline</v-icon>
-                </v-btn>
+                </v-btn> -->
                 <v-btn v-if="userIsOwner" color="primary" icon @click="changeEditMode">
                   <v-icon>mdi-pencil-outline</v-icon>
                 </v-btn>

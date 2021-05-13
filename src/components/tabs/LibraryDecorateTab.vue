@@ -5,7 +5,7 @@
         <p class="text-h5">Library Name</p>
       </v-col>
     </v-row>
-    <v-row>
+    <!-- <v-row>
       <v-col>
         <v-btn 
           color="primary"
@@ -13,7 +13,7 @@
           Add existing component(s)
         </v-btn>
       </v-col>
-    </v-row>
+    </v-row> -->
      <v-row>
       <v-col>
         <v-btn 

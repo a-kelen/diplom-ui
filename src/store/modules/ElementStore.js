@@ -119,6 +119,7 @@ const state = {
         })
       })
     },
+    
     createElement ({ commit, dispatch, state }) {
       if(state.elementSelectType == 0) {
         var libraryFiles = [];

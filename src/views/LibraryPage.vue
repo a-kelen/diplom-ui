@@ -51,9 +51,9 @@
               <v-btn @click="like" :loading="likeBtnLoading" color="primary" icon>
                 <v-icon>{{ likeIcon }}</v-icon>
               </v-btn>
-              <v-btn color="primary" icon>
+              <!-- <v-btn :href="downloadHref" color="primary" icon>
                 <v-icon>mdi-download-outline</v-icon>
-              </v-btn>
+              </v-btn> -->
               <v-btn 
                 v-if="!userIsOwner && !library.owned"
                 @click="getOwn"
@@ -87,10 +87,10 @@
           </v-tabs>
           <v-tabs-items class="transparent-body" v-model="tab">
             <v-tab-item background-opacity="0" value="tab-1">
-              <Editor v-if="editMode" 
+              <Editor 
+                :mode="editMode ? 'preview' : 'viewer'"
                 v-model="library.description"
               />
-              <div v-else> {{ library.description }} </div>
             </v-tab-item>
             <v-tab-item value="tab-2">
                 <component-row v-for="(c, i) in library.components" :key="i" :component="c" :libname="library.name" />
@@ -137,6 +137,14 @@ export default {
     snackbarText: 'Library updated successfully',
     getOwnBtnLoading: false
   }),
+
+  mounted() {
+    if(this.library) {
+      this.savedDescription = this.library.description 
+      this.savedStatus = this.library.status == 'Public'
+    }
+  },
+
   computed: {
     ...mapState({
       library: s => s.LibraryStore.activeLibrary,
@@ -192,11 +200,14 @@ export default {
     },
     
     libraryDescription() {
-      if(this.savedDescription == '') {
-          this.savedDescription = this.library.description
-      }
+      if(this.savedDescription == '') 
+        this.savedDescription = this.library.description
+        this.savedStatus = this.library.s
     },
+
+    
   },
+  
   methods: {
     fetch() {
       let payload = {

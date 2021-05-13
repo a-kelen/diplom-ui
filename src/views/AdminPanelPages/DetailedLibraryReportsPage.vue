@@ -54,6 +54,11 @@
             >
                 Reset
             </v-btn>
+        </template>
+        <template v-slot:item.date="{ item }"> 
+          <span>
+            {{ dateFormat(item.date) }}
+          </span>
         </template>  
         <!-- <template v-slot:item.status="{ item }"> 
           <v-chip
@@ -101,6 +106,7 @@ export default {
         value: 'username',
       },
       { text: 'Content', value: 'content' },
+      { text: 'Date', value: 'date' },
       { text: 'Status', value: 'status' },
     ],
 
@@ -147,6 +153,11 @@ export default {
   },
 
   methods: {  
+    dateFormat(dateJSON) {
+      let date = new Date(dateJSON)
+      return date.toLocaleDateString()
+    },
+
     getColor(status) {
       return status == 'Approved' ? 'grey' : 'primary'   
     },
