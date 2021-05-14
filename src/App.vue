@@ -16,7 +16,7 @@
 
 <script>
 import Navbar from './components/Navbar.vue'
-import axios from './store/axios'
+// import axios from './store/axios'
 
 export default {
   name: 'app',
@@ -25,7 +25,7 @@ export default {
   },
   created() {
     
-    axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('token')
+    // axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('token')
 
     this.$store.dispatch('UserStore/getCurrentUser')
       .then(() => {

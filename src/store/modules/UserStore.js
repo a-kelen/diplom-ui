@@ -134,7 +134,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('auth_request')
       if (localStorage.getItem('token') != null) {
-        Axios.get('User', {withCredentials: true})
+        Axios.get('User')
           .then(resp => {
             const user = resp.data
             commit('reauth_success', user)
