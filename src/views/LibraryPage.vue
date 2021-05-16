@@ -138,13 +138,6 @@ export default {
     getOwnBtnLoading: false
   }),
 
-  mounted() {
-    if(this.library) {
-      this.savedDescription = this.library.description 
-      this.savedStatus = this.library.status == 'Public'
-    }
-  },
-
   computed: {
     ...mapState({
       library: s => s.LibraryStore.activeLibrary,
@@ -215,6 +208,10 @@ export default {
         name: this.$route.params.name
       }
       this.$store.dispatch('LibraryStore/getLibrary', payload)
+        .then(() => {
+          this.savedDescription = this.library.description 
+          this.savedStatus = this.library.status == 'Public'
+        })
     },
 
     saveAvatar(canvas) {

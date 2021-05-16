@@ -189,6 +189,15 @@ const routes = [
     }
   },
   {
+    path: '/history',
+    name: 'History',
+    component: () => import('../views/HistoryPage.vue'),
+    meta: {
+      auth: true,
+      title: 'History'
+    }
+  },
+  {
     path: '/settings',
     name: 'Settings',
     component: () => import('../views/Settings.vue'),

@@ -74,8 +74,11 @@
             <v-btn @click="admit(item)" color="primary" class="mx-2">Admit</v-btn>
             <v-btn @click="reject(item)" color="red">Reject</v-btn>
           </div>
+          <div class="mt-3">
+            Id: {{item.id}}
+          </div>
           <div class="ma-4">
-            {{ item.content }}
+           Content: {{ item.content }}
           </div>
         </td>
       </template>

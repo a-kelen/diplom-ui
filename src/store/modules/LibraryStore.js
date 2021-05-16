@@ -112,15 +112,18 @@ const actions = {
   },
 
   getLibrary({ commit, state }, payload) {
-    if(state.cache.some(c => c.author == payload.author && c.name == payload.name)) {
-      commit('set_active_library', state.cache.find(c => c.author == payload.author && c.name == payload.name))
-      return
-    }
+    return new Promise((resolve) => {
+      if(state.cache.some(c => c.author == payload.author && c.name == payload.name)) {
+        commit('set_active_library', state.cache.find(c => c.author == payload.author && c.name == payload.name))
+        resolve()
+      }
 
-    Axios.get(`Library/${payload.author}/${payload.name}`)
-      .then(resp => {
-        commit('set_active_library', resp.data)
-        commit('add_to_cache', resp.data)
+      Axios.get(`Library/${payload.author}/${payload.name}`)
+        .then(resp => {
+          commit('set_active_library', resp.data)
+          commit('add_to_cache', resp.data)
+          resolve()
+      })
     })
   },
 

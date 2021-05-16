@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import ComponentStore from './modules/ComponentStore'
 import ElementStore from './modules/ElementStore'
 import LibraryStore from './modules/LibraryStore'
+import HistoryStore from './modules/HistoryStore'
 import SearchStore from './modules/SearchStore'
 import AdminStore from './modules/AdminStore'
 import UserStore from './modules/UserStore'
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     ElementStore,
     UserStore,
     LibraryStore,
+    HistoryStore,
     SearchStore,
     AdminStore
   }
