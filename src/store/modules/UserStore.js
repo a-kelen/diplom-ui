@@ -120,7 +120,7 @@ const actions = {
     return new Promise((resolve, reject) => {
     if(state.topUsers.length > 0)
       resolve()
-    Axios.get('User/topList')
+    Axios.get('User/top-list')
       .then(resp => {
         commit('set_top_users', resp.data)
         resolve(resp.data)

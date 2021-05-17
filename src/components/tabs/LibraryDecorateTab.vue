@@ -5,15 +5,6 @@
         <p class="text-h5">Library Name</p>
       </v-col>
     </v-row>
-    <!-- <v-row>
-      <v-col>
-        <v-btn 
-          color="primary"
-        >
-          Add existing component(s)
-        </v-btn>
-      </v-col>
-    </v-row> -->
      <v-row>
       <v-col>
         <v-btn 
@@ -37,6 +28,12 @@
           <primary-component-item :component="c" ></primary-component-item>
         </sortable>
       </v-col>
+    </v-row>
+    <v-row>
+      <v-alert
+        v-show="hasDuplicates"
+        type="error"
+      >Component List has duplicates</v-alert>
     </v-row>
   </v-container>
 </template>
@@ -66,11 +63,23 @@ export default {
   }),
   computed: {
     ...mapState({
-      components: s => s.ElementStore.components
-    })
+      components: s => s.ElementStore.components,
+    }),
+
+    hasDuplicates() {
+      let array = this.components.map(x => x.name)
+      return new Set(array).size !== array.length && array.every(x => x.name != '')
+    }
+  },
+  watch: {
+    hasDuplicates(val) {
+      console.log(val)
+      this.$store.commit('ElementStore/updateNewLibraryHasDuplicates', val)
+    }
   },
   methods: {
     addNewComponent() {
+      console
       this.$store.commit('ElementStore/addNewComponentToLibrary')
     },
 

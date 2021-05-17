@@ -110,7 +110,9 @@ export default {
   computed: {
     ...mapState({
       elementType: s => s.ElementStore.elementSelectType,
+      frameworkType: s => s.ElementStore.elementType,
       newLibraryName: s => s.ElementStore.newLibraryName,
+      hasDuplicates: s => s.ElementStore.newLibraryHasDuplicates,
       components: s => s.ElementStore.components,
       newComponent: s => s.ElementStore.newComponent
     }),
@@ -129,7 +131,7 @@ export default {
       this.newLibraryName
       this.elementType
       if(this.currentStep == 1) {
-        return this.elementType == undefined
+        return this.elementType == undefined || this.frameworkType == ""
       }
       if(this.currentStep == 2) {
         return this.newLibraryName == ''
@@ -140,9 +142,9 @@ export default {
     saveButtonDisable() {
       
       if(this.elementType == 0)
-        return this.components.length == 0 
+        return this.components.length === 0 || this.components.some(x => !x.isDone) || this.hasDuplicates
       else  
-        return this.newComponent.files == 0
+        return this.newComponent.files === 0
     },
     
     backButtonVisible() {

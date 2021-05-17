@@ -1,10 +1,11 @@
 import Axios from '../axios'
 const state = {
     elementSelectType: 0,
-    elementType: -1,
+    elementType: '',
     status: false,
     newLibraryName: 'Library name',
     newLibraryAvatar: null,
+    newLibraryHasDuplicates: false,
     newLibraryDescription: 'Library Description',
     newComponent: {
       name: '',
@@ -71,6 +72,10 @@ const state = {
       state.newLibraryAvatar = val
     },
 
+    updateNewLibraryHasDuplicates (state, val) {
+      state.newLibraryHasDuplicates = val
+    },
+
     updateNewLibraryDescription (state, val) {
       state.newLibraryDescription = val
     },
@@ -84,7 +89,8 @@ const state = {
         props: [],
         slots: [],
         description: 'Description ...',
-        dependencies: ''
+        dependencies: '',
+        isDone: false
       })
     },
 
@@ -124,7 +130,8 @@ const state = {
       if(state.elementSelectType == 0) {
         var libraryFiles = [];
         for(var i=0; i<state.components.length; i++){
-          libraryFiles = libraryFiles.concat(state.components[i].files);
+          let fs = state.components[i].files.map(x => new File([x], `${state.components[i].name}/${x.name}`))
+          libraryFiles = libraryFiles.concat(fs);
         }
         let payload = {
           name: state.newLibraryName,
@@ -142,11 +149,12 @@ const state = {
             .then(resp => {
               formData.append('elementId', resp.data.id)
               formData.append('descriminator', 'library')
-              dispatch(
-                'LibraryStore/saveAvatar',
-                { libraryId: resp.data.id, blob: state.newLibraryAvatar },
-                { root: true }
-              )
+              if(state.newLibraryAvatar)
+                dispatch(
+                  'LibraryStore/saveAvatar',
+                  { libraryId: resp.data.id, blob: state.newLibraryAvatar },
+                  { root: true }
+                )
               Axios.post('File/upload-files', formData)
                 .then(resp => {
                   commit('LibraryStore/add_own_library', resp.data, { root: true })

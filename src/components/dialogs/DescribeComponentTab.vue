@@ -2,7 +2,7 @@
   <v-container>
     <v-row class="d-flex">
       <v-text-field
-        v-model="component.name"
+        v-model.trim="component.name"
         label="Name"
         outlined
         dense
@@ -160,15 +160,34 @@ export default {
   props: ['component'],
   data: () => ({
     renderConfig: {
-    mermaid: {
-        theme: 'dark'
-    },
-    emoji: false
+      mermaid: {
+          theme: 'dark'
+      },
+      emoji: false
     },
     dragEventData: {},
     dragPropData: {},
     dragSlotData: {},
   }),
+
+  computed: {
+    changeData() {
+      const { name, files } = this.component
+      return {
+        name,
+        files
+      }
+    }
+  },
+
+  watch: {
+    changeData: {
+      handler: function(val) {
+        this.component.isDone = val.name && val.files.length > 0
+      },
+      deep: true
+    }
+  },
   methods: {
 
     addProp() {

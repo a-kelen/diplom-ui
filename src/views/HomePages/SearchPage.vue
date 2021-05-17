@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 ma-0">
+  <v-container class="ma-0">
     <v-row>
         <v-col>
             <v-text-field
@@ -14,6 +14,7 @@
     </v-row>
     <v-row>
         <v-tabs
+            class="mx-4"
             grow
             v-model="tab"
             >
@@ -44,7 +45,7 @@
                 </v-badge>
             </v-tab>
         </v-tabs>
-        <v-tabs-items class="transparent-body pa-3" v-model="tab">
+        <v-tabs-items class="transparent-body pa-3 mx-4" v-model="tab">
             <v-tab-item background-opacity="0" value="tab-1">
               <users-page :users="users"/>
             </v-tab-item>

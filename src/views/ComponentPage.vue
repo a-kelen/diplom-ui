@@ -10,7 +10,7 @@
                 </v-card-text>
                 <v-chip label >{{ component.format }}</v-chip>
                 <v-icon v-if="statusIcon">mdi-lock-outline</v-icon>
-                <report-bottom-sheet @submit="reportToComponent" :visibility.sync="reportSheet"/>
+                <report-bottom-sheet v-if="!userIsOwner" @submit="reportToComponent" :visibility.sync="reportSheet"/>
               </v-sheet>
             </v-col>
           </v-row>
@@ -35,12 +35,6 @@
                 >
                   <v-icon>{{ likeIcon }}</v-icon>
                 </v-btn>
-                <!-- <v-btn 
-                  v-if="componentIsIndepended" 
-                  color="primary" icon
-                >
-                  <v-icon>mdi-download-outline</v-icon>
-                </v-btn> -->
                 <v-btn v-if="userIsOwner" color="primary" icon @click="changeEditMode">
                   <v-icon>mdi-pencil-outline</v-icon>
                 </v-btn>
@@ -66,10 +60,10 @@
           <v-card class="px-2">
             <v-tabs v-model="tab" grow>
               <v-tab href="#tab-1">Description</v-tab>
-              <v-tab href="#tab-2">Events</v-tab>
-              <v-tab href="#tab-3">Props</v-tab>
-              <v-tab href="#tab-4">Slots</v-tab>
-              <v-tab href="#tab-5">Dependencies</v-tab>
+              <v-tab v-show="component.events.length > 0" href="#tab-2">Events</v-tab>
+              <v-tab v-show="component.props.length > 0" href="#tab-3">Props</v-tab>
+              <v-tab v-show="component.slots.length > 0" href="#tab-4">Slots</v-tab>
+              <v-tab v-show="component.dependencies" href="#tab-5">Dependencies</v-tab>
             </v-tabs>
             <v-tabs-items class="transparent-body" v-model="tab">
               <v-tab-item background-opacity="0" value="tab-1">
@@ -205,7 +199,7 @@ export default {
     }),
 
     statusIcon() {
-      return this.component.status == 'Private'
+      return this.component.status == 'Private' && this.componentIsIndepended
     },
 
     likeIcon() {

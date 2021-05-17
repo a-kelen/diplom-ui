@@ -4,9 +4,9 @@
       <v-col>
       <v-card elevation="3" class="d-flex pa-2 align-center">
         <v-icon size="30" color="blue" >mdi-vuejs</v-icon>
-        <v-chip color="blue" class="mx-2" dark  label>Format</v-chip>
-        <div class="mx-2">Component</div>
-        
+        <v-chip color="blue" class="mx-2" dark  label>{{ frameworkType }}</v-chip>
+        <div class="mx-2">{{ componentName }}</div>
+        <v-icon v-show="component.isDone" color="primary">mdi-checkbox-marked-circle-outline</v-icon>
         <v-btn icon color="primary" @click="addNewComponent" class="ml-auto">
           <v-icon>mdi-pen</v-icon>
         </v-btn>
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import DescribeComponentTab from '../dialogs/DescribeComponentTab.vue'
 
 export default {
@@ -63,10 +64,16 @@ export default {
   },
   props: ['component'],
   data: () => ({
-    dialog: false,
+    dialog: false
   }),
   computed: {
-    
+    ...mapState({
+       frameworkType: s => s.ElementStore.elementType
+    }),
+
+    componentName() {
+      return this.component.name ? this.component.name : '(Empty)' 
+    }
   },
   methods: {
     addNewComponent() {
@@ -76,7 +83,7 @@ export default {
     deleteComponent() {
       this.$store.commit('ElementStore/deleteComponent', this.component.id)
     }
-  }
+  },
 }
 </script>
 

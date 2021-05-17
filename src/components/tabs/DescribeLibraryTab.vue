@@ -4,7 +4,7 @@
       <v-text-field
         filled
         dense
-        v-model="newLibraryName"
+        v-model.trim="newLibraryName"
         label="Name"
       ></v-text-field>
     </v-row>

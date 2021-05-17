@@ -1,7 +1,6 @@
 <template>
-  <v-container>
+  <v-card elevation="3" max-width="500px" class="pa-2">
     <router-link :to="{ name: 'UserProfile', params: { username: author.username } }">
-      <v-sheet max-width="500px" elevation="3" class="pa-2">
         <v-row class="d-flex align-center ma-0 mb-2 flex-nowrap gap">
           <v-avatar
             color="green"
@@ -49,9 +48,8 @@
               </div>
           </v-col>
         </v-row>
-      </v-sheet>
     </router-link>
-  </v-container>
+  </v-card>
 </template>
 
 <script>
