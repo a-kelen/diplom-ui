@@ -144,7 +144,7 @@ export default {
       if(this.elementType == 0)
         return this.components.length === 0 || this.components.some(x => !x.isDone) || this.hasDuplicates
       else  
-        return this.newComponent.files === 0
+        return this.newComponent.files.length === 0 || !this.newComponent.name
     },
     
     backButtonVisible() {

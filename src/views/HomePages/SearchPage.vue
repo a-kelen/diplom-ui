@@ -14,14 +14,14 @@
     </v-row>
     <v-row>
         <v-tabs
-            class="mx-4"
-            grow
-            v-model="tab"
+                class="mx-4"
+                grow
+                v-model="tab"
             >
             <v-tab href="#tab-1">
                 <v-badge
-                color="primary"
-                dot
+                    color="primary"
+                    :content="users.length"
                 >
                 Users
                 </v-badge>
@@ -29,8 +29,8 @@
 
             <v-tab href="#tab-2">
                 <v-badge
-                color="primary"
-                content="6"
+                    color="primary"
+                    :content="components.length"
                 >
                 Components
                 </v-badge>
@@ -39,14 +39,14 @@
             <v-tab href="#tab-3">
                 <v-badge
                 color="primary"
-                content="2"
+                :content="libraries.length"
                 >
                 Libraries
                 </v-badge>
             </v-tab>
         </v-tabs>
-        <v-tabs-items class="transparent-body pa-3 mx-4" v-model="tab">
-            <v-tab-item background-opacity="0" value="tab-1">
+        <v-tabs-items class="pa-5 mx-4 transparent-body" v-model="tab">
+            <v-tab-item  value="tab-1">
               <users-page :users="users"/>
             </v-tab-item>
             <v-tab-item value="tab-2">
@@ -77,15 +77,20 @@ export default {
         searchQuery: '',
         dictionary: new Map()
     }),
+
     methods: {
         search() {
+            if(!this.searchQuery) return
+
             let dispatcher = this.dictionary.get(this.tab)
             this.$store.dispatch(dispatcher, this.searchQuery)
                 .then(() => {
 
                 })       
-        }
+        },
+
     },
+
     computed: {
         ...mapState({
           components: s => s.SearchStore.components,
@@ -93,12 +98,23 @@ export default {
           users: s => s.SearchStore.users
         }),
     },
+
+    watch: {
+        tab() {
+            this.search()
+        }
+    },
+
     created() {
         this.dictionary.set('tab-1', 'SearchStore/searchUsers')
         this.dictionary.set('tab-2', 'SearchStore/searchComponents')
         this.dictionary.set('tab-3', 'SearchStore/searchLibraries')
-        // this.$store.dispatch('ComponentStore/getTopComponentList')
-        //   .then(() => this.skeletons = [])
+        
     }
 }
 </script>
+<style scoped>
+.transparent-body {
+  background: transparent !important;
+}
+</style>

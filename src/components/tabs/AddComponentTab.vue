@@ -56,42 +56,57 @@
         <v-btn @click="addProp" class="ma-2" color="primary">Add prop</v-btn>
       </v-col>
     </v-row>
-    <v-row>
-      <sortable v-for="(prop, index) in component.props"
-        v-model="dragPropData"
-        :key="prop.id"
-        :index="index"
-        drag-direction="vertical"
-        replace-direction="vertical"
-        @sortend="sortProps" 
-      >
-        <add-component-field
-          @deleteItem="deleteProp"
-          :descriptionTitle="'Prop Description'" 
-          :nameTitle="'Prop name'" 
-          :item="prop"/>
-      </sortable>
+    <v-row v-if="component.props.length > 0">
+      <v-col>
+        <sortable v-for="(prop, index) in component.props"
+          v-model="dragPropData"
+          :key="prop.id"
+          :index="index"
+          drag-direction="vertical"
+          replace-direction="vertical"
+          @sortend="sortProps" 
+        >
+          <add-component-field
+            @deleteItem="deleteProp"
+            :descriptionTitle="'Prop Description'" 
+            :nameTitle="'Prop name'" 
+            :item="prop"/>
+        </sortable>
+      </v-col>
     </v-row>
+    <v-row v-else>
+      <v-col>
+        <empty-list-component/>
+      </v-col>
+    </v-row>
+
     <v-row>
         <v-col>
           <v-btn @click="addEvent" class="ma-2" color="primary">Add event</v-btn>
         </v-col>
     </v-row>
-    <v-row>
-      <sortable v-for="(event, index) in component.events"
-        v-model="dragEventData"
-        :key="event.id"
-        :index="index"
-        drag-direction="vertical"
-        replace-direction="vertical"
-        @sortend="sortEvents" 
-      >
-        <add-component-field
-          @deleteItem="deleteEvent"
-          :descriptionTitle="'Event Description'" 
-          :nameTitle="'Event name'" 
-          :item="event"/>
-      </sortable>
+    <v-row v-if="component.events.length > 0">
+      <v-col>
+        <sortable v-for="(event, index) in component.events"
+          v-model="dragEventData"
+          :key="event.id"
+          :index="index"
+          drag-direction="vertical"
+          replace-direction="vertical"
+          @sortend="sortEvents" 
+        >
+          <add-component-field
+            @deleteItem="deleteEvent"
+            :descriptionTitle="'Event Description'" 
+            :nameTitle="'Event name'" 
+            :item="event"/>
+        </sortable>
+      </v-col>
+    </v-row>
+    <v-row v-else>
+      <v-col>
+        <empty-list-component/>
+      </v-col>
     </v-row>
 
     <v-row>
@@ -99,21 +114,28 @@
           <v-btn class="ma-2" color="primary" @click="addSlot">Add slot</v-btn>
         </v-col>
     </v-row>
-    <v-row>
-      <sortable v-for="(slot, index) in component.slots"
-        v-model="dragSlotData"
-        :key="slot.id"
-        :index="index"
-        drag-direction="vertical"
-        replace-direction="vertical"
-        @sortend="sortSlots" 
-      >
-        <add-component-field
-          @deleteItem="deleteSlot"
-          :descriptionTitle="'Slot Description'" 
-          :nameTitle="'Slot name'" 
-          :item="slot"/>
-      </sortable>
+    <v-row v-if="component.slots.length > 0">
+      <v-col>
+        <sortable v-for="(slot, index) in component.slots"
+          v-model="dragSlotData"
+          :key="slot.id"
+          :index="index"
+          drag-direction="vertical"
+          replace-direction="vertical"
+          @sortend="sortSlots" 
+        >
+          <add-component-field
+            @deleteItem="deleteSlot"
+            :descriptionTitle="'Slot Description'" 
+            :nameTitle="'Slot name'" 
+            :item="slot"/>
+        </sortable>
+      </v-col>
+    </v-row>
+    <v-row v-else>
+      <v-col>
+        <empty-list-component/>
+      </v-col>
     </v-row>
 
     <v-row>
@@ -143,12 +165,14 @@ import AddComponentField from '../items/AddComponentField.vue'
 // import { VueEditor } from "vue2-editor";
 import { mapState } from 'vuex';
 import Sortable from 'vue-drag-sortable'
+import EmptyListComponent from '../EmptyListComponent.vue';
 
 export default {
   name: 'AddComponentTab',
   components: {
     AddComponentField,
     Sortable,
+    EmptyListComponent,
     // Editor
     // VueEditor 
   },

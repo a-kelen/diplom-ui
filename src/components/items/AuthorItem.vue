@@ -59,7 +59,7 @@ export default {
   name: 'AuthorItem',
   props: ['author'],
   data: () => ({
-    avatar: ' '
+    avatar: ''
   }),
   methods: {
         getAvatar() {
