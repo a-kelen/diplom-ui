@@ -1,8 +1,8 @@
 <template>
-  <v-app>
-    <navbar />
+  <v-app >
+    <navbar v-show="initialized"/>
 
-    <v-main>
+    <v-main v-show="initialized">
       <v-container fluid>
         <keep-alive>
           <transition name="fade" mode="out-in">
@@ -11,24 +11,36 @@
         </keep-alive>
       </v-container>
     </v-main>
+    <v-progress-linear
+      v-show="!initialized"
+      indeterminate
+      height="10"
+      class="my-10"
+      color="primary"
+    ></v-progress-linear>
   </v-app>
+  
 </template>
 
 <script>
 import Navbar from './components/Navbar.vue'
-// import axios from './store/axios'
+import 'vue-loading-overlay/dist/vue-loading.min.css';
 
 export default {
   name: 'app',
   components: {
     Navbar
   },
-  created() {
-    
-    // axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('token')
 
-    this.$store.dispatch('UserStore/getCurrentUser')
+  data: () => ({
+    initialized: false
+  }),
+
+  created() {
+    this.$store.dispatch('UserStore/getCurrentUser') 
       .then(() => {
+        this.initialized = true
+        console.log('asd')
         this.$store.dispatch('UserStore/getRole')
           .then(() => {
             
@@ -36,6 +48,10 @@ export default {
           .catch(() => {
           })
       })
+  },
+  
+  methods: {
+    
   }
 }
 </script>

@@ -7,20 +7,41 @@
                 <v-btn color="primary" to="register" class="mr-auto" small rounded outlined>Register</v-btn>
                 <div class="text-h4">Login</div>
             </div>
-            <v-text-field
-                v-model="user.email"
-                label="Email"
-            ></v-text-field>
-            <v-text-field
-                v-model="user.password"
-                :type="showPass ? 'text' : 'password'"
-                :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="[rules.required, rules.min]"
-                @click:append="showPass = !showPass"
-                label="Password"
-            ></v-text-field>
-              
-            <v-btn @click="login" :loading="loading" color="primary" rounded block class="mt-5">Login</v-btn>
+
+            <v-form v-model="valid" ref="form">
+              <v-text-field
+                  v-model="user.email"
+                  :rules="[rules.required]"
+                  label="Email"
+              ></v-text-field>
+              <v-text-field
+                  v-model="user.password"
+                  :type="showPass ? 'text' : 'password'"
+                  :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+                  :rules="[rules.required, rules.min]"
+                  @click:append="showPass = !showPass"
+                  label="Password"
+              ></v-text-field>
+              <v-alert
+                v-show="error"
+                dense
+                outlined
+                type="error"
+              >
+                Invalid email or password
+              </v-alert>  
+              <v-btn 
+                @click="login" 
+                :loading="loading"
+                :disabled="!valid" 
+                :class="[ error ? 'error' : 'primary']" 
+                rounded 
+                block 
+                class="mt-5"
+              >
+                Login
+              </v-btn>
+            </v-form>
           </v-card>
       </v-col>
     </v-row>
@@ -34,6 +55,8 @@ export default {
   name: 'Login',
   data: () => ({
     showPass: false,
+    error: false,
+    valid: false,
     loading: false,
     user: {
       email: '',
@@ -52,6 +75,14 @@ export default {
         .then(() => {
           this.loading = false
           this.$router.push({ name: 'Home'})
+        })
+        .catch(() => {
+          this.error = true
+          this.loading = false
+          setTimeout(() => {
+            this.error = false
+            
+          }, 3000);
         })
     }
   },

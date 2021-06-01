@@ -42,13 +42,21 @@
                         label="Password Confirmation"
                         :rules="passwordConfirmRules"
                     ></v-text-field>
+                    <v-alert
+                        v-show="error"
+                        dense
+                        outlined
+                        type="error"
+                    >
+                        Incorect data
+                    </v-alert>  
                     <v-btn 
                         :disabled="!valid" 
                         :loading="loading"
                         @click="register"
-                        color="primary" 
                         rounded 
                         block 
+                        :class="[ error ? 'error' : 'primary']" 
                         class="mt-5"
                         >
                         Register
@@ -66,6 +74,7 @@ export default {
     data: () => ({
         valid: false,
         loading: false,
+        error: false,
         showPass1: false,
         user: {
             email: '',
@@ -105,9 +114,15 @@ export default {
             this.loading = true
             this.$store.dispatch('UserStore/register', this.user)
                 .then(() => {
-                this.loading = false
-                this.$router.push({ name: 'Home'})
-                
+                    this.loading = false
+                    this.$router.push({ name: 'Home'})
+                })
+                .catch(() => {
+                    this.error = true
+                    this.loading = false
+                    setInterval(() => {
+                        this.error = false
+                    }, 3000);
                 })
             }
     }

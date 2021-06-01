@@ -30,9 +30,10 @@
             Back
           </v-btn>
           <v-btn
-            color="primary"
+            :class="[error ? 'error' : 'primary']"
             class="mx-3"
             v-show="n.saveVisibleBtn"
+            
             :disabled="saveButtonDisable"
             :loading="saveBtnLoading"
             @click="saveElement"
@@ -51,12 +52,14 @@
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
+    <default-snakbar :snackbar.sync="error" :text="errorText"/>
   </v-container>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import SelectTypeTab from '../components/tabs/SelectTypeTab'
+import DefaultSnakbar from '../components/snackbars/DefaultSnakbar.vue'
 import DescribeLibraryTab from '../components/tabs/DescribeLibraryTab'
 import DescribeComponentTab from '../components/tabs/AddComponentTab'
 import LibraryDecorateTab from '../components/tabs/LibraryDecorateTab'
@@ -65,12 +68,15 @@ export default {
   name: 'CreateElementPage',
   components: {
     SelectTypeTab,
+    DefaultSnakbar,
     DescribeLibraryTab,
     DescribeComponentTab,
     LibraryDecorateTab
   },
   data: () => ({
     saveBtnLoading: false,
+    error: false,
+    errorText: 'Element saving failed',
     e1: 0,
     rawSteps: [
       {
@@ -166,6 +172,13 @@ export default {
         this.$store.dispatch('ElementStore/createElement').then(() => {
           this.saveBtnLoading = false
           this.$router.push('Dashboard')
+        })
+        .catch(() => {
+          this.error = true
+          this.saveBtnLoading = false
+          setTimeout(() => {
+            this.error = false
+          }, 4000)
         })
       },
       nextStep () {

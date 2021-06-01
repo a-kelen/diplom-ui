@@ -18,6 +18,7 @@
     "vue-cookies": "^1.7.4",
     "vue-debounce": "^2.6.0",
     "vue-drag-sortable": "^0.2.2",
+    "vue-loading-overlay": "^2.2.2",
     "vue-router": "^3.2.0",
     "vue2-editor": "^2.10.2",
     "vuetify": "^2.2.11",

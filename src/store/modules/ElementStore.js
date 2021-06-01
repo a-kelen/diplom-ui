@@ -163,6 +163,7 @@ const state = {
                   reject(err)
                 })
             })
+            .catch(reject)
           })
       }
       if(state.elementSelectType == 1) {
@@ -188,6 +189,7 @@ const state = {
                   reject(err)
                 })
             })
+            .catch(reject)
         })
       }
       

@@ -133,20 +133,19 @@ const actions = {
   getCurrentUser ({ commit, dispatch }) {
     return new Promise((resolve, reject) => {
       commit('auth_request')
-      if (localStorage.getItem('token') != null) {
-        Axios.get('User')
-          .then(resp => {
-            const user = resp.data
-            commit('reauth_success', user)
-            if(user.hasAvatar)
-              dispatch('getAvatar', user.username)
-            resolve(resp)
-          })
-          .catch(err => {
-            reject(err)
-            commit('auth_error', err)
-          })
-      }
+      Axios.get('User')
+        .then(resp => {
+          const user = resp.data
+          commit('reauth_success', user)
+          if(user.hasAvatar)
+            dispatch('getAvatar', user.username)
+          resolve(resp)
+        })
+        .catch(err => {
+          reject(err)
+          commit('auth_error', err)
+        })
+      
     })
   },
 
@@ -214,7 +213,7 @@ const actions = {
     })
   },
 
-  login ({ commit }, user) {
+  login({ commit }, user) {
     return new Promise((resolve, reject) => {
       commit('auth_request')
       Axios({ url: 'User/login', data: user, method: 'POST' })
@@ -225,14 +224,11 @@ const actions = {
             name: resp.data.name,
             nickname: resp.data.nickname
           }
-          localStorage.setItem('token', token)
           Axios.defaults.headers.common.Authorization = 'Bearer ' + token
           commit('auth_success', { token, user })
           resolve(resp)
         })
         .catch(err => {
-          commit('auth_error', err)
-          localStorage.removeItem('token')
           reject(err)
         })
     })
@@ -277,13 +273,15 @@ const actions = {
     })
   },
 
-  logout ({ commit }) {
-    return new Promise((resolve) => {
-      commit('logout')
-      localStorage.removeItem('token')
-      delete Axios.defaults.headers.common.Authorization
-      
-      resolve(true)
+  logout () {   
+    return new Promise((resolve, reject) => {
+      Axios({ url: 'User/logout', method: 'POST' })
+        .then(resp => {
+           resolve(resp)
+        })
+        .catch(err => {
+          reject(err)
+        })
     })
   },
 
