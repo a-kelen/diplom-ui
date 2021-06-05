@@ -84,6 +84,12 @@ const mutations = {
     set_user_status(state, val) {
         let user = state.usersPage.users.find(x => x.email == val.email)
         user.status = val.status
+        state.usersPage.blockedUsers += val.status == 'Blocked' ? 1 : -1
+    },
+
+    set_user_role(state, val) {
+        let user = state.usersPage.users.find(x => x.email == val.email)
+        user.role = val.role
     }
 
 }
@@ -258,9 +264,25 @@ const actions = {
         return new Promise((resolve, reject) => {
             Axios.post('Admin/switch-block-user', {email})
                 .then((resp) => {
-                    console.log(resp.data)
                     commit('set_user_status', resp.data)
                     resolve()
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    },
+
+    setRole( { commit }, email) {
+        return new Promise((resolve, reject) => {
+            Axios.put('Admin/set-role', {userEmail: email})
+                .then((resp) => {
+                    console.log(resp.data)
+                    commit('set_user_role', {
+                        email,
+                        role : 'moderator'
+                    })
+                    resolve(resp.data)
                 })
                 .catch(err => {
                     reject(err)

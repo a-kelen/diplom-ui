@@ -10,7 +10,7 @@
       <v-list >
         <v-list-item>
           <v-list-item-avatar class="ml-n2" @click="mini = !mini">
-            <v-img :src="user.avatar"></v-img>
+            <v-img  :src="user.avatar"></v-img>
           </v-list-item-avatar>
 
           <v-list-item-title>{{ user.name }}</v-list-item-title>
@@ -39,8 +39,8 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-item 
-          v-show="user.role === 'admin'"
-          :to="{ name: 'AdminPanel' }" 
+          v-show="adminPanelAccess"
+          :to="adminPanelPath" 
           active-class="highlighted"
           
         >
@@ -77,11 +77,6 @@
         </template>
         <v-list>
           <v-list-item
-            @click="theme = !theme"
-          >
-            <v-list-item-title>Change Theme</v-list-item-title>
-          </v-list-item>
-          <v-list-item
             @click="logout"
           >
             <v-list-item-title>Log Out</v-list-item-title>
@@ -112,6 +107,16 @@ export default {
     ...mapState({
       user: s => s.UserStore.user
     }),
+
+    adminPanelAccess() {
+      return ['admin', 'moderator'].includes(this.user.role) 
+    },
+    adminPanelPath() {
+      if(this.user.role === 'admin')
+        return { name: 'AdminPanel' }
+      
+      return { name: 'UserReports' }
+    }
   },
 
   watch: {
@@ -126,6 +131,7 @@ export default {
     logout() {
       this.$router.push({ name: 'Login' })
         .then(() => {
+          console.log('s')
           this.$store.dispatch('UserStore/logout').then((() => {
             location.reload()
           }))

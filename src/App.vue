@@ -40,13 +40,10 @@ export default {
     this.$store.dispatch('UserStore/getCurrentUser') 
       .then(() => {
         this.initialized = true
-        console.log('asd')
-        this.$store.dispatch('UserStore/getRole')
-          .then(() => {
-            
-          })
-          .catch(() => {
-          })
+      })
+      .catch(() => {
+        this.$router.push({ name: 'Login' })
+        this.initialized = true
       })
   },
   

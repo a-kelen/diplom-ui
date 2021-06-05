@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-
+import store from '../store'
 Vue.use(VueRouter);
 
 const routes = [
@@ -156,7 +156,6 @@ const routes = [
     name: 'Login',
     component: () => import('../views/Login.vue'),
     meta: {
-      auth: true,
       title: 'Login'
     }
   },
@@ -165,7 +164,6 @@ const routes = [
     name: 'Register',
     component: () => import('../views/Register.vue'),
     meta: {
-      auth: true,
       title: 'Register'
     }
   },
@@ -225,6 +223,7 @@ const routes = [
       },
       {
         path: 'user-reports',
+        name: 'UserReports',
         component: () => import('../views/AdminPanelPages/UserReportsPage.vue'),
         meta: {
           auth: true,
@@ -285,7 +284,19 @@ const router = new VueRouter({
   routes
 });
 router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.auth)) {
+    if (!store.getters['UserStore/isLoggedIn'] && store.getters['UserStore/isLoggedIn']) {
+      console.log('---1')
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  }
   document.title = to.meta.title || 'CompoS'
+   
   if(to.name === 'LibraryPage') 
     document.title += ` ${to.params.author} - ${to.params.name}`
 

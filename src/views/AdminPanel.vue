@@ -24,7 +24,7 @@
               active-class="highlighted"
               :class="item.path === $route.path ? 'highlighted' : ''"
             >
-              <v-list-item-content>
+              <v-list-item-content >
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 
 export default {
   name: 'AdminPanel',
@@ -58,16 +59,26 @@ export default {
       selectedItem: 1,
       dashboardReady: false,
       page: 1,
-      items: [
-        { title: 'Users Table', icon: 'mdi-account', path: '/admin-panel/users-table'},
-        { title: 'Users Reports', icon: 'mdi-account', path: '/admin-panel/user-reports'},
-        { title: 'Library Reports', icon: 'mdi-view-compact', path: '/admin-panel/library-reports'},
+      rawItems: [
+        { title: 'Users Table', icon: 'mdi-account', path: '/admin-panel/users-table' },
+        { title: 'Users Reports', icon: 'mdi-account', path: '/admin-panel/user-reports' },
+        { title: 'Library Reports', icon: 'mdi-view-compact', path: '/admin-panel/library-reports' },
         { title: 'Component Reports', icon: 'mdi-library', path: '/admin-panel/component-reports' },
       ],
   }),
 
   computed: {
-    
+    ...mapState({
+      currentUser: s => s.UserStore.user
+    }),
+
+    items() {
+      if(['admin', 'moderator'].includes(this.currentUser.role)) {
+        return this.rawItems.slice(1)
+      }
+
+      return this.rawItems
+    }  
   }
 };
 </script>

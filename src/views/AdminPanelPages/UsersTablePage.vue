@@ -73,6 +73,8 @@
           {{item.status == 'Active' ? 'Block': 'Activate'}}
         </v-btn>
         <v-btn @click="openNewTab(item)" class="ma-3">Open Profile</v-btn>
+        <v-btn v-if="!item.role" @click="setRole(item)" class="ma-3">Set moderator</v-btn>
+        <span class="ma-3" v-else>Moderator</span>
         
         <div class="ma-2">
           Admitted/Total Reports: 
@@ -152,6 +154,10 @@ export default {
 
     switchBlock(item) {
       this.$store.dispatch('AdminStore/switchBlockUser', item.email)
+    },
+
+    setRole(item) {
+      this.$store.dispatch('AdminStore/setRole', item.email)
     }
   },
 };

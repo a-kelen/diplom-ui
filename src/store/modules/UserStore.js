@@ -3,9 +3,10 @@ const state = {
   status: '',
   token: localStorage.getItem('token') || '',
   user: {
-    avatar: null,
-    role: ''
+    avatar: null
   },
+  isLoggedIn: false,
+  init: false,
   activeProfile: {},
   topUsers: [],
   followedUsers: [],
@@ -14,7 +15,7 @@ const state = {
 }
 // getters
 const getters = {
-  isLoggedIn: state => !!state.token,
+  isLoggedIn: state => state.isLoggedIn,
   authStatus: state => state.status
 }
 
@@ -28,16 +29,21 @@ const mutations = {
     state.status = 'success'
     state.token = payload.token
     state.user = payload.user
+    state.isLoggedIn = true
+    state.init = true
   },
 
   reauth_success (state, user) {
     state.status = 'success'
     state.token = localStorage.getItem('token')
     state.user = user
+    state.isLoggedIn = true
+    state.init = true
   },
 
   auth_error (state) {
     state.status = 'error'
+    state.isLoggedIn = false
   },
 
   set_top_users(state, val) {
