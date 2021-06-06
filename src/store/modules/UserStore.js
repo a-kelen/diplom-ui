@@ -219,7 +219,7 @@ const actions = {
     })
   },
 
-  login({ commit }, user) {
+  login({ commit, dispatch }, user) {
     return new Promise((resolve, reject) => {
       commit('auth_request')
       Axios({ url: 'User/login', data: user, method: 'POST' })
@@ -228,10 +228,13 @@ const actions = {
           const user = {
             email: resp.data.email,
             name: resp.data.name,
-            nickname: resp.data.nickname
+            nickname: resp.data.nickname,
+            username: resp.data.username
           }
-          Axios.defaults.headers.common.Authorization = 'Bearer ' + token
           commit('auth_success', { token, user })
+          
+          if(resp.data.hasAvatar)
+            dispatch('getAvatar', resp.data.username)
           resolve(resp)
         })
         .catch(err => {
