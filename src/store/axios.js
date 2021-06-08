@@ -6,7 +6,9 @@ if(process.env.NODE_ENV == 'development')  {
 }
 else
     url = 'http://akelen-001-site1.itempurl.com/'
-    
+
+console.log(process.env)
+
 const api = Axios.create({
     baseURL: url,
     httpsAgent: new https.Agent({
