@@ -13,6 +13,33 @@
         </v-col>
     </v-row>
     <v-row>
+        <v-col class="pt-0">
+            <v-combobox
+                :disabled="labelsDisabled"
+                v-model="model"
+                debounce="1000"
+                :items="searchedLabels"
+                :search-input.sync="searchLabels"
+                hide-selected
+                label="Add some labels"
+                multiple
+                deletable-chips
+                persistent-hint
+                small-chips
+            >
+                <template v-slot:no-data>
+                <v-list-item>
+                    <v-list-item-content>
+                    <v-list-item-title>
+                        No results matching "<strong>{{ search }}</strong>". Press <kbd>enter</kbd> to create a new one
+                    </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                </template>
+            </v-combobox>
+        </v-col>
+    </v-row>
+    <v-row>
         <v-tabs
                 class="mx-4"
                 grow
@@ -75,15 +102,20 @@ export default {
     data: () => ({
         tab: null,
         searchQuery: '',
+        model: [],
+        searchLabels: null,
         dictionary: new Map()
     }),
 
     methods: {
         search() {
-            if(!this.searchQuery) return
+            if(!this.searchQuery && this.model.length == 0) return
 
             let dispatcher = this.dictionary.get(this.tab)
-            this.$store.dispatch(dispatcher, this.searchQuery)
+            this.$store.dispatch(dispatcher, {
+                searchQuery: this.searchQuery,
+                labels: this.model
+            })
                 .then(() => {
 
                 })       
@@ -95,14 +127,29 @@ export default {
         ...mapState({
           components: s => s.SearchStore.components,
           libraries: s => s.SearchStore.libraries,
-          users: s => s.SearchStore.users
+          users: s => s.SearchStore.users,
+          searchedLabels: s => s.ElementStore.searchedLabels
         }),
+
+        labelsDisabled() {
+            return this.tab == 'tab-1'
+        }
     },
 
     watch: {
         tab() {
             this.search()
+        },
+        model () {
+            this.search()
+            this.searchLabels = null
+      },
+      
+      searchLabels() {
+        if(this.searchLabels) {
+          this.$store.dispatch('ElementStore/searchLabels', this.searchLabels)
         }
+      }
     },
 
     created() {

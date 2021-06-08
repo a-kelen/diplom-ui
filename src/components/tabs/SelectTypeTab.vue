@@ -30,6 +30,30 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
+    <div>
+      <v-combobox
+        v-model="model"
+        debounce="1000"
+        :items="searchedLabels"
+        :search-input.sync="search"
+        hide-selected
+        hint="Maximum of 5 tags"
+        label="Add some tags"
+        multiple
+        persistent-hint
+        small-chips
+      >
+        <template v-slot:no-data>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>
+                No results matching "<strong>{{ search }}</strong>". Press <kbd>enter</kbd> to create a new one
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </v-combobox>
+    </div>
     <div class="d-flex">
       <v-select
         :items="typeItems"
@@ -49,6 +73,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
   name: 'SelectTypeTab',
@@ -60,8 +85,15 @@ export default {
       'ReactTS',
       'AngularJS',
       'AngularTS',
-    ]
+    ],
+    model: [],
+    search: null,
   }),
+
+  methods: {
+
+  },
+
   computed: {
     selectedItem: {
       get () {
@@ -88,8 +120,27 @@ export default {
       set (value) {
         this.$store.commit('ElementStore/updateStatus', value)
       }
-    }
-  }
+    },
+
+    ...mapState({
+      searchedLabels: s => s.ElementStore.searchedLabels
+    })
+  },
+
+  watch: {
+      model (val) {
+        if (val.length > 5) {
+          this.$nextTick(() => this.model.pop())
+        }
+        this.$store.commit('ElementStore/set_labels', this.model)
+      },
+      
+      search() {
+        if(this.search) {
+          this.$store.dispatch('ElementStore/searchLabels', this.search)
+        }
+      }
+    },
 }
 </script>
 

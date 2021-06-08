@@ -2,6 +2,8 @@ import Axios from '../axios'
 const state = {
     elementSelectType: 0,
     elementType: '',
+    elementLabels: [],
+    searchedLabels: [],
     status: false,
     newLibraryName: 'Library name',
     newLibraryAvatar: null,
@@ -27,29 +29,16 @@ const state = {
   
   const mutations = {
     
-    reset_state(state) {
-      Object.assign(state, {
-        elementSelectType: 0,
-        elementType: '',
-        status: true,
-        newLibraryName: 'Library name',
-        newLibraryAvatar: null,
-        newLibraryDescription: 'Library Description',
-        newComponent: {
-          files: [],
-          events: [],
-          props: [],
-          description: 'Description ...',
-        },
-        components: [],
-    
-        likedList: []
-      })
-    },
 
     set_liked(state, val) {
       state.likedList = val
-      // state.likedList.sort((a,b)=>a.created - b.created);
+    },
+    set_searched_labels(state, val) {
+      state.searchedLabels = val
+    },
+
+    set_labels(state, val) {
+      state.elementLabels = val
     },
 
     updateElementType (state, val) {
@@ -114,6 +103,22 @@ const state = {
 
   const actions = {
 
+    searchLabels({ commit }, searchQuery) {
+        
+      return new Promise((resolve, reject) => {
+          Axios.get('Label/search', { params: {
+            searchQuery
+          } })
+              .then(resp => {
+                  commit('set_searched_labels', resp.data)
+                  resolve()
+              })
+              .catch(err => {
+                  reject(err)
+              })
+      })
+  },
+
     getLikedLibraries({ commit }) {
       return new Promise((resolve, reject) => {
         Axios.get('Like/liked')
@@ -138,7 +143,8 @@ const state = {
           description: state.newLibraryDescription,
           components: state.components,
           status: state.status,
-          type: state.elementType
+          type: state.elementType,
+          labels: state.elementLabels
         }
         let formData = new FormData()
         for(let i=0; i < libraryFiles.length; i++){
@@ -176,7 +182,8 @@ const state = {
           Axios.post('Component/', {
             ...state.newComponent,
             status: state.status,
-            type: state.elementType
+            type: state.elementType,
+            labels: state.elementLabels
           })
             .then(resp => {
               formData.append('elementId', resp.data.id)

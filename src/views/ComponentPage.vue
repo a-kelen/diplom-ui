@@ -3,7 +3,7 @@
       <v-row>
         <v-col>
           <v-row>
-            <v-col>
+            <v-col class="pb-0">
               <v-sheet class="transparent d-flex gap align-center">
                 <v-card-text class="text-h4">
                   {{ component.name }}
@@ -14,6 +14,24 @@
               </v-sheet>
             </v-col>
           </v-row>
+
+          <v-row > 
+            <v-col class=" pl-6 py-0">
+              <v-chip-group
+                multiple
+                v-if="componentIsIndepended"
+              >
+                <v-chip
+                  v-for="label in component.labels"
+                  :key="label"
+                  small
+                >
+                  {{ label }}
+                </v-chip>
+              </v-chip-group>
+            </v-col>
+          </v-row>
+
           <v-row>
             <v-col>
               <v-sheet class="transparent gap d-flex align-center">
@@ -60,14 +78,17 @@
           <v-card class="px-2">
             <v-tabs v-model="tab" grow>
               <v-tab href="#tab-1">Description</v-tab>
-              <v-tab v-show="component.events.length > 0" href="#tab-2">Events</v-tab>
-              <v-tab v-show="component.props.length > 0" href="#tab-3">Props</v-tab>
-              <v-tab v-show="component.slots.length > 0" href="#tab-4">Slots</v-tab>
+              <v-tab v-show="component.events.length" href="#tab-2">Events</v-tab>
+              <v-tab v-show="component.props.length" href="#tab-3">Props</v-tab>
+              <v-tab v-show="component.slots.length" href="#tab-4">Slots</v-tab>
               <v-tab v-show="component.dependencies" href="#tab-5">Dependencies</v-tab>
             </v-tabs>
             <v-tabs-items class="transparent-body" v-model="tab">
               <v-tab-item background-opacity="0" value="tab-1">
-                {{component.description}}
+                <Editor 
+                  mode="viewer"
+                  v-model="component.description"
+                />
               </v-tab-item>
               <v-tab-item  value="tab-2">
                 <component-field-item
@@ -167,12 +188,14 @@
 import clone from '../utils/clone'
 import compare from '../utils/compare'
 import EditComponent from '../components/dialogs/EditComponent.vue'
+import { Editor } from 'vuetify-markdown-editor'
 import ReportBottomSheet from '../components/sheets/ReportBottomSheet.vue'
 import { mapState } from 'vuex'
 import ComponentFieldItem from '../components/items/ComponentFieldItem.vue'
 export default {
   name: 'ComponentPage',
   components: {
+    Editor,
     EditComponent,
     ReportBottomSheet,
     ComponentFieldItem

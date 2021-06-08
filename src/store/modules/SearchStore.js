@@ -1,4 +1,6 @@
 import Axios from '../axios'
+import Qs from 'qs'
+
 const state = {
     dashboardSearchQuery: '',
     userProfileSearchQuery: '',
@@ -36,10 +38,10 @@ const mutations = {
 
 // actions
 const actions = {
-    searchUsers({ commit }, searchQuery) {
+    searchUsers({ commit }, payload) {
         
         return new Promise((resolve, reject) => {
-            Axios.get(`User/search/${searchQuery}`)
+            Axios.get(`User/search/${payload.searchQuery}`)
                 .then(resp => {
                     commit('set_users', resp.data)
                     resolve()
@@ -50,9 +52,17 @@ const actions = {
         })
     },
 
-    searchComponents({ commit }, searchQuery) {
+    searchComponents({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            Axios.get(`Component/search/${searchQuery}`)
+            Axios.get('Component/search/', {
+                params: {
+                    searchQuery: payload.searchQuery,
+                    labels: payload.labels
+                },
+                paramsSerializer: function(params) {
+                    return Qs.stringify(params, {arrayFormat: 'repeat'})
+                }
+            })
                 .then(resp => {
                     commit('set_components', resp.data)
                     resolve()
@@ -63,9 +73,14 @@ const actions = {
         })
     },
 
-    searchLibraries({ commit }, searchQuery) {
+    searchLibraries({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            Axios.get(`Library/search/${searchQuery}`)
+            Axios.get('Library/search/', {
+                params: {
+                    searchQuery: payload.searchQuery,
+                    labels: payload.labels
+                }
+            })
                 .then(resp => {
                     
                     commit('set_libraries', resp.data)

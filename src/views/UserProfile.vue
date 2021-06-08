@@ -37,7 +37,7 @@
             <v-col class="py-2">
               <v-sheet class="transparent gap d-flex align-center">
                 <v-chip>{{ profile.followersCount }} followers</v-chip>
-                <v-chip>231 stars</v-chip>
+                <!-- <v-chip>231 stars</v-chip> -->
                 <v-chip>{{ componentsCount }} components</v-chip>
                 <v-chip>{{ librariesCount }} libraries</v-chip>
                 <report-bottom-sheet v-if="currentUser.username != profile.username" @submit="reportToUser"  :visibility.sync="reportSheet"/>

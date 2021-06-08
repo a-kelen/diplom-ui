@@ -50,11 +50,6 @@
             </v-list-item>
         </v-list>
     </v-row>
-    <v-row>
-      <v-text-field
-        
-      ></v-text-field>
-    </v-row>
 
     <v-row>
         <v-col>

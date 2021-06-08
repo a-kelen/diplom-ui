@@ -32,7 +32,7 @@ const mutations = {
 
         state.historyItems = []
 
-        for(let group in historyByDay) {
+        for(let group of Object.keys(historyByDay).reverse()) {
             state.historyItems.push({ header: group})
             state.historyItems.push({ divider: true })
             for(let i of historyByDay[group]) {

@@ -46,6 +46,23 @@
             <v-icon v-if="status" small class="my-1">mdi-lock-outline</v-icon> 
           </v-col>
         </v-row>
+
+        <v-row > 
+          <v-col class="px-3 py-0">
+            <v-chip-group
+              multiple
+            >
+              <v-chip
+                v-for="label in library.labels"
+                :key="label"
+                x-small
+              >
+                {{ label }}
+              </v-chip>
+            </v-chip-group>
+          </v-col>
+        </v-row>
+
         <v-row>
           <v-col class="d-flex">
             <router-link :to="{ name: 'UserProfile', params: {username: library.author} }" >

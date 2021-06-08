@@ -24,6 +24,21 @@
             <v-icon v-if="status" class="mx-2" small>mdi-lock-outline</v-icon> 
           </v-col>
         </v-row>
+        <v-row > 
+          <v-col class="px-3 py-0">
+            <v-chip-group
+              multiple
+            >
+              <v-chip
+                v-for="label in component.labels"
+                :key="label"
+                x-small
+              >
+                {{ label }}
+              </v-chip>
+            </v-chip-group>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col class="d-flex">
               <div class=" grey--text text-body-2 text--darken-2">{{ component.author }}</div>

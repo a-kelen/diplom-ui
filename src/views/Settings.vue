@@ -79,7 +79,7 @@
         </v-alert>
       </v-form>
     </v-row>
-    <v-row class="d-flex my-7 align-content-center flex-wrap">
+    <!-- <v-row class="d-flex my-7 align-content-center flex-wrap">
       <span class="mr-5 text-button">
         Others
       </span>
@@ -96,7 +96,7 @@
           label="Theme"
         ></v-select>
         </div>
-    </v-row>
+    </v-row> -->
     <v-row>
       <v-col>
         <v-btn 

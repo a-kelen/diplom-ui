@@ -41,6 +41,23 @@
             </v-sheet>
           </v-col>
         </v-row>
+
+        <v-row > 
+          <v-col class=" pl-6 py-0">
+            <v-chip-group
+              multiple
+            >
+              <v-chip
+                v-for="label in library.labels"
+                :key="label"
+                small
+              >
+                {{ label }}
+              </v-chip>
+            </v-chip-group>
+          </v-col>
+        </v-row>
+
         <v-row>
           <v-col>
             <v-sheet class="transparent gap d-flex align-center">
