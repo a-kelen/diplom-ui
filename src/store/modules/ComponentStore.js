@@ -163,7 +163,7 @@ const state = {
     //PUT
     updateComponent ( _, payload) {
       return new Promise((resolve, reject) => {
-      Axios.put('Component/', payload)
+      Axios.post('Component/update', payload)
         .then(resp => {
           
           resolve(resp.data)

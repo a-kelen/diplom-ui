@@ -296,7 +296,7 @@ const actions = {
 
   changeProfile ({ commit }, user) {
     return new Promise((resolve, reject) => {
-      Axios.put('User', user)
+      Axios.post('User', user)
         .then(resp => {
           commit('update_user', resp.data)
           resolve()
@@ -309,7 +309,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const form = new FormData()
       form.append('image', payload.blob)
-    Axios.put('User/avatar', form)
+    Axios.post('User/avatar', form)
       .then(resp => {
         resolve(resp.data)
       })

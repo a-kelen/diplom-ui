@@ -275,7 +275,7 @@ const actions = {
 
     setRole( { commit }, email) {
         return new Promise((resolve, reject) => {
-            Axios.put('Admin/set-role', {userEmail: email})
+            Axios.post('Admin/set-role', {userEmail: email})
                 .then((resp) => {
                     console.log(resp.data)
                     commit('set_user_role', {

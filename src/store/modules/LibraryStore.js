@@ -179,7 +179,7 @@ const actions = {
   //PUT
   updateLibrary ( _, payload) {
     return new Promise((resolve, reject) => {
-    Axios.put('Library/', payload)
+    Axios.post('Library/update', payload)
       .then(resp => {
         resolve(resp.data)
       })
@@ -192,7 +192,7 @@ const actions = {
       const form = new FormData()
       form.append('libraryId', payload.libraryId)
       form.append('image', payload.blob)
-    Axios.put('Library/avatar', form)
+    Axios.post('Library/avatar', form)
       .then(resp => {
         resolve(resp.data)
       })
