@@ -5,7 +5,7 @@ if(process.env.NODE_ENV == 'development')  {
     url = 'https://localhost:44345/api/';
 }
 else
-    url = 'https://composdevapi.herokuapp.com/api/'
+    url = 'https://u1400620.plsk.regruhosting.ru/api/'
 
 console.log(process.env)
 
