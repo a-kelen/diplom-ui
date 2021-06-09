@@ -13,7 +13,9 @@ const api = Axios.create({
     baseURL: url,
     httpsAgent: new https.Agent({
         rejectUnauthorized: false
-    })
+    }),
+    headers: {"Access-Control-Allow-Origin": "*"}
+    
 })
 
 api.defaults.withCredentials = true
