@@ -5,7 +5,7 @@ if(process.env.NODE_ENV == 'development')  {
     url = 'https://localhost:44345/api/';
 }
 else
-    url = 'http://akelen-001-site1.itempurl.com/'
+    url = 'https://composdevapi.herokuapp.com/'
 
 console.log(process.env)
 
