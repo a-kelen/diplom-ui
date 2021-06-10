@@ -224,12 +224,13 @@ const actions = {
       commit('auth_request')
       Axios({ url: 'User/login', data: user, method: 'POST' })
         .then(resp => {
-          const token = resp.data.token
+          const token = resp.data.token 
           const user = {
             email: resp.data.email,
             name: resp.data.name,
             nickname: resp.data.nickname,
-            username: resp.data.username
+            username: resp.data.username,
+            role: resp.data.role
           }
           commit('auth_success', { token, user })
           
