@@ -173,11 +173,12 @@ export default {
           this.saveBtnLoading = false
           this.$router.push('Dashboard')
         })
-        .catch(() => {
+        .catch((err) => {
           this.error = true
           this.saveBtnLoading = false
           setTimeout(() => {
             this.error = false
+            console.log(err)
           }, 4000)
         })
       },

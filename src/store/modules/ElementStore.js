@@ -196,7 +196,10 @@ const state = {
                   reject(err)
                 })
             })
-            .catch(reject)
+            .catch(err => {
+              console.log(err)
+              reject(err)
+            })
         })
       }
       

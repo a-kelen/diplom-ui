@@ -61,7 +61,11 @@
       dark
     >
       <v-app-bar-nav-icon v-if="isLogged" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>CompoS</v-toolbar-title>
+      <v-toolbar-title>
+        <div class="d-flex">
+          compos <span class="devicon text--primary ml-1 px-1">dev</span>
+        </div>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu offset-y v-if="isLogged">
         <template v-slot:activator="{ on }">
@@ -140,3 +144,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.devicon {
+  background-color: white ;
+  border-radius: .2em;
+  
+}
+</style>
