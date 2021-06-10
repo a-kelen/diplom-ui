@@ -14,9 +14,27 @@ const api = Axios.create({
     httpsAgent: new https.Agent({
         rejectUnauthorized: false
     }),
-    headers: {"Access-Control-Allow-Origin": "*"}
+    
     
 })
+api.interceptors.response.use((response) => {
+        return response
+    },
+    function (err) {
+        let original = err.config
+        
+        if(err.config.url === 'User/refresh-token') return err
+
+        return api.post('User/refresh-token').then(resp => {
+            
+            if(resp.data.error) return
+            return api(original)
+        })
+        
+        
+    }
+)
+
 
 api.defaults.withCredentials = true
 
