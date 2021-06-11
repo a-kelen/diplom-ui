@@ -63,7 +63,7 @@
       <v-app-bar-nav-icon v-if="isLogged" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>
         <div class="d-flex">
-          compos <span class="devicon text--primary ml-1 px-1">dev</span>
+          compos <span class="devicon font-weight-bold px-1">dev</span>
         </div>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -147,8 +147,9 @@ export default {
 
 <style scoped>
 .devicon {
-  background-color: white ;
-  border-radius: .2em;
+  
+  border-color: white !important;
+  border-bottom: .2em solid;
   
 }
 </style>
