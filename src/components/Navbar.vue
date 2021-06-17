@@ -58,6 +58,7 @@
       app
       color="teal darken-3"
       dense
+      dark
     >
       <v-app-bar-nav-icon v-if="isLogged" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>
@@ -97,7 +98,7 @@ export default {
     isLogged: false,
     drawer : false,
     mini : false,
-    theme : true,
+    theme : false,
      items: [
           { title: 'Home', icon: 'mdi-home', path : '/'},
           { title: 'Dashboard', icon: 'mdi-view-dashboard' , path : '/dashboard' },

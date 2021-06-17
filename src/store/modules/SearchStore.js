@@ -10,8 +10,8 @@ const state = {
 }
 // getters
 const getters = {
-    getUserAmount() {
-        return users.length
+    getUserAmount(state) {
+        return state.users.length
     }
 }
 
