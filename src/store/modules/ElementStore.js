@@ -202,7 +202,6 @@ const state = {
             })
         })
       }
-      
     },
 
     report (_, payload) {
@@ -216,14 +215,6 @@ const state = {
             }
           }).catch((err) => reject(err))
       })
-    },
-
-    uploadFiles ({ state }) {
-      Axios.post('File/upload-files', state.newComponent.files)
-        .then(resp => {
-          console.log(resp);
-          // commit('add_own_library', resp.data)
-        })
     },
   }
   

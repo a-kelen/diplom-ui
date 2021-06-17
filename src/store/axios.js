@@ -1,13 +1,12 @@
 import Axios from 'axios'
 import https from 'https' 
-let url = ""
+let url = ''
 if(process.env.NODE_ENV == 'development')  {
     url = 'https://localhost:44345/api/';
 }
 else
     url = 'https://u1400620.plsk.regruhosting.ru/api/'
 
-console.log(process.env)
 
 const api = Axios.create({
     baseURL: url,
@@ -30,13 +29,9 @@ api.interceptors.response.use((response) => {
             if(resp.data.error) return
             return api(original)
         })
-        
-        
     }
 )
 
-
 api.defaults.withCredentials = true
-
 export default api
 

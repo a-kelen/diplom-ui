@@ -120,7 +120,7 @@ const routes = [
     component: () => import('../views/ComponentPage.vue'),
     meta: {
       auth: true,
-      title: 'Component | '
+      title: 'Component'
     }
   },
   {
@@ -130,7 +130,7 @@ const routes = [
     component: () => import('../views/ComponentPage.vue'),
     meta: {
       auth: true,
-      title: 'Lib Component | '
+      title: 'Lib Component'
     }
   },
   {
@@ -286,7 +286,6 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.auth)) {
     if (!store.getters['UserStore/isLoggedIn'] && store.getters['UserStore/isLoggedIn']) {
-      console.log('---1')
       next({
         path: '/login',
         query: { redirect: to.fullPath }
@@ -295,7 +294,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
   }
-  document.title = to.meta.title || 'CompoS'
+  document.title = to.meta.title || 'composdev'
    
   if(to.name === 'LibraryPage') 
     document.title += ` ${to.params.author} - ${to.params.name}`

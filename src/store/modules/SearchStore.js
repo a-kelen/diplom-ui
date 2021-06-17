@@ -10,7 +10,9 @@ const state = {
 }
 // getters
 const getters = {
- 
+    getUserAmount() {
+        return users.length
+    }
 }
 
 // mutations

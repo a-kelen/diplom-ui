@@ -58,7 +58,6 @@
       app
       color="teal darken-3"
       dense
-      dark
     >
       <v-app-bar-nav-icon v-if="isLogged" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>

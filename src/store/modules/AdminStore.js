@@ -271,13 +271,12 @@ const actions = {
                     reject(err)
                 })
         })
-    },
+    }, 
 
     setRole( { commit }, email) {
         return new Promise((resolve, reject) => {
             Axios.post('Admin/set-role', {userEmail: email})
                 .then((resp) => {
-                    console.log(resp.data)
                     commit('set_user_role', {
                         email,
                         role : 'moderator'
@@ -289,6 +288,7 @@ const actions = {
                 })
         })
     },
+
 }
 
 export default {
