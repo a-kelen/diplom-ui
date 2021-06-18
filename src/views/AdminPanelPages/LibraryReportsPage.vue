@@ -9,7 +9,7 @@
         :server-items-length="pagination.totalItems"
         :loading="loading"
         :expanded.sync="expanded"
-        item-key="author"
+        item-key="id"
         disable-sort
         show-expand
         class="elevation-1"

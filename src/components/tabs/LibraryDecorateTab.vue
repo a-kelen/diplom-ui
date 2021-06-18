@@ -2,7 +2,7 @@
   <v-container class="mb-6">
     <v-row>
       <v-col>
-        <p class="text-h5">Library Name</p>
+        <p class="text-h5">{{ libraryName }}</p>
       </v-col>
     </v-row>
      <v-row>
@@ -64,6 +64,7 @@ export default {
   computed: {
     ...mapState({
       components: s => s.ElementStore.components,
+      libraryName: s => s.ElementStore.newLibraryName
     }),
 
     hasDuplicates() {
@@ -73,7 +74,6 @@ export default {
   },
   watch: {
     hasDuplicates(val) {
-      console.log(val)
       this.$store.commit('ElementStore/updateNewLibraryHasDuplicates', val)
     }
   },

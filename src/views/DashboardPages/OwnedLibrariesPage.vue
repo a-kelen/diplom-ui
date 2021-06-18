@@ -10,7 +10,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <div class="custom-grid">
+      <div class="custom-grid mx-4">
         <library-item v-for="library in libraries" :key="library.id" :library="library"/>
       </div>
     </v-row>

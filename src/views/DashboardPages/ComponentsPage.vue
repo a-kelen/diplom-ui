@@ -10,7 +10,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <div class="custom-grid ma-4">
+      <div class="custom-grid mx-4">
         <component-item v-for="component in components" :key="component.id" :component="component"/>
       </div>
     </v-row>

@@ -10,7 +10,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <div class="custom-grid">
+      <div class="custom-grid mx-4">
         <div v-for="like in liked" :key="like.id">
           <library-item v-if="like.library != null" :library="like.library"/>
           <component-item v-if="like.component != null" :component="like.component"/>

@@ -112,12 +112,13 @@ export default {
             if(!this.searchQuery && this.model.length == 0) return
 
             let dispatcher = this.dictionary.get(this.tab)
+            console.log(this.searchQuery)
             this.$store.dispatch(dispatcher, {
                 searchQuery: this.searchQuery,
                 labels: this.model
             })
                 .then(() => {
-
+                    
                 })       
         },
 
